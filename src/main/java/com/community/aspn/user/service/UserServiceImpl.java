@@ -6,7 +6,10 @@ import com.community.aspn.user.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author nanguangjun
@@ -28,8 +31,26 @@ public class UserServiceImpl implements UserService {
      * @return int
      **/
     @Override
-    public int insertUser(User user) {
-        return userMapper.insert(user);
+    public Map<String,String> insertUser(User user) {
+
+        Map<String, String> msg = new HashMap<>();
+        //检查邮箱
+        Integer email = userMapper.selectCount(new QueryWrapper<User>().eq("email", user.getEmail()));
+        if(email>0){
+            msg.put("code","0");
+            msg.put("msg","邮箱以存在");
+            return msg;
+        }
+        //检查手机
+        Integer phone = userMapper.selectCount(new QueryWrapper<User>().eq("phone", user.getPhone()));
+        if(phone>0){
+            msg.put("code","0");
+            msg.put("msg","手机以存在");
+            return msg;
+        }
+        user.setRegisterTime(new Date());
+        userMapper.insert(user);
+        return msg;
     }
 
     /**
@@ -79,7 +100,7 @@ public class UserServiceImpl implements UserService {
     public User login(User user) {
         QueryWrapper<User> query = new QueryWrapper<>();
         //用户名，密码验证
-        query.eq("login_id",user.getLoginId())
+        query.eq("email",user.getEmail())
                 .eq("password",user.getPassword());
         return userMapper.selectOne(query);
     }

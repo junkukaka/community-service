@@ -18,8 +18,8 @@ public class Menu {
     //父类菜单
     private Integer father;
     private Character useYn;
-    private String registerId;
+    private Integer registerId;
     private Date registerTime;
-    private String updateId;
+    private Integer updateId;
     private Date updateTime;
 }
