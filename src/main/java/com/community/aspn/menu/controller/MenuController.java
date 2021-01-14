@@ -37,8 +37,8 @@ public class MenuController {
      **/
     @PostMapping("/menus")
     public @ResponseBody AjaxResponse InsertMenu(@RequestBody Menu menu){
-        int i = menuService.insertMenu(menu);
-        return AjaxResponse.success(i);
+        int m = menuService.insertMenu(menu);
+        return AjaxResponse.success(m);
     }
 
     /**
@@ -56,14 +56,15 @@ public class MenuController {
 
     /**
      * @Author nanguangjun
-     * @Description //获取所有菜单
+     * @Description //根据条件查询
      * @Date 15:46 2020/12/24
      * @Param []
      * @return com.community.aspn.util.AjaxResponse
      **/
-    @GetMapping("/menus")
-    public @ResponseBody AjaxResponse getAllMenu(){
-        return AjaxResponse.success(menuService.getAll());
+    @PostMapping("/menus/condition")
+    public @ResponseBody AjaxResponse getMenusByCondition(@RequestBody Menu menu){
+        System.out.print(menu.toString());
+        return AjaxResponse.success(menuService.getMenusByCondition(menu));
     }
 
 

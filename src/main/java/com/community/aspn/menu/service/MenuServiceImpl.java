@@ -1,8 +1,10 @@
 package com.community.aspn.menu.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.community.aspn.menu.mapper.MenuMapper;
 import com.community.aspn.pojo.Menu;
 import org.springframework.stereotype.Service;
+
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -25,7 +27,8 @@ public class MenuServiceImpl implements MenuService{
     @Override
     public int insertMenu(Menu menu) {
         menu.setRegisterTime(new Date());
-        return menuMapper.insert(menu);
+        int insert = menuMapper.insert(menu);
+        return insert;
     }
     
     /**
@@ -43,7 +46,7 @@ public class MenuServiceImpl implements MenuService{
     
     /**
      * @Author nanguangjun
-     * @Description //TODO 
+     * @Description //删除菜单
      * @Date 16:00 2020/12/24
      * @Param [id]
      *
@@ -56,7 +59,7 @@ public class MenuServiceImpl implements MenuService{
     
     /**
      * @Author nanguangjun
-     * @Description //TODO 
+     * @Description //根据ID查询
      * @Date 16:00 2020/12/24
      * @Param [id]
      * @return com.community.aspn.pojo.Menu
@@ -65,15 +68,31 @@ public class MenuServiceImpl implements MenuService{
     public Menu getMenuById(Integer id) {
         return menuMapper.selectById(id);
     }
+
+
     /**
      * @Author nanguangjun
-     * @Description //TODO 
-     * @Date 16:09 2020/12/24
-     * @Param []
+     * @Description //条件查询
+     * @Date 14:07 2021/1/13
+     * @Param [menu]
      * @return java.util.List<com.community.aspn.pojo.Menu>
      **/
     @Override
-    public List<Menu> getAll() {
-        return menuMapper.selectList(null);
+    public List<Menu> getMenusByCondition(Menu menu) {
+        QueryWrapper<Menu> query = new QueryWrapper<>();
+        //菜单等级查询
+        if(menu.getTier() != null && !"".equals(menu.getTier())){
+            query.eq("tier",menu.getTier());
+        //添加父目录条件
+        }
+        if(menu.getFather() != null && !"".equals(menu.getFather())){
+            query.eq("father",menu.getFather());
+        //使用状态
+        }
+        if(menu.getUseYn() != null && !"".equals(menu.getUseYn())){
+            query.eq("use_yn",menu.getUseYn());
+        }
+
+        return menuMapper.selectList(query);
     }
 }

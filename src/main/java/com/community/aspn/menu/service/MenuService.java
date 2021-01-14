@@ -9,5 +9,5 @@ public interface MenuService {
     public int updateMenu(Menu menu);
     public void deleteMenuById(Integer id);
     public Menu getMenuById(Integer id);
-    public List<Menu> getAll();
+    public List<Menu> getMenusByCondition(Menu menu);
 }
