@@ -10,4 +10,5 @@ public interface MenuService {
     public void deleteMenuById(Integer id);
     public Menu getMenuById(Integer id);
     public List<Menu> getMenusByCondition(Menu menu);
+    public List<Menu> getMenuTree();
 }

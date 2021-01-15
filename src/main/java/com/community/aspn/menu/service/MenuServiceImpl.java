@@ -95,4 +95,22 @@ public class MenuServiceImpl implements MenuService{
 
         return menuMapper.selectList(query);
     }
+
+    /**
+     * @Author nanguangjun
+     * @Description //获取MenuTrees
+     * @Date 10:29 2021/1/15
+     * @Param []
+     * @return java.util.List<java.lang.Object>
+     **/
+    @Override
+    public List<Menu> getMenuTree() {
+        //一级菜单
+        List<Menu> first = menuMapper.selectMenuByTier(1);
+        //一级菜单
+        List<Menu> second = menuMapper.selectMenuByTier(2);
+        //一级菜单
+        List<Menu> third = menuMapper.selectMenuByTier(3);
+        return second;
+    }
 }
