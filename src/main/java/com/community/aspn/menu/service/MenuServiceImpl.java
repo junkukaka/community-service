@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class MenuServiceImpl implements MenuService{
@@ -94,5 +93,41 @@ public class MenuServiceImpl implements MenuService{
         }
 
         return menuMapper.selectList(query);
+
+
+    }
+
+    /**
+     * 获取menu
+     * @return
+     */
+    @Override
+    public List<Map<String,Object>> getMenuTree() {
+        //最终集合
+        List<Map<String,Object>> finalList = new ArrayList<>();
+        //菜单对象
+        List<Map<String,Object>> listMap = new ArrayList<>();
+
+        //菜单临时容器
+        List<Menu> listTmp = null;
+
+        Integer id = 0;
+        //第一层菜单
+        List<Menu> first = menuMapper.selectMenuByTier(1);
+        System.out.println(first.size());
+        for (int i = 0; i < first.size(); i++) {
+            Menu menuTmp = first.get(i);
+            //单个对象
+            Map<String,Object> mapTmp = new HashMap<>();
+            mapTmp.put("id",menuTmp.getId());
+            mapTmp.put("tier",menuTmp.getTier());
+            mapTmp.put("name",menuTmp.getName());
+            listTmp = menuMapper.selectByFather(menuTmp.getId());
+            if(!listTmp.isEmpty()){
+                mapTmp.put("child",listTmp);
+            }
+            listMap.add(mapTmp);
+        }
+        return listMap;
     }
 }

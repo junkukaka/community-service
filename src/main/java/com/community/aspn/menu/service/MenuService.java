@@ -2,7 +2,10 @@ package com.community.aspn.menu.service;
 
 import com.community.aspn.pojo.Menu;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface MenuService {
     public int insertMenu(Menu menu);
@@ -10,4 +13,5 @@ public interface MenuService {
     public void deleteMenuById(Integer id);
     public Menu getMenuById(Integer id);
     public List<Menu> getMenusByCondition(Menu menu);
+    public List<Map<String,Object>> getMenuTree();
 }

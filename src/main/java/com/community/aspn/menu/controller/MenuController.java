@@ -6,6 +6,8 @@ import com.community.aspn.util.AjaxResponse;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/menu")
@@ -72,6 +74,12 @@ public class MenuController {
     public @ResponseBody AjaxResponse deleteMenuById(@PathVariable Integer id){
         menuService.deleteMenuById(id);
         return AjaxResponse.success();
+    }
+
+    @GetMapping("/menus/tree")
+    public @ResponseBody AjaxResponse selectMenuTree(@RequestBody Menu menu){
+        List<Map<String, Object>> menuTree = menuService.getMenuTree();
+        return  AjaxResponse.success(menuTree);
     }
 
 
