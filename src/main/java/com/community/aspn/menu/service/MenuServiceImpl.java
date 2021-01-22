@@ -97,55 +97,67 @@ public class MenuServiceImpl implements MenuService{
 
     }
 
-    /**
-     * 获取menu
-     * @return
-     */
-    @Override
-    public List<Map<String,Object>> getMenuTree() {
-        //最终集合
-        List<Map<String,Object>> finalList = new ArrayList<>();
-        //菜单对象
-        List<Map<String,Object>> listMap = new ArrayList<>();
-
-        //菜单临时容器
-        List<Menu> listTmp = null;
-
-        Integer id = 0;
-        //第一层菜单
-        List<Menu> first = menuMapper.selectMenuByTier(1);
-        System.out.println(first.size());
-        for (int i = 0; i < first.size(); i++) {
-            Menu menuTmp = first.get(i);
-            //单个对象
-            Map<String,Object> mapTmp = new HashMap<>();
-            mapTmp.put("id",menuTmp.getId());
-            mapTmp.put("tier",menuTmp.getTier());
-            mapTmp.put("name",menuTmp.getName());
-            listTmp = menuMapper.selectByFather(menuTmp.getId());
-            if(!listTmp.isEmpty()){
-                mapTmp.put("child",listTmp);
-            }
-            listMap.add(mapTmp);
-        }
-        return listMap;
-    }
 
     /**
      * @Author nanguangjun
-     * @Description //获取MenuTrees
-     * @Date 10:29 2021/1/15
+     * @Description // MenuTree
+     * @Date 9:51 2021/1/18
      * @Param []
-     * @return java.util.List<java.lang.Object>
+     * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
      **/
-    @Override
-    public List<Menu> getMenuTree() {
-        //一级菜单
+    public List<Map<String,Object>> getMenuTree(){
         List<Menu> first = menuMapper.selectMenuByTier(1);
-        //一级菜单
         List<Menu> second = menuMapper.selectMenuByTier(2);
-        //一级菜单
         List<Menu> third = menuMapper.selectMenuByTier(3);
-        return second;
+        //临时2级菜单
+        List<Map<String,Object>> secondTmp = new ArrayList<>();
+        //2级菜单封装
+        for (int i = 0; i < second.size(); i++) {
+            //单个对象
+            Map<String,Object> mapTmp = new HashMap<>(); //2级临时菜单
+            List<Menu> thirdTem= new ArrayList<>(); //3级临时菜单
+            int secondId = second.get(i).getId();
+            for (int j = 0; j < third.size(); j++) {
+                int thirdFather = third.get(j).getFather();
+                if(secondId == thirdFather){
+                    thirdTem.add(third.get(j));
+                }
+            }
+            //在2级菜单添加 3级菜单
+            if(thirdTem.size()>0){
+                mapTmp.put("children",thirdTem);
+            }
+            mapTmp.put("id",secondId);
+            mapTmp.put("tier",second.get(i).getTier());
+            mapTmp.put("name",second.get(i).getName());
+            mapTmp.put("father",second.get(i).getFather());
+            secondTmp.add(mapTmp);
+        }
+        //最终菜单
+        List<Map<String,Object>> finalList = new ArrayList<>();
+        //1级菜单封装
+        for (int i = 0; i < first.size(); i++) {
+            //单个对象
+            Map<String,Object> mapTmp2 = new HashMap<>();
+            List<Map<String,Object>> sTem= new ArrayList<>(); //3级临时菜单
+            int firstId = first.get(i).getId();
+            for(Map<String,Object> s: secondTmp){
+                int father = (int) s.get("father");
+                if(firstId == father){
+                    sTem.add(s);
+                }
+            }
+            if(sTem.size() > 0){
+                mapTmp2.put("children",sTem);
+            }
+            mapTmp2.put("id",firstId);
+            mapTmp2.put("tier",first.get(i).getTier());
+            mapTmp2.put("name",first.get(i).getName());
+            mapTmp2.put("father",first.get(i).getFather());
+            finalList.add(mapTmp2);
+        }
+
+        return finalList;
     }
+
 }

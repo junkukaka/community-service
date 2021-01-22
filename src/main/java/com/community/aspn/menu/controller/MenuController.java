@@ -69,15 +69,28 @@ public class MenuController {
         return AjaxResponse.success(menuService.getMenusByCondition(menu));
     }
 
-
+    /**
+     * @Author nanguangjun
+     * @Description // 删除
+     * @Date 9:14 2021/1/18
+     * @Param [id]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
     @DeleteMapping("/menus/{id}")
     public @ResponseBody AjaxResponse deleteMenuById(@PathVariable Integer id){
         menuService.deleteMenuById(id);
         return AjaxResponse.success();
     }
 
+    /**
+     * @Author nanguangjun
+     * @Description //获取menu tree
+     * @Date 9:14 2021/1/18
+     * @Param []
+     * @return com.community.aspn.util.AjaxResponse
+     **/
     @GetMapping("/menus/tree")
-    public @ResponseBody AjaxResponse selectMenuTree(@RequestBody Menu menu){
+    public @ResponseBody AjaxResponse selectMenuTree(){
         List<Map<String, Object>> menuTree = menuService.getMenuTree();
         return  AjaxResponse.success(menuTree);
     }
