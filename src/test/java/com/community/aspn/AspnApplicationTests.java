@@ -1,7 +1,9 @@
 package com.community.aspn;
 
+import com.community.aspn.community.mapper.CommunitysMapper;
 import com.community.aspn.menu.mapper.MenuMapper;
 import com.community.aspn.menu.service.MenuService;
+import com.community.aspn.pojo.Communitys;
 import com.community.aspn.pojo.Dessert;
 import com.community.aspn.pojo.Menu;
 import com.community.aspn.test.service.DessertService;
@@ -25,6 +27,9 @@ class AspnApplicationTests {
     @Resource
     MenuService menuService;
 
+    @Resource
+    CommunitysMapper communitysMapper;
+
     @Test
     void contextLoads() {
         Dessert dessert = dessertService.getDessert(6);
@@ -43,6 +48,14 @@ class AspnApplicationTests {
         for (int i = 0; i < menuTree.size(); i++) {
             Map<String, Object> stringObjectMap = menuTree.get(i);
             System.out.println(stringObjectMap.toString());
+        }
+    }
+
+    @Test
+    void testView(){
+        List<Communitys> communitysList = communitysMapper.selectList(null);
+        for (Communitys communitys:communitysList) {
+            System.out.println(communitys.toString());
         }
     }
 
