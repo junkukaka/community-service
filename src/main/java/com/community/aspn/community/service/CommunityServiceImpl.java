@@ -35,7 +35,6 @@ public class CommunityServiceImpl implements CommunityService{
     public int insertCommunity(Community community) {
         community.setRegisterTime(new Date());
         String content = community.getContent();
-        MinIOFileUtil.base64RegexMatches(content);
         return 1;
 //        return communityMapper.insert(community);
     }

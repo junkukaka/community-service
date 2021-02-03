@@ -14,6 +14,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MinIOFileUtil {
+
+    private static final String REG = "(data:image\\/png\\;base64\\,)[a-z,A-Z]([^\'\"]+)";
+    private static final Pattern PATTERN = Pattern.compile(REG);
+
     /**
      * @Author nanguangjun
      * @Description // 日期 / uuid.文件后缀
@@ -74,17 +78,30 @@ public class MinIOFileUtil {
         }
     }
 
-    public static int base64RegexMatches(String content){
-        String pattern = "([\'\"])data:image\\/png\\;base64\\,[a-z,A-Z]([^\'\"])";
-        Pattern r = Pattern.compile(pattern);
-        Matcher matcher = r.matcher(content);
+
+    /**
+     * 查看是否匹配
+     * @param content
+     * @return
+     */
+    public static Boolean ifBase64RegexMatcher(String content){
+        Matcher matcher = PATTERN.matcher(content);
+        return matcher.matches();
+    }
+
+    /**
+     * 如果匹配的话就替换url
+     * @param content
+     * @return
+     */
+    public static int base64RegexReplace(String content){
+        Matcher matcher = PATTERN.matcher(content);
         int i = 1;
         while (matcher.find()){
             String group = matcher.group(i);
             System.out.println(group);
             i++;
         }
-
         return 1;
     }
 
