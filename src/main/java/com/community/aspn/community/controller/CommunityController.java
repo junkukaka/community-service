@@ -28,9 +28,14 @@ public class CommunityController {
     CommunityService communityService;
 
     @PostMapping("/communitys")
-    public @ResponseBody  AjaxResponse insertCommunity(@RequestBody Community community){
-        int i = communityService.insertCommunity(community);
-        return AjaxResponse.success(i);
+    public @ResponseBody  AjaxResponse saveCommunity(@RequestBody Community community){
+        int code = 0;
+        if(community.getId() != null){
+            code = communityService.updateCommunity(community);
+        }else {
+            code = communityService.insertCommunity(community);
+        }
+        return AjaxResponse.success(code);
     }
     
     /**

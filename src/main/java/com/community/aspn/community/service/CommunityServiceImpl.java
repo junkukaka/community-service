@@ -6,6 +6,7 @@ import com.community.aspn.community.mapper.CommunityMapper;
 import com.community.aspn.menu.mapper.MenuMapper;
 import com.community.aspn.pojo.Community;
 import com.community.aspn.pojo.Menu;
+import com.community.aspn.util.mino.MinIOFileUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -33,7 +34,10 @@ public class CommunityServiceImpl implements CommunityService{
     @Override
     public int insertCommunity(Community community) {
         community.setRegisterTime(new Date());
-        return communityMapper.insert(community);
+        String content = community.getContent();
+        MinIOFileUtil.base64RegexMatches(content);
+        return 1;
+//        return communityMapper.insert(community);
     }
 
     /**

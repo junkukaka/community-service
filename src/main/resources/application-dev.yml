@@ -17,7 +17,11 @@ spring:
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*Mapper.xml
 
+# MinIo文件服务器
+minio:
+  endpoint: http://192.168.72.130:9000
+  accessKey: minioadmin
+  secretKey: minioadmin
+  bucketName: test
+  url: http://192.168.72.130:9000/test/
 
-# 配置日志
-logging:
-  config: classpath:log4j2-dev.xml
