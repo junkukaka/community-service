@@ -1,22 +1,26 @@
 package com.community.aspn.util.mino;
 
+
 import org.springframework.web.multipart.MultipartFile;
 import sun.misc.BASE64Decoder;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+
+import javax.annotation.Resource;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
-import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 public class MinIOFileUtil {
 
-    private static final String REG = "(data:image\\/png\\;base64\\,)[a-z,A-Z]([^\'\"]+)";
-    private static final Pattern PATTERN = Pattern.compile(REG);
+    @Resource
+    MinIOTemplate minIOTemplate;
+
+    private static final String REG = "(data:image\\/[a-z]{2,4}\\;base64\\,)[a-z,A-Z]([^\'\"]+)";
+    public static final Pattern PATTERN = Pattern.compile(REG);
 
     /**
      * @Author nanguangjun
@@ -80,30 +84,18 @@ public class MinIOFileUtil {
 
 
     /**
-     * 查看是否匹配
-     * @param content
-     * @return
-     */
+     * @Author nanguangjun
+     * @Description //是否匹配 base64 截图文件
+     * @Date 10:36 2021/2/4
+     * @Param [content]
+     * @return java.lang.Boolean
+     **/
     public static Boolean ifBase64RegexMatcher(String content){
         Matcher matcher = PATTERN.matcher(content);
-        return matcher.matches();
+        return matcher.find();
     }
 
-    /**
-     * 如果匹配的话就替换url
-     * @param content
-     * @return
-     */
-    public static int base64RegexReplace(String content){
-        Matcher matcher = PATTERN.matcher(content);
-        int i = 1;
-        while (matcher.find()){
-            String group = matcher.group(i);
-            System.out.println(group);
-            i++;
-        }
-        return 1;
-    }
+
 
     /**
      * @Author nanguangjun

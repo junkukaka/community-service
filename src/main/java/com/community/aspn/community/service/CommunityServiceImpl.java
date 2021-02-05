@@ -7,6 +7,7 @@ import com.community.aspn.menu.mapper.MenuMapper;
 import com.community.aspn.pojo.Community;
 import com.community.aspn.pojo.Menu;
 import com.community.aspn.util.mino.MinIOFileUtil;
+import com.community.aspn.util.mino.MinoIOComponent;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,6 +25,9 @@ public class CommunityServiceImpl implements CommunityService{
     @Resource
     MenuMapper menuMapper;
 
+    @Resource
+    MinoIOComponent minoIOComponent;
+
     /**
      * @Author nanguangjun
      * @Description // 写帖子
@@ -35,8 +39,12 @@ public class CommunityServiceImpl implements CommunityService{
     public int insertCommunity(Community community) {
         community.setRegisterTime(new Date());
         String content = community.getContent();
-        return 1;
-//        return communityMapper.insert(community);
+        //是否有截图，如果有截图，处理截图文件。
+        if(MinIOFileUtil.ifBase64RegexMatcher(content)){
+            String newContent = minoIOComponent.base64RegexReplace(content);
+            community.setContent(newContent);
+        }
+        return communityMapper.insert(community);
     }
 
     /**
@@ -49,6 +57,12 @@ public class CommunityServiceImpl implements CommunityService{
     @Override
     public int updateCommunity(Community community) {
         community.setUpdateTime(new Date());
+        String content = community.getContent();
+        //是否有截图，如果有截图，处理截图文件。
+        if(MinIOFileUtil.ifBase64RegexMatcher(content)){
+            String newContent = minoIOComponent.base64RegexReplace(content);
+            community.setContent(newContent);
+        }
         return communityMapper.updateById(community);
     }
 

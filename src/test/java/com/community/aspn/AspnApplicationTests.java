@@ -21,8 +21,8 @@ class AspnApplicationTests {
 
     @Test
     void testRes(){
-        String content = "src='data:image/png;base64,iVBORw0KGgoAasdAAANSUasdasdhEUgAAAbgAA89=='src='data:image/png;base64,iVBORw0KGgoAAAANSUasdasdhEUgAAAbgAA89=='" ;
-        String pattern = "(data:image\\/png\\;base64\\,)[a-z,A-Z]([^\'\"]+)";
+        String content = "<img src=\"data:image/jepg;base64,iVBORANX4xQVR4Ae3d2Y8UZd/Gcc6e/+AORK5CYII=\">" ;
+        String pattern = "(data:image\\/[a-z]{2,4}\\;base64\\,)[a-z,A-Z]([^\'\"]+)";
 
         Pattern r = Pattern.compile(pattern);
         Matcher matcher = r.matcher(content);
@@ -32,8 +32,15 @@ class AspnApplicationTests {
             String group = matcher.group();
             replace = replace.replace(group, "123");
             System.out.println(replace);
-
         }
     }
+
+    @Test
+    void testBaseToFile(){
+        String content = "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAacAAAEnCAYAAAANX4xAAAAf6ElEQVR4Ae3d2Y8UZd/Gcc6e/+AORK5CYII=\">" ;
+        Boolean aBoolean = MinIOFileUtil.ifBase64RegexMatcher(content);
+        System.out.println(aBoolean);
+    }
+
 
 }

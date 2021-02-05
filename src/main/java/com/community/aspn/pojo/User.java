@@ -22,12 +22,12 @@ public class User extends Model<User> implements Serializable {
     private Integer id;
     private String password;
     private String userName;
+    private String email;
     //部门
     private Integer department;
     //职位
     private Integer duty;
     private String phone;
-    private String email;
     //备注
     private String remark;
     //用户权限

@@ -54,21 +54,5 @@ public class MinIOFileUploadController {
         return AjaxResponse.success(url);
     }
 
-    @PostMapping("/minio/base64")
-    public @ResponseBody AjaxResponse uploadBASE64(@RequestBody Map<String,String> map) throws Exception {
-        String base634 = map.get("base64");
-        //把字符串转换成文件
-        MultipartFile multipartFile = MinIOFileUtil.base64MutipartFile(base634);
-        InputStream inputStream = multipartFile.getInputStream();
-        //获取文件名称和存储路径
-        String fileName = MinIOFileUtil.getCommunityFileName(multipartFile.getOriginalFilename());
-        //获取文件类型 contentType
-        String contentType = MinIOFileUtil.getContentType(multipartFile.getOriginalFilename());
-        //获取文件类型 contentType
-        ObjectWriteResponse objectWriteResponse = minIOTemplate.putObject(fileName, inputStream, contentType);
-        String url = minIOProperties.getUrl() + objectWriteResponse.object();
-        return  AjaxResponse.success(url);
-    }
-
 
 }
