@@ -48,5 +48,10 @@ public class UserController {
         return AjaxResponse.success(login);
     }
 
+    @GetMapping("/department")
+    public @ResponseBody AjaxResponse getDepartment(){
+        return AjaxResponse.success(userService.getDepartment());
+    }
+
 
 }

@@ -38,18 +38,20 @@ public class UserServiceImpl implements UserService {
         Integer email = userMapper.selectCount(new QueryWrapper<User>().eq("email", user.getEmail()));
         if(email>0){
             msg.put("code","0");
-            msg.put("msg","邮箱以存在");
+            msg.put("msg","중복된 메일 주소 입니다.");
             return msg;
         }
         //检查手机
         Integer phone = userMapper.selectCount(new QueryWrapper<User>().eq("phone", user.getPhone()));
         if(phone>0){
             msg.put("code","0");
-            msg.put("msg","手机以存在");
+            msg.put("msg","중복된 핸드폰 번호 입니다.");
             return msg;
         }
         user.setRegisterTime(new Date());
         userMapper.insert(user);
+        msg.put("code","1");
+        msg.put("msg","회원가입 성공");
         return msg;
     }
 
@@ -115,5 +117,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUser() {
         return userMapper.selectList(null);
+    }
+
+    @Override
+    public List<Map<String,Object>> getDepartment() {
+        return userMapper.getDepartment();
     }
 }

@@ -24,7 +24,7 @@ public class User extends Model<User> implements Serializable {
     private String userName;
     private String email;
     //部门
-    private Integer department;
+    private String department;
     //职位
     private Integer duty;
     private String phone;

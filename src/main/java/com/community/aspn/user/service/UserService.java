@@ -12,4 +12,5 @@ public interface UserService {
     public User getUserById(Integer id);
     public User login(User user);
     public List<User> getAllUser();
+    public List<Map<String,Object>> getDepartment();
 }
