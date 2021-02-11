@@ -112,7 +112,7 @@ public class CommunityServiceImpl implements CommunityService{
         queryWrapper.eq("menu_id",params.get("menuId"));
         Menu menu = menuMapper.selectById(params.get("menuId"));
 
-        Page<Community> page = new Page<>(params.get("page"),10);  //查询第1页，每页5条数据
+        Page<Community> page = new Page<>(params.get("page"),20);  //查询第1页，每页5条数据
         communityMapper.selectPage(page, queryWrapper);
         //分页返回的对象与传入的对象是同一个
         List<Community> communitys = page.getRecords();
