@@ -42,7 +42,7 @@ public class UserController {
         return AjaxResponse.success(userById);
     }
 
-    @GetMapping("/users/login")
+    @PostMapping("/users/login")
     public @ResponseBody AjaxResponse logIn(@RequestBody User user){
         User login = userService.login(user);
         return AjaxResponse.success(login);

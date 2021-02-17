@@ -104,6 +104,7 @@ public class UserServiceImpl implements UserService {
         //用户名，密码验证
         query.eq("email",user.getEmail())
                 .eq("password",user.getPassword());
+        User u = userMapper.selectOne(query);
         return userMapper.selectOne(query);
     }
 
