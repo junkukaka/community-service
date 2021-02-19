@@ -32,20 +32,9 @@ public class UserServiceImpl implements UserService {
      **/
     @Override
     public Map<String,String> insertUser(User user) {
-
-        Map<String, String> msg = new HashMap<>();
-        //检查邮箱
-        Integer email = userMapper.selectCount(new QueryWrapper<User>().eq("email", user.getEmail()));
-        if(email>0){
-            msg.put("code","0");
-            msg.put("msg","중복된 메일 주소 입니다.");
-            return msg;
-        }
-        //检查手机
-        Integer phone = userMapper.selectCount(new QueryWrapper<User>().eq("phone", user.getPhone()));
-        if(phone>0){
-            msg.put("code","0");
-            msg.put("msg","중복된 핸드폰 번호 입니다.");
+        Map<String, String> msg = checkUserOne(user);
+        //회원 핸드폰 메일 체크
+        if("0".equals(msg.get("code"))){
             return msg;
         }
         user.setRegisterTime(new Date());
@@ -63,8 +52,43 @@ public class UserServiceImpl implements UserService {
      * @return int
      **/
     @Override
-    public int updateUser(User user) {
-        return userMapper.updateById(user);
+    public Map<String,String> updateUser(User user) {
+        Map<String, String> msg = checkUserOne(user);
+        //회원 핸드폰 메일 체크
+        if("0".equals(msg.get("code"))){
+            return msg;
+        }
+        user.setRegisterTime(new Date());
+        userMapper.updateById(user);
+        msg.put("code","1");
+        msg.put("msg","회원정보 수정 성공");
+        return msg;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description //회원 핸드폰 메일 체크
+     * @Date 11:09 2021/2/19
+     * @Param [user]
+     * @return java.util.Map<java.lang.String,java.lang.String>
+     **/
+    public Map<String,String> checkUserOne(User user){
+        Map<String, String> msg = new HashMap<>();
+        //检查邮箱
+        Integer email = userMapper.selectCount(new QueryWrapper<User>().eq("email", user.getEmail()));
+        if(email> 0){
+            msg.put("code","0");
+            msg.put("msg","중복된 메일 주소 입니다.");
+            return msg;
+        }
+        //检查手机
+        Integer phone = userMapper.selectCount(new QueryWrapper<User>().eq("phone", user.getPhone()));
+        if(phone> 0){
+            msg.put("code","0");
+            msg.put("msg","중복된 핸드폰 번호 입니다.");
+            return msg;
+        }
+        return msg;
     }
 
     /**

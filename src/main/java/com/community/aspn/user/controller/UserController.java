@@ -48,9 +48,15 @@ public class UserController {
         return AjaxResponse.success(login);
     }
 
-    @GetMapping("/department")
+    @GetMapping("/users/department")
     public @ResponseBody AjaxResponse getDepartment(){
         return AjaxResponse.success(userService.getDepartment());
+    }
+
+    @PutMapping("/users")
+    public @ResponseBody AjaxResponse updateUser(@RequestBody User user){
+        Map<String, String> stringStringMap = userService.updateUser(user);
+        return AjaxResponse.success(stringStringMap);
     }
 
 

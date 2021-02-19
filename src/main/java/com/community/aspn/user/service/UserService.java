@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface UserService {
     public Map<String,String> insertUser(User user);
-    public int updateUser(User user);
+    public Map<String,String> updateUser(User user);
     public void deleteUser(Integer id);
     public User getUserById(Integer id);
     public User login(User user);
