@@ -54,10 +54,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public Map<String,String> updateUser(User user) {
         Map<String, String> msg = checkUserOne(user);
-        //회원 핸드폰 메일 체크
-        if("0".equals(msg.get("code"))){
-            return msg;
-        }
         user.setRegisterTime(new Date());
         userMapper.updateById(user);
         msg.put("code","1");

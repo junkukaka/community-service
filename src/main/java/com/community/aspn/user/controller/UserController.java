@@ -3,14 +3,17 @@ package com.community.aspn.user.controller;
 import com.community.aspn.pojo.User;
 import com.community.aspn.user.service.UserService;
 import com.community.aspn.util.AjaxResponse;
+import com.community.aspn.util.TokenUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins="*",maxAge=3600)
+//@CrossOrigin(origins="*",maxAge=3600)
 public class UserController {
 
     @Resource
@@ -45,7 +48,16 @@ public class UserController {
     @PostMapping("/users/login")
     public @ResponseBody AjaxResponse logIn(@RequestBody User user){
         User login = userService.login(user);
-        return AjaxResponse.success(login);
+
+        Map<String, Object> map = new HashMap<>();
+        if(login != null){
+            map.put("user",login);
+            String token= TokenUtil.sign(login);
+            map.put("token",token);
+        }else {
+            map.put("user", 0);
+        }
+        return AjaxResponse.success(map);
     }
 
     @GetMapping("/users/department")
@@ -57,6 +69,13 @@ public class UserController {
     public @ResponseBody AjaxResponse updateUser(@RequestBody User user){
         Map<String, String> stringStringMap = userService.updateUser(user);
         return AjaxResponse.success(stringStringMap);
+    }
+
+
+    @GetMapping("/users/getAll")
+    public @ResponseBody AjaxResponse getAllUsers(){
+        List<User> allUser = userService.getAllUser();
+        return AjaxResponse.success(allUser);
     }
 
 
