@@ -7,6 +7,7 @@ import com.community.aspn.util.TokenUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,13 @@ public class UserController {
         return AjaxResponse.success(userById);
     }
 
+    /**
+     * @Author nanguangjun
+     * @Description //会员登录
+     * @Date 16:52 2021/2/23
+     * @Param [user]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
     @PostMapping("/users/login")
     public @ResponseBody AjaxResponse logIn(@RequestBody User user){
         User login = userService.login(user);
@@ -60,22 +68,56 @@ public class UserController {
         return AjaxResponse.success(map);
     }
 
+    /**
+     * @Author nanguangjun
+     * @Description //获取部门
+     * @Date 16:52 2021/2/23
+     * @Param []
+     * @return com.community.aspn.util.AjaxResponse
+     **/
     @GetMapping("/users/department")
     public @ResponseBody AjaxResponse getDepartment(){
         return AjaxResponse.success(userService.getDepartment());
     }
 
+    /**
+     * @Author nanguangjun
+     * @Description //修改用戶
+     * @Date 16:53 2021/2/23
+     * @Param [user]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
     @PutMapping("/users")
     public @ResponseBody AjaxResponse updateUser(@RequestBody User user){
         Map<String, String> stringStringMap = userService.updateUser(user);
         return AjaxResponse.success(stringStringMap);
     }
 
-
+    /**
+     * @Author nanguangjun
+     * @Description //获取所有用户
+     * @Date 16:53 2021/2/23
+     * @Param []
+     * @return com.community.aspn.util.AjaxResponse
+     **/
     @GetMapping("/users/getAll")
     public @ResponseBody AjaxResponse getAllUsers(){
         List<User> allUser = userService.getAllUser();
         return AjaxResponse.success(allUser);
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description //使用token 获取用户信息
+     * @Date 16:56 2021/2/23
+     * @Param [token]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/users/token/{token}")
+    public @ResponseBody AjaxResponse getUserByToken(@PathVariable String token){
+        Integer userIdByToken = TokenUtil.getUserIdByToken(token);
+        User user = userService.getUserById(userIdByToken);
+        return AjaxResponse.success(user);
     }
 
 

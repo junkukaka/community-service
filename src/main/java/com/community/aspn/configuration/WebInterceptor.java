@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * 跨域请求支持/token拦截
  * tip:只能写在一个配置类里
  */
-//@Configuration
+@Configuration
 public class WebInterceptor implements WebMvcConfigurer {
 
     private TokenInterceptor tokenInterceptor;
@@ -28,7 +28,6 @@ public class WebInterceptor implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowCredentials(true)
                 .allowedHeaders("*")
                 .allowedMethods("*")
                 .allowedOrigins("*");
@@ -45,6 +44,10 @@ public class WebInterceptor implements WebMvcConfigurer {
         List<String> excludePath = new ArrayList<>();
         //排除拦截，除了注册登录(此时还没token)，其他都拦截
         excludePath.add("/user/users/login");  //登录
+        excludePath.add("/user/users/token");
+        excludePath.add("/menu/**"); //菜单
+        excludePath.add("/community/communitys/pageList"); //论坛
+
         registry.addInterceptor(tokenInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(excludePath);
