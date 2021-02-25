@@ -4,11 +4,17 @@ import com.community.aspn.pojo.User;
 import com.community.aspn.user.service.UserService;
 import com.community.aspn.util.AjaxResponse;
 import com.community.aspn.util.TokenUtil;
+import com.community.aspn.util.mino.MinIOFileUtil;
+import io.minio.ObjectWriteResponse;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -115,10 +121,9 @@ public class UserController {
      **/
     @GetMapping("/users/token/{token}")
     public @ResponseBody AjaxResponse getUserByToken(@PathVariable String token){
-        Integer userIdByToken = TokenUtil.getUserIdByToken(token);
+        Integer userIdByToken = TokenUtil.verify(token);
         User user = userService.getUserById(userIdByToken);
         return AjaxResponse.success(user);
     }
-
 
 }

@@ -8,8 +8,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.io.InputStream;
+
 import java.util.Iterator;
 import java.util.Map;
 
@@ -43,6 +43,36 @@ public class MinIOFileUploadController {
             multipartFile = request.getFile(str);
             //获取文件名称和存储路径
             String fileName = MinIOFileUtil.getCommunityFileName(multipartFile.getOriginalFilename());
+            MultipartFile mpf = request.getFile(str);
+            //获取文件类型 contentType
+            String contentType = MinIOFileUtil.getContentType(multipartFile.getOriginalFilename());
+            InputStream inputStream = mpf.getInputStream();
+            //保存
+            objectWriteResponse = minIOTemplate.putObject(fileName, inputStream, contentType);
+            url = minIOProperties.getUrl() + objectWriteResponse.object();
+        }
+        return AjaxResponse.success(url);
+    }
+
+
+    /**
+     * @Author nanguangjun
+     * @Description //关于用户的文件上传
+     * @Date 11:12 2021/2/25
+     * @Param [request]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @PostMapping("/minio/user")
+    public @ResponseBody AjaxResponse uploadUserFile(MultipartHttpServletRequest request) throws Exception{
+        Iterator<String> itr  = request.getFileNames();
+        MultipartFile  multipartFile ;
+        ObjectWriteResponse objectWriteResponse;
+        String url = "";
+        while (itr .hasNext()){
+            String str = itr.next();
+            multipartFile = request.getFile(str);
+            //获取文件名称和存储路径
+            String fileName = MinIOFileUtil.getUserFileName(multipartFile.getOriginalFilename());
             MultipartFile mpf = request.getFile(str);
             //获取文件类型 contentType
             String contentType = MinIOFileUtil.getContentType(multipartFile.getOriginalFilename());

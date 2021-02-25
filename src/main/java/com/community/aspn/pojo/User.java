@@ -20,6 +20,8 @@ public class User extends Model<User> implements Serializable {
 
     @TableId(type = IdType.AUTO)
     private Integer id;
+    private String loginId;
+    private String picture;
     private String password;
     private String userName;
     private String email;

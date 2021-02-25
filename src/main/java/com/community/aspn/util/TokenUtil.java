@@ -7,6 +7,8 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.community.aspn.pojo.User;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TokenUtil {
 
@@ -21,9 +23,14 @@ public class TokenUtil {
     public static String sign(User user){
         String token = null;
         try {
+            // 设置头部信息
+            Map<String, Object> header = new HashMap<>(2);
+            header.put("Type", "Jwt");
+            header.put("alg", "HS256");
             Date expiresAt = new Date(System.currentTimeMillis() + EXPIRE_TIME);
             token = JWT.create()
-                    .withIssuer("auth0")
+//                    .withIssuer("auth0")
+                    .withHeader(header)
                     .withClaim("userId", user.getId())
                     .withExpiresAt(expiresAt)
                     // 使用了HMAC256加密算法。
@@ -34,36 +41,17 @@ public class TokenUtil {
         return token;
     }
 
-    /**
-     * 签名验证
-     * @param token
-     * @return
-     */
-    public static boolean verify(String token){
+
+    public static int verify(String token){
         try {
-            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer("auth0").build();
+            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).build();
             DecodedJWT jwt = verifier.verify(token);
-//            System.out.println("认证通过：");
-//            System.out.println("username: " + jwt.getClaim("username").asString());
-//            System.out.println("过期时间：      " + jwt.getExpiresAt());
-            return true;
+            int userId = jwt.getClaim("userId").asInt();
+            return userId;
         } catch (Exception e){
-            return false;
+            return 0;
         }
     }
 
-    /**
-     * @Author nanguangjun
-     * @Description //根据token 返回userId
-     * @Date 16:51 2021/2/23
-     * @Param [token]
-     * @return java.lang.Integer
-     **/
-    public static Integer getUserIdByToken(String token){
-        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TOKEN_SECRET)).withIssuer("auth0").build();
-        DecodedJWT jwt = verifier.verify(token);
-        String t = jwt.getClaim("userId").asString();
-        Integer userId = Integer.parseInt(t);
-        return userId;
-    }
+
 }

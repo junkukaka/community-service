@@ -30,14 +30,64 @@ public class MinIOFileUtil {
      * @return java.lang.String
      **/
     public static String getCommunityFileName(String img){
-        UUID uuid = UUID.randomUUID();
-        String randomUUIDString = uuid.toString();
+        String randomUUIDString = getUUID();
         String[] split = img.split("\\.");
-        Date date = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String format = simpleDateFormat.format(date);
-        String path =  "image/" + format + "/" + randomUUIDString+ "." + split[1];
+        String format = getFormatDate();
+        String path =  "image/community/" + format + "/" + randomUUIDString+ "." + split[1];
         return path;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // 关于用户得文件修改
+     * @Date 11:04 2021/2/25
+     * @Param [img]
+     * @return java.lang.String
+     **/
+    public static String getUserFileName(String img){
+        String randomUUIDString = getUUID();
+        String[] split = img.split("\\.");
+        String format = getFormatDate();
+        String path =  "image/user/" + format + "/" + randomUUIDString+ "." + split[1];
+        return path;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description //文件上传
+     * @Date 11:21 2021/2/25
+     * @Param [str]
+     * @return java.lang.String
+     **/
+    public static String getUploadFileName(String str){
+        String randomUUIDString = getUUID();
+        String[] split = str.split("\\.");
+        String format = getFormatDate();
+        String path =  "image/upload/" + format + "/" + randomUUIDString+ "." + split[1];
+        return path;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // yyyy-MM-dd
+     * @Date 11:24 2021/2/25
+     * @Param []
+     * @return java.lang.String
+     **/
+    public static String getFormatDate(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return simpleDateFormat.format(new Date());
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description //getUUID
+     * @Date 11:02 2021/2/25
+     * @Param []
+     * @return java.lang.String
+     **/
+    public static String getUUID(){
+        return UUID.randomUUID().toString();
     }
 
     /**
@@ -56,6 +106,7 @@ public class MinIOFileUtil {
         String path =  "image/" + format + "/" + randomUUIDString+ "." + "png";
         return path;
     }
+
 
     /**
      * @Author nanguangjun

@@ -1,6 +1,12 @@
 package com.community.aspn;
 
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.community.aspn.pojo.User;
+import com.community.aspn.util.TokenUtil;
 import com.community.aspn.util.mino.MinIOFileUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,6 +46,19 @@ class AspnApplicationTests {
         String content = "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAacAAAEnCAYAAAANX4xAAAAf6ElEQVR4Ae3d2Y8UZd/Gcc6e/+AORK5CYII=\">" ;
         Boolean aBoolean = MinIOFileUtil.ifBase64RegexMatcher(content);
         System.out.println(aBoolean);
+    }
+
+    @Test
+    void testTokenToString(){
+        User user = new User();
+        user.setId(1);
+        String token = TokenUtil.sign(user);
+        System.out.println("token = " + token);
+
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC256("txdy")).build();
+        DecodedJWT jwt = verifier.verify(token);
+        int t = jwt.getClaim("userId").asInt();
+        System.out.println(t);
     }
 
 

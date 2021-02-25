@@ -53,9 +53,9 @@ public class UserServiceImpl implements UserService {
      **/
     @Override
     public Map<String,String> updateUser(User user) {
-        Map<String, String> msg = checkUserOne(user);
-        user.setRegisterTime(new Date());
-        userMapper.updateById(user);
+        user.setUpdateTime(new Date());
+        userMapper.updateUserDynamic(user);
+        Map<String, String> msg = new HashMap<>();
         msg.put("code","1");
         msg.put("msg","회원정보 수정 성공");
         return msg;
@@ -70,6 +70,14 @@ public class UserServiceImpl implements UserService {
      **/
     public Map<String,String> checkUserOne(User user){
         Map<String, String> msg = new HashMap<>();
+        //loginId 验证
+        Integer loginId = userMapper.selectCount(new QueryWrapper<User>().eq("login_id", user.getLoginId()));
+        if(loginId> 0){
+            msg.put("code","0");
+            msg.put("msg","중복된 login 입니다.");
+            return msg;
+        }
+
         //检查邮箱
         Integer email = userMapper.selectCount(new QueryWrapper<User>().eq("email", user.getEmail()));
         if(email> 0){
@@ -122,7 +130,7 @@ public class UserServiceImpl implements UserService {
     public User login(User user) {
         QueryWrapper<User> query = new QueryWrapper<>();
         //用户名，密码验证
-        query.eq("email",user.getEmail())
+        query.eq("login_id",user.getLoginId())
                 .eq("password",user.getPassword());
         User u = userMapper.selectOne(query);
         return userMapper.selectOne(query);

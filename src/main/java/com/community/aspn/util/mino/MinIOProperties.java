@@ -10,5 +10,8 @@ public class MinIOProperties {
     private String accessKey;
     private String secretKey;
     private String bucketName;
-    private String url;
+
+    public String getUrl(){
+        return this.getEndpoint()+ "/" + this.getBucketName() + "/";
+    }
 }

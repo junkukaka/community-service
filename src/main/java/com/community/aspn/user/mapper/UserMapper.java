@@ -10,4 +10,5 @@ import java.util.Map;
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
     List<Map<String,Object>> getDepartment();
+    void updateUserDynamic(User user);
 }

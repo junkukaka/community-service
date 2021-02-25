@@ -45,6 +45,7 @@ public class WebInterceptor implements WebMvcConfigurer {
         //排除拦截，除了注册登录(此时还没token)，其他都拦截
         excludePath.add("/user/users/login");  //登录
         excludePath.add("/user/users/token");
+        excludePath.add("/user/users");
         excludePath.add("/menu/**"); //菜单
         excludePath.add("/community/communitys/pageList"); //论坛
 
