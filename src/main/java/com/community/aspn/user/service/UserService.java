@@ -1,6 +1,6 @@
 package com.community.aspn.user.service;
 
-import com.community.aspn.pojo.User;
+import com.community.aspn.pojo.user.User;
 
 import java.util.List;
 import java.util.Map;

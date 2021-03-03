@@ -1,7 +1,7 @@
 package com.community.aspn.community.service;
 
 
-import com.community.aspn.pojo.Community;
+import com.community.aspn.pojo.community.Community;
 
 import java.util.List;
 import java.util.Map;

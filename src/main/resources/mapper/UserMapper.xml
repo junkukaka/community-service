@@ -6,7 +6,7 @@
         select id as value,name as text from department
     </select>
 
-    <update id="updateUserDynamic" parameterType="com.community.aspn.pojo.User">
+    <update id="updateUserDynamic" parameterType="com.community.aspn.pojo.user.User">
         update user
             <trim prefix="set" suffixOverrides=",">
                 <if test="picture!= null">picture = #{picture},</if>

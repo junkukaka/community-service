@@ -1,7 +1,7 @@
 package com.community.aspn.user.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.community.aspn.pojo.User;
+import com.community.aspn.pojo.user.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

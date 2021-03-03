@@ -1,7 +1,7 @@
 package com.community.aspn.user.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.community.aspn.pojo.User;
+import com.community.aspn.pojo.user.User;
 import com.community.aspn.user.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
      * @Description //获取用户信息
      * @Date 9:25 2020/12/25
      * @Param [id]
-     * @return com.community.aspn.pojo.User
+     * @return com.community.aspn.pojo.user.User
      **/
     @Override
     public User getUserById(Integer id) {
@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService {
      * @Description // 用户登录
      * @Date 9:25 2020/12/25
      * @Param [user]
-     * @return com.community.aspn.pojo.User
+     * @return com.community.aspn.pojo.user.User
      **/
     @Override
     public User login(User user) {
@@ -141,7 +141,7 @@ public class UserServiceImpl implements UserService {
      * @Description // 获取所有用户
      * @Date 9:36 2020/12/25
      * @Param []
-     * @return java.util.List<com.community.aspn.pojo.User>
+     * @return java.util.List<com.community.aspn.pojo.user.User>
      **/
     @Override
     public List<User> getAllUser() {

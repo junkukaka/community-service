@@ -5,7 +5,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.community.aspn.pojo.User;
+import com.community.aspn.pojo.user.User;
 import com.community.aspn.util.TokenUtil;
 import com.community.aspn.util.mino.MinIOFileUtil;
 import org.junit.jupiter.api.Test;

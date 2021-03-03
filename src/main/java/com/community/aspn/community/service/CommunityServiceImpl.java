@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.community.aspn.community.mapper.CommunityMapper;
 import com.community.aspn.menu.mapper.MenuMapper;
-import com.community.aspn.pojo.Community;
+import com.community.aspn.pojo.community.Community;
 import com.community.aspn.pojo.Menu;
 import com.community.aspn.util.mino.MinIOFileUtil;
 import com.community.aspn.util.mino.MinoIOComponent;
@@ -71,7 +71,7 @@ public class CommunityServiceImpl implements CommunityService{
      * @Description // 根据ID 查找帖子
      * @Date 13:50 2021/1/26
      * @Param [id]
-     * @return com.community.aspn.pojo.Community
+     * @return com.community.aspn.pojo.community.Community
      **/
     @Override
     public Community selectCommunityById(Integer id) {

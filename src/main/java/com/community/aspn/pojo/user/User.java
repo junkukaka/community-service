@@ -1,4 +1,4 @@
-package com.community.aspn.pojo;
+package com.community.aspn.pojo.user;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

@@ -1,4 +1,4 @@
-package com.community.aspn.pojo;
+package com.community.aspn.pojo.community;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -7,22 +7,15 @@ import lombok.Data;
 
 import java.util.Date;
 
-/**
- * @Author nanguangjun
- * @Description // community comment
- * @Date 14:10 2021/3/1
- * @Param
- * @return
- **/
 @Data
-@TableName("com_comment")
-public class ComComment {
+@TableName("community")
+public class Community {
     @TableId(type = IdType.AUTO)
     private Integer id;
-    private Integer communityId;
-    private Integer userId;
-    private Integer replyUserId;
+    private Integer menuId;
+    private String title;
     private String content;
+    private Integer userId;
 
     private Integer registerId;
     private Date registerTime;

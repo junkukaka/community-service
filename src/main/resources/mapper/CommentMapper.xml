@@ -3,7 +3,25 @@
 <mapper namespace="com.community.aspn.community.mapper.CommentMapper">
 
     <select id="selectCommentByCommunityId" resultType="java.util.Map">
-        select id,community_id,user_id,content from com_comment
+        SELECT
+            u.id,
+            u.user_name,
+            u.picture,
+            c.content,
+            c.community_id,
+            c.register_id,
+            c.register_time
+        FROM
+            com_comment c,
+            user u
+        WHERE
+            c.user_id = u.id
+        and c.community_id = #{communityId}
     </select>
+
+    <select id="selectCommentCountByCommunityId" resultType="int">
+        SELECT count(1) from com_comment where community_id = #{communityId}
+    </select>
+
 
 </mapper>

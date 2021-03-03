@@ -1,9 +1,8 @@
 package com.community.aspn.community.controller;
 
 import com.community.aspn.community.service.CommunityService;
-import com.community.aspn.pojo.Community;
+import com.community.aspn.pojo.community.Community;
 import com.community.aspn.util.AjaxResponse;
-import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
