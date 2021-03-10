@@ -16,6 +16,10 @@ spring:
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*Mapper.xml
+  global-config:
+    db-config:
+      #字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断"),NOT_EMPTY:"非空判断"
+      field-strategy: not_null
 
 # MinIo文件服务器
 minio:

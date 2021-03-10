@@ -9,23 +9,18 @@ import java.util.Date;
 
 /**
  * @Author nanguangjun
- * @Description // community comment
- * @Date 14:10 2021/3/1
+ * @Description // 用户收藏
+ * @Date 13:39 2021/3/9
  * @Param
  * @return
  **/
 @Data
-@TableName("com_comment")
-public class ComComment {
-    @TableId(type = IdType.AUTO)
-    private Integer id;
+@TableName("com_collect")
+public class ComCollect {
+
+    @TableId
     private Integer communityId;
     private Integer userId;
-    private Integer replyId;
-    private String content;
 
-    private Integer registerId;
     private Date registerTime;
-    private Integer updateId;
-    private Date updateTime;
 }

@@ -1,7 +1,7 @@
 package com.community.aspn.menu.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.community.aspn.pojo.Menu;
+import com.community.aspn.pojo.sys.Menu;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

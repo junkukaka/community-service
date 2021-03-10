@@ -1,7 +1,7 @@
 package com.community.aspn.menu.controller;
 
 import com.community.aspn.menu.service.MenuService;
-import com.community.aspn.pojo.Menu;
+import com.community.aspn.pojo.sys.Menu;
 import com.community.aspn.util.AjaxResponse;
 import org.springframework.web.bind.annotation.*;
 

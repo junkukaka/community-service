@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.community.aspn.community.mapper.CommunityMapper;
 import com.community.aspn.menu.mapper.MenuMapper;
 import com.community.aspn.pojo.community.Community;
-import com.community.aspn.pojo.Menu;
+import com.community.aspn.pojo.sys.Menu;
 import com.community.aspn.util.mino.MinIOFileUtil;
 import com.community.aspn.util.mino.MinoIOComponent;
 import org.springframework.stereotype.Service;

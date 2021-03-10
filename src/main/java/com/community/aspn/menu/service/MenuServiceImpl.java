@@ -2,7 +2,7 @@ package com.community.aspn.menu.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.community.aspn.menu.mapper.MenuMapper;
-import com.community.aspn.pojo.Menu;
+import com.community.aspn.pojo.sys.Menu;
 import org.springframework.stereotype.Service;
 
 
@@ -61,7 +61,7 @@ public class MenuServiceImpl implements MenuService{
      * @Description //根据ID查询
      * @Date 16:00 2020/12/24
      * @Param [id]
-     * @return com.community.aspn.pojo.Menu
+     * @return com.community.aspn.pojo.sys.Menu
      **/
     @Override
     public Menu getMenuById(Integer id) {
@@ -74,7 +74,7 @@ public class MenuServiceImpl implements MenuService{
      * @Description //条件查询
      * @Date 14:07 2021/1/13
      * @Param [menu]
-     * @return java.util.List<com.community.aspn.pojo.Menu>
+     * @return java.util.List<com.community.aspn.pojo.sys.Menu>
      **/
     @Override
     public List<Menu> getMenusByCondition(Menu menu) {
