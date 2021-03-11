@@ -13,4 +13,5 @@ public interface CommunityService {
     int deleteCommunityById(Integer id);
     List<Community> selectAll(Map<String,Object> map);
     Map<String,Object> selectPageList(Map<String,Integer> map);
+    public Map<String,Object> selectCommunityDetail(Integer id);
 }

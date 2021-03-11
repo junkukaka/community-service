@@ -1,6 +1,6 @@
 package com.community.aspn.pojo.community;
 
-import com.baomidou.mybatisplus.annotation.IdType;
+
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -19,7 +19,7 @@ import java.util.Date;
 public class ComHits {
     @TableId
     private Integer communityId;
-    private Integer userId;
+    private Integer memberId;
     private String ip;
 
     private Date registerTime;

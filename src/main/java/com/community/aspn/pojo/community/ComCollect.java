@@ -20,7 +20,7 @@ public class ComCollect {
 
     @TableId
     private Integer communityId;
-    private Integer userId;
+    private Integer memberId;
 
     private Date registerTime;
 }

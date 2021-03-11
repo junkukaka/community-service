@@ -4,7 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.community.aspn.pojo.user.User;
+import com.community.aspn.pojo.member.Member;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -17,10 +17,10 @@ public class TokenUtil {
     
     /**
      * 签名生成
-     * @param user
+     * @param member
      * @return
      */
-    public static String sign(User user){
+    public static String sign(Member member){
         String token = null;
         try {
             // 设置头部信息
@@ -31,7 +31,7 @@ public class TokenUtil {
             token = JWT.create()
 //                    .withIssuer("auth0")
                     .withHeader(header)
-                    .withClaim("userId", user.getId())
+                    .withClaim("userId", member.getId())
                     .withExpiresAt(expiresAt)
                     // 使用了HMAC256加密算法。
                     .sign(Algorithm.HMAC256(TOKEN_SECRET));

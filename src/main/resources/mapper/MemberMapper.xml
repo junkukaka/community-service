@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.community.aspn.user.mapper.UserMapper">
+<mapper namespace="com.community.aspn.member.mapper.MemberMapper">
 
     <select id="getDepartment" resultType="java.util.Map">
         select id as value,name as text from department
     </select>
 
-    <update id="updateUserDynamic" parameterType="com.community.aspn.pojo.user.User">
-        update user
+    <update id="updateMemberDynamic" parameterType="com.community.aspn.pojo.member.Member">
+        update member
             <trim prefix="set" suffixOverrides=",">
                 <if test="picture!= null">picture = #{picture},</if>
                 <if test="password!= null">password = #{password},</if>
-                <if test="userName!= null">user_name = #{userName},</if>
+                <if test="memberName!= null">member_name = #{memberName},</if>
                 <if test="email!= null">email = #{email},</if>
                 <if test="department!= null">department = #{department},</if>
                 <if test="duty!= null">duty = #{duty},</if>

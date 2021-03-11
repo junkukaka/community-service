@@ -20,7 +20,7 @@ public class ComComment {
     @TableId(type = IdType.AUTO)
     private Integer id;
     private Integer communityId;
-    private Integer userId;
+    private Integer memberId;
     private Integer replyId;
     private String content;
 

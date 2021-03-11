@@ -123,4 +123,9 @@ public class CommunityServiceImpl implements CommunityService{
         result.put("total",page.getTotal()); //总记录数
         return result;
     }
+
+    @Override
+    public Map<String, Object> selectCommunityDetail(Integer id) {
+        return null;
+    }
 }

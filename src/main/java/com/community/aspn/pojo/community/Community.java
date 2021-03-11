@@ -15,7 +15,7 @@ public class Community {
     private Integer menuId;
     private String title;
     private String content;
-    private Integer userId;
+    private Integer memberId;
 
     private Integer registerId;
     private Date registerTime;

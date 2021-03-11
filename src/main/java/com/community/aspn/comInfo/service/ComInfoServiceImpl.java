@@ -42,7 +42,7 @@ public class ComInfoServiceImpl implements ComInfoService {
     public void saveHits(ComHits comHits) {
         QueryWrapper<ComHits> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("community_id",comHits.getCommunityId())
-                .eq("user_id",comHits.getUserId());
+                .eq("member_id",comHits.getMemberId());
         //if there is no user id and community id will counting hits
         Integer count = comHitsMapper.selectCount(queryWrapper);
         if(count == 0){
@@ -65,7 +65,7 @@ public class ComInfoServiceImpl implements ComInfoService {
     public int saveCollete(ComCollect comCollect) {
         QueryWrapper<ComCollect> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("community_id",comCollect.getCommunityId())
-                .eq("user_id",comCollect.getUserId());
+                .eq("member_id",comCollect.getMemberId());
         Integer count = comCollectMapper.selectCount(queryWrapper);
         //if there is no user id and community id will save hits
         if (count == 0){
@@ -90,7 +90,7 @@ public class ComInfoServiceImpl implements ComInfoService {
         comLikes.setLikeYn(1);
         QueryWrapper<ComLikes> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("community_id", comLikes.getCommunityId());
-        queryWrapper.eq("user_id", comLikes.getUserId());
+        queryWrapper.eq("member_id", comLikes.getMemberId());
         Integer count = comLikesMapper.selectCount(queryWrapper);
         //if there is no user id and community id will save hits
         if (count == 0){

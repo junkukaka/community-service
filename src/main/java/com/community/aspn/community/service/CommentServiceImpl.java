@@ -18,7 +18,7 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public int insertComment(ComComment comComment) {
         comComment.setRegisterTime(new Date());
-        comComment.setRegisterId(comComment.getUserId());
+        comComment.setRegisterId(comComment.getMemberId());
         return commentMapper.insert(comComment);
     }
 

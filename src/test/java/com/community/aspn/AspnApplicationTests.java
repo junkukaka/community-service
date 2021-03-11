@@ -5,7 +5,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.community.aspn.pojo.user.User;
+import com.community.aspn.pojo.member.Member;
 import com.community.aspn.util.TokenUtil;
 import com.community.aspn.util.mino.MinIOFileUtil;
 import org.junit.jupiter.api.Test;
@@ -50,9 +50,9 @@ class AspnApplicationTests {
 
     @Test
     void testTokenToString(){
-        User user = new User();
-        user.setId(1);
-        String token = TokenUtil.sign(user);
+        Member member = new Member();
+        member.setId(1);
+        String token = TokenUtil.sign(member);
         System.out.println("token = " + token);
 
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256("txdy")).build();

@@ -1,7 +1,7 @@
-package com.community.aspn.user.controller;
+package com.community.aspn.member.controller;
 
-import com.community.aspn.pojo.user.User;
-import com.community.aspn.user.service.UserService;
+import com.community.aspn.pojo.member.Member;
+import com.community.aspn.member.service.MemberService;
 import com.community.aspn.util.AjaxResponse;
 import com.community.aspn.util.TokenUtil;
 import org.springframework.web.bind.annotation.*;
@@ -12,23 +12,23 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/member")
 //@CrossOrigin(origins="*",maxAge=3600)
-public class UserController {
+public class MemberController {
 
     @Resource
-    UserService userService;
+    MemberService memberservice;
 
     /**
      * @Author nanguangjun
      * @Description // 会员注册
      * @Date 16:03 2021/1/7
-     * @Param [user]
+     * @Param [member]
      * @return com.community.aspn.util.AjaxResponse
      **/
-    @PostMapping("/users")
-    public @ResponseBody AjaxResponse insertUser(@RequestBody User user){
-        Map<String, String> stringStringMap = userService.insertUser(user);
+    @PostMapping("/members")
+    public @ResponseBody AjaxResponse insertmember(@RequestBody Member member){
+        Map<String, String> stringStringMap = memberservice.insertMember(member);
         return AjaxResponse.success(stringStringMap);
     }
 
@@ -39,30 +39,30 @@ public class UserController {
      * @Param [id]
      * @return com.community.aspn.util.AjaxResponse
      **/
-    @GetMapping("/users/{id}")
-    public @ResponseBody AjaxResponse getUserById(@PathVariable int id){
-        User userById = userService.getUserById(id);
-        return AjaxResponse.success(userById);
+    @GetMapping("/members/{id}")
+    public @ResponseBody AjaxResponse getmemberById(@PathVariable int id){
+        Member memberById = memberservice.getMemberById(id);
+        return AjaxResponse.success(memberById);
     }
 
     /**
      * @Author nanguangjun
      * @Description //会员登录
      * @Date 16:52 2021/2/23
-     * @Param [user]
+     * @Param [member]
      * @return com.community.aspn.util.AjaxResponse
      **/
-    @PostMapping("/users/login")
-    public @ResponseBody AjaxResponse logIn(@RequestBody User user){
-        User login = userService.login(user);
+    @PostMapping("/members/login")
+    public @ResponseBody AjaxResponse logIn(@RequestBody Member member){
+        Member login = memberservice.login(member);
 
         Map<String, Object> map = new HashMap<>();
         if(login != null){
-            map.put("user",login);
+            map.put("member",login);
             String token= TokenUtil.sign(login);
             map.put("token",token);
         }else {
-            map.put("user", 0);
+            map.put("member", 0);
         }
         return AjaxResponse.success(map);
     }
@@ -74,21 +74,21 @@ public class UserController {
      * @Param []
      * @return com.community.aspn.util.AjaxResponse
      **/
-    @GetMapping("/users/department")
+    @GetMapping("/members/department")
     public @ResponseBody AjaxResponse getDepartment(){
-        return AjaxResponse.success(userService.getDepartment());
+        return AjaxResponse.success(memberservice.getDepartment());
     }
 
     /**
      * @Author nanguangjun
      * @Description //修改用戶
      * @Date 16:53 2021/2/23
-     * @Param [user]
+     * @Param [member]
      * @return com.community.aspn.util.AjaxResponse
      **/
-    @PutMapping("/users")
-    public @ResponseBody AjaxResponse updateUser(@RequestBody User user){
-        Map<String, String> stringStringMap = userService.updateUser(user);
+    @PutMapping("/members")
+    public @ResponseBody AjaxResponse updatemember(@RequestBody Member member){
+        Map<String, String> stringStringMap = memberservice.updateMember(member);
         return AjaxResponse.success(stringStringMap);
     }
 
@@ -99,10 +99,10 @@ public class UserController {
      * @Param []
      * @return com.community.aspn.util.AjaxResponse
      **/
-    @GetMapping("/users/getAll")
-    public @ResponseBody AjaxResponse getAllUsers(){
-        List<User> allUser = userService.getAllUser();
-        return AjaxResponse.success(allUser);
+    @GetMapping("/members/getAll")
+    public @ResponseBody AjaxResponse getAllmembers(){
+        List<Member> allMember = memberservice.getAllMember();
+        return AjaxResponse.success(allMember);
     }
 
 

@@ -1,8 +1,8 @@
-package com.community.aspn.user.service;
+package com.community.aspn.member.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.community.aspn.pojo.user.User;
-import com.community.aspn.user.mapper.UserMapper;
+import com.community.aspn.pojo.member.Member;
+import com.community.aspn.member.mapper.MemberMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,26 +19,26 @@ import java.util.Map;
  * @return
  **/
 @Service
-public class UserServiceImpl implements UserService {
+public class MemberServiceImpl implements MemberService {
 
     @Resource
-    UserMapper userMapper;
+    MemberMapper memberMapper;
     /**
      * @Author nanguangjun
      * @Description // 注册 ， 新增用户使用
      * @Date 9:22 2020/12/25
-     * @Param [user]
+     * @Param [Member]
      * @return int
      **/
     @Override
-    public Map<String,String> insertUser(User user) {
-        Map<String, String> msg = checkUserOne(user);
+    public Map<String,String> insertMember(Member member) {
+        Map<String, String> msg = checkMemberOne(member);
         //회원 핸드폰 메일 체크
         if("0".equals(msg.get("code"))){
             return msg;
         }
-        user.setRegisterTime(new Date());
-        userMapper.insert(user);
+        member.setRegisterTime(new Date());
+        memberMapper.insert(member);
         msg.put("code","1");
         msg.put("msg","회원가입 성공");
         return msg;
@@ -48,13 +48,13 @@ public class UserServiceImpl implements UserService {
      * @Author nanguangjun
      * @Description // 跟新用户信息
      * @Date 9:23 2020/12/25
-     * @Param [user]
+     * @Param [Member]
      * @return int
      **/
     @Override
-    public Map<String,String> updateUser(User user) {
-        user.setUpdateTime(new Date());
-        userMapper.updateUserDynamic(user);
+    public Map<String,String> updateMember(Member member) {
+        member.setUpdateTime(new Date());
+        memberMapper.updateMemberDynamic(member);
         Map<String, String> msg = new HashMap<>();
         msg.put("code","1");
         msg.put("msg","회원정보 수정 성공");
@@ -65,13 +65,13 @@ public class UserServiceImpl implements UserService {
      * @Author nanguangjun
      * @Description //회원 핸드폰 메일 체크
      * @Date 11:09 2021/2/19
-     * @Param [user]
+     * @Param [Member]
      * @return java.util.Map<java.lang.String,java.lang.String>
      **/
-    public Map<String,String> checkUserOne(User user){
+    public Map<String,String> checkMemberOne(Member member){
         Map<String, String> msg = new HashMap<>();
         //loginId 验证
-        Integer loginId = userMapper.selectCount(new QueryWrapper<User>().eq("login_id", user.getLoginId()));
+        Integer loginId = memberMapper.selectCount(new QueryWrapper<Member>().eq("login_id", member.getLoginId()));
         if(loginId> 0){
             msg.put("code","0");
             msg.put("msg","중복된 login 입니다.");
@@ -79,14 +79,14 @@ public class UserServiceImpl implements UserService {
         }
 
         //检查邮箱
-        Integer email = userMapper.selectCount(new QueryWrapper<User>().eq("email", user.getEmail()));
+        Integer email = memberMapper.selectCount(new QueryWrapper<Member>().eq("email", member.getEmail()));
         if(email> 0){
             msg.put("code","0");
             msg.put("msg","중복된 메일 주소 입니다.");
             return msg;
         }
         //检查手机
-        Integer phone = userMapper.selectCount(new QueryWrapper<User>().eq("phone", user.getPhone()));
+        Integer phone = memberMapper.selectCount(new QueryWrapper<Member>().eq("phone", member.getPhone()));
         if(phone> 0){
             msg.put("code","0");
             msg.put("msg","중복된 핸드폰 번호 입니다.");
@@ -103,8 +103,8 @@ public class UserServiceImpl implements UserService {
      * @return void
      **/
     @Override
-    public void deleteUser(Integer id) {
-        userMapper.deleteById(id);
+    public void deleteMember(Integer id) {
+        memberMapper.deleteById(id);
     }
 
     /**
@@ -112,28 +112,28 @@ public class UserServiceImpl implements UserService {
      * @Description //获取用户信息
      * @Date 9:25 2020/12/25
      * @Param [id]
-     * @return com.community.aspn.pojo.user.User
+     * @return com.community.aspn.pojo.Member.Member
      **/
     @Override
-    public User getUserById(Integer id) {
-        return userMapper.selectById(id);
+    public Member getMemberById(Integer id) {
+        return memberMapper.selectById(id);
     }
 
     /**
      * @Author nanguangjun
      * @Description // 用户登录
      * @Date 9:25 2020/12/25
-     * @Param [user]
-     * @return com.community.aspn.pojo.user.User
+     * @Param [Member]
+     * @return com.community.aspn.pojo.Member.Member
      **/
     @Override
-    public User login(User user) {
-        QueryWrapper<User> query = new QueryWrapper<>();
+    public Member login(Member member) {
+        QueryWrapper<Member> query = new QueryWrapper<>();
         //用户名，密码验证
-        query.eq("login_id",user.getLoginId())
-                .eq("password",user.getPassword());
-        User u = userMapper.selectOne(query);
-        return userMapper.selectOne(query);
+        query.eq("login_id", member.getLoginId())
+                .eq("password", member.getPassword());
+        Member u = memberMapper.selectOne(query);
+        return memberMapper.selectOne(query);
     }
 
     /**
@@ -141,15 +141,15 @@ public class UserServiceImpl implements UserService {
      * @Description // 获取所有用户
      * @Date 9:36 2020/12/25
      * @Param []
-     * @return java.util.List<com.community.aspn.pojo.user.User>
+     * @return java.util.List<com.community.aspn.pojo.Member.Member>
      **/
     @Override
-    public List<User> getAllUser() {
-        return userMapper.selectList(null);
+    public List<Member> getAllMember() {
+        return memberMapper.selectList(null);
     }
 
     @Override
     public List<Map<String,Object>> getDepartment() {
-        return userMapper.getDepartment();
+        return memberMapper.getDepartment();
     }
 }

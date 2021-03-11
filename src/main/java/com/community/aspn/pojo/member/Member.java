@@ -1,4 +1,4 @@
-package com.community.aspn.pojo.user;
+package com.community.aspn.pojo.member;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -12,9 +12,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@TableName("user")
+@TableName("member")
 @EqualsAndHashCode(callSuper = true)
-public class User extends Model<User> implements Serializable {
+public class Member extends Model<Member> implements Serializable {
 
     private static final long serialVersionUID = 6401942840459021558L;
 
@@ -23,7 +23,7 @@ public class User extends Model<User> implements Serializable {
     private String loginId;
     private String picture;
     private String password;
-    private String userName;
+    private String memberName;
     private String email;
     //部门
     private String department;

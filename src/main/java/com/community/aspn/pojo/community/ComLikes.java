@@ -19,7 +19,7 @@ import java.util.Date;
 public class ComLikes {
     @TableId
     private Integer communityId;
-    private Integer userId;
+    private Integer memberId;
     private Integer likeYn;
 
     private Date registerTime;
