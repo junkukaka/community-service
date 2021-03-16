@@ -38,6 +38,7 @@ public class CommunityServiceImpl implements CommunityService{
     @Override
     public int insertCommunity(Community community) {
         community.setRegisterTime(new Date());
+        community.setRegisterId(community.getMemberId());
         String content = community.getContent();
         //是否有截图，如果有截图，处理截图文件。
         if(MinIOFileUtil.ifBase64RegexMatcher(content)){
@@ -101,31 +102,37 @@ public class CommunityServiceImpl implements CommunityService{
     /**
      * @Author nanguangjun
      * @Description //分页查询
-     * @Date 16:44 2021/1/27
-     * @Param [map]
+     * @Date 10:04 2021/3/16
+     * @Param [params]
      * @return java.util.Map<java.lang.String,java.lang.Object>
      **/
-    @Override
-    public Map<String, Object> selectPageList(Map<String, Integer> params) {
+    public Map<String,Object> selectPageList(Map<String, Integer> params){
         Map<String, Object> result = new HashMap<>(); //最后返回值
-        QueryWrapper<Community> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("menu_id",params.get("menuId"));
-        Menu menu = menuMapper.selectById(params.get("menuId"));
+        int menuId = params.get("menuId");
+        int page = params.get("page");
+        int size = 5; //页面显示记录条数
+        Menu menu = menuMapper.selectById(menuId);//菜单查询
+        Integer total = communityMapper.selectCommunityListByMenuIdCount(menuId); //select total
+        int pages = total%size==0 ? total/size : total/size+1;
+        int start = (page -1) * size;
+        int end = page * size;
 
-        Page<Community> page = new Page<>(params.get("page"),20);  //查询第1页，每页5条数据
-        communityMapper.selectPage(page, queryWrapper);
-        //分页返回的对象与传入的对象是同一个
-        List<Community> communitys = page.getRecords();
+        //分页查询传参
+        Map<String,Integer> args = new HashMap<>();
+        args.put("menuId",menuId);
+        args.put("start",start);
+        args.put("end",end);
+        List<Map<String, Object>> list = communityMapper.selectCommunityListByMenuId(args);
+
         result.put("menuName",menu.getName());
-        result.put("communitys",communitys); //数据
-        result.put("page",params.get("page")); //当前页面
-        result.put("pages",page.getPages()); //总页数
-        result.put("total",page.getTotal()); //总记录数
+        result.put("communitys",list); //数据
+        result.put("page",page); //当前页面
+        result.put("pages",pages); //总页数
         return result;
     }
 
     @Override
     public Map<String, Object> selectCommunityDetail(Integer id) {
-        return null;
+        return communityMapper.selectCommunityDetail(id);
     }
 }

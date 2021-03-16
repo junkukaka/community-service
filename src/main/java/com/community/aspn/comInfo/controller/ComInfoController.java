@@ -41,6 +41,19 @@ public class ComInfoController {
 
     /**
      * @Author nanguangjun
+     * @Description //use community id and member id select whether member likes or collected this community
+     * @Date 14:40 2021/3/15
+     * @Param [map]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @PostMapping("/selectLikeAndCollectByMember")
+    public @ResponseBody AjaxResponse selectLikeAndCollectByMember(@RequestBody Map<String,Integer> map){
+        Map<String, Integer> resultMap = comInfoService.selectLikeAndCollectByMember(map);
+        return AjaxResponse.success(resultMap);
+    }
+
+    /**
+     * @Author nanguangjun
      * @Description // counting hits
      * @Date 15:50 2021/3/9
      * @Param [comHits]

@@ -8,8 +8,9 @@ import com.community.aspn.pojo.community.ComLikes;
 import java.util.Map;
 
 public interface ComInfoService {
-    public void saveHits(ComHits comHits);
-    public int saveCollete(ComCollect comCollect);
-    public int saveLikes(ComLikes comLikes);
-    public Map<String,Integer> selectComInfoCountByCommunityId(Integer communityId);
+     void saveHits(ComHits comHits);
+     int saveCollete(ComCollect comCollect);
+     int saveLikes(ComLikes comLikes);
+     Map<String,Integer> selectComInfoCountByCommunityId(Integer communityId);
+     Map<String,Integer> selectLikeAndCollectByMember(Map<String,Integer> map);
 }

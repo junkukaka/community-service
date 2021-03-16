@@ -46,8 +46,8 @@ public class CommunityController {
      **/
     @GetMapping("/communitys/{id}")
     public @ResponseBody AjaxResponse selectCommunityById(@PathVariable Integer id){
-        Community community = communityService.selectCommunityById(id);
-        return AjaxResponse.success(community);
+        Map<String, Object> stringObjectMap = communityService.selectCommunityDetail(id);
+        return AjaxResponse.success(stringObjectMap);
     }
 
     @PostMapping("/communitys/getList")

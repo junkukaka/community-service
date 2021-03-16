@@ -5,20 +5,57 @@
     <!-- community detail select   -->
     <select id="selectCommunityDetail" resultType="java.util.Map">
         SELECT
-            m.id,
-            m.member_name,
+            m.id as memberId,
+            m.member_name as memberName,
             m.picture,
+            d.name as department,
             c.content,
-            c.community_id,
-            c.register_id,
-            c.register_time
+            c.id,
+            c.register_id as registerId,
+            c.register_time as registerTime
         FROM
-            com_comment c,
+            community c,
+            member m,
+            department d
+        WHERE
+            c.member_id = m.id
+        and m.department = d.id
+        and c.id = #{communityId}
+    </select>
+
+    <select id="selectCommunityListByMenuId" resultType="java.util.Map">
+        SELECT
+            m.id as memberId,
+            m.member_name as memberName,
+            m.picture,
+            c.id,
+            c.title,
+            c.register_time as registerTime,
+            (select count(1) from com_comment where community_id = c.id) as commentCount,
+            (select count(1) from com_like where community_id = c.id) as likesCount,
+            (select count(1) from com_hits where community_id = c.id) as hitsCount
+        FROM
+            community c,
             member m
         WHERE
-            c.member_id = u.id
-        and c.community_id = #{communityId}
+            c.member_id = m.id
+          and c.menu_id = #{menuId}
+        order by c.id desc
+        LIMIT #{start},#{end}
     </select>
+
+    <select id="selectCommunityListByMenuIdCount" resultType="java.lang.Integer">
+        SELECT
+            count(1) cnt
+        FROM
+            community c,
+            member m
+        WHERE
+            c.member_id = m.id
+          and c.menu_id = #{menuId}
+    </select>
+
+
 
 
 

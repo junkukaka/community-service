@@ -103,6 +103,7 @@ public class ComInfoServiceImpl implements ComInfoService {
         return count;
     }
 
+
     /**
      * @Author nanguangjun
      * @Description // select hits ,likes , collect
@@ -130,6 +131,32 @@ public class ComInfoServiceImpl implements ComInfoService {
         commentQueryWrapper.eq("community_id",communityId);
         result.put("commentCount",commentMapper.selectCount(commentQueryWrapper));
         return result;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // use community id and member id select whether member likes or collected this community
+     * @Date 14:27 2021/3/15
+     * @Param [map]
+     * @return java.util.Map<java.lang.String,java.lang.Integer>
+     **/
+    @Override
+    public Map<String, Integer> selectLikeAndCollectByMember(Map<String, Integer> map) {
+        QueryWrapper<ComLikes> comLikesQueryWrapper = new QueryWrapper<>();
+        comLikesQueryWrapper.eq("community_id",map.get("communityId"))
+                .eq("member_id",map.get("memberId"));
+        Integer likesCount = comLikesMapper.selectCount(comLikesQueryWrapper);
+
+        QueryWrapper<ComCollect> comCollectQueryWrapper = new QueryWrapper<>();
+        comCollectQueryWrapper.eq("community_id",map.get("communityId"))
+                .eq("member_id",map.get("memberId"));
+        Integer collectCount = comCollectMapper.selectCount(comCollectQueryWrapper);
+
+        Map<String, Integer> resultMap = new HashMap<>();
+        resultMap.put("memberLikesYn",likesCount);
+        resultMap.put("memberCollectYn",collectCount);
+
+        return resultMap;
     }
 
 }
