@@ -63,8 +63,11 @@ class AspnApplicationTests {
 
     @Test
     void testEmailRegex(){
-        String regex = "\\w+(\\.\\w)*@\\w+(\\.\\w{2,3}){1,3}";
-        String[] str1 = {"aaa@","aa.b@qq.com","1123@163.com","113fe$@11.com","han. @sohu.com.cn","han.c@sohu.com.cn.cm.cm","","张吗"};
+        String regex = "\\w+(\\.\\w+)*@\\w+(\\.\\w{2,6}){1,5}";
+        String[] str1 = {"lu.jiayu@ncbakery.com",
+                "aa.b@qq.com","1123@163.com","113fe$@11.com",
+                "han. @sohu.com.cn","han.c@sohu.com.cn.cm.cm",
+                "","张吗"};
         for (String str:str1){
             System.out.println(str+" \\\\. "+str.matches(regex));
         }

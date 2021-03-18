@@ -23,7 +23,7 @@
         and c.id = #{communityId}
     </select>
 
-    <select id="selectCommunityListByMenuId" resultType="java.util.Map">
+    <select id="selectCommunityList" resultType="java.util.Map">
         SELECT
             m.id as memberId,
             m.member_name as memberName,
@@ -39,12 +39,17 @@
             member m
         WHERE
             c.member_id = m.id
-          and c.menu_id = #{menuId}
+            <if test="menuId != null">
+                and c.menu_id = #{menuId}
+            </if>
+            <if test="memberId != null">
+                and c.member_id = #{memberId}
+            </if>
         order by c.id desc
         LIMIT #{start},#{end}
     </select>
 
-    <select id="selectCommunityListByMenuIdCount" resultType="java.lang.Integer">
+    <select id="selectCommunityListCount" resultType="java.lang.Integer">
         SELECT
             count(1) cnt
         FROM
@@ -52,7 +57,12 @@
             member m
         WHERE
             c.member_id = m.id
-          and c.menu_id = #{menuId}
+            <if test="menuId != null">
+                and c.menu_id = #{menuId}
+            </if>
+            <if test="memberId != null">
+                and c.member_id = #{memberId}
+            </if>
     </select>
 
 

@@ -50,18 +50,43 @@ public class CommunityController {
         return AjaxResponse.success(stringObjectMap);
     }
 
-    @PostMapping("/communitys/getList")
-    public @ResponseBody AjaxResponse selectCommunityList(@RequestBody Map<String,Object> map){
-        List<Community> communities = communityService.selectAll(map);
+    /**
+     * @Author nanguangjun
+     * @Description // select list by member
+     * @Date 14:12 2021/3/18
+     * @Param [map]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/communitys/getListByMember")
+    public @ResponseBody AjaxResponse selectCommunityListByMember(HttpServletRequest request){
+        Map<String, Integer> map = new HashMap<>();
+        map.put("memberId",Integer.parseInt(request.getParameter("memberId")));
+        map.put("itemsPerPage",Integer.parseInt(request.getParameter("itemsPerPage")));
+        map.put("page",Integer.parseInt(request.getParameter("page")));
+        Map<String, Object> communities = communityService.selectCommunityListByMember(map);
         return AjaxResponse.success(communities);
     }
 
+    /**
+     * @Author nanguangjun
+     * @Description // delete community by Id
+     * @Date 14:12 2021/3/18
+     * @Param [id]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
     @DeleteMapping("/communitys/{id}")
     public @ResponseBody AjaxResponse deleteCommunityById(@PathVariable Integer id){
         int i = communityService.deleteCommunityById(id);
         return AjaxResponse.success(i);
     }
 
+    /**
+     * @Author nanguangjun
+     * @Description // community list by menuId
+     * @Date 14:11 2021/3/18
+     * @Param [request]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
     @GetMapping("/communitys/pageList")
     public @ResponseBody AjaxResponse selectPageList(HttpServletRequest request){
         Map<String, Integer> map = new HashMap<>();

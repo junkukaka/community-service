@@ -111,8 +111,9 @@ public class CommunityServiceImpl implements CommunityService{
         int menuId = params.get("menuId");
         int page = params.get("page");
         int size = 5; //页面显示记录条数
-        Menu menu = menuMapper.selectById(menuId);//菜单查询
-        Integer total = communityMapper.selectCommunityListByMenuIdCount(menuId); //select total
+        Map<String,Integer> totalMapArgs = new HashMap<>();
+        totalMapArgs.put("menuId",menuId);
+        Integer total = communityMapper.selectCommunityListCount(totalMapArgs); //select total
         int pages = total%size==0 ? total/size : total/size+1;
         int start = (page -1) * size;
         int end = page * size;
@@ -122,7 +123,9 @@ public class CommunityServiceImpl implements CommunityService{
         args.put("menuId",menuId);
         args.put("start",start);
         args.put("end",end);
-        List<Map<String, Object>> list = communityMapper.selectCommunityListByMenuId(args);
+        List<Map<String, Object>> list = communityMapper.selectCommunityList(args);
+
+        Menu menu = menuMapper.selectById(menuId);
 
         result.put("menuName",menu.getName());
         result.put("communitys",list); //数据
@@ -130,6 +133,42 @@ public class CommunityServiceImpl implements CommunityService{
         result.put("pages",pages); //总页数
         return result;
     }
+
+    /**
+     * @Author nanguangjun
+     * @Description // select community list by member
+     * @Date 14:22 2021/3/18
+     * @Param [params]
+     * @return java.util.Map<java.lang.String,java.lang.Object>
+     **/
+    @Override
+    public Map<String,Object> selectCommunityListByMember(Map<String, Integer> params){
+        Map<String, Object> result = new HashMap<>(); //最后返回值
+        int memberId = params.get("memberId");
+        int itemsPerPage = params.get("itemsPerPage");
+        int page = params.get("page");
+        int size = itemsPerPage; //页面显示记录条数
+        Map<String,Integer> totalMapArgs = new HashMap<>();
+        totalMapArgs.put("memberId",memberId);
+        Integer total = communityMapper.selectCommunityListCount(totalMapArgs); //select total
+        int pages = total%size==0 ? total/size : total/size+1;
+        int start = (page -1) * size;
+        int end = page * size;
+
+        //分页查询传参
+        Map<String,Integer> args = new HashMap<>();
+        args.put("memberId",memberId);
+        args.put("start",start);
+        args.put("end",end);
+        List<Map<String, Object>> list = communityMapper.selectCommunityList(args);
+
+        result.put("communitys",list); //数据
+        result.put("page",page); //当前页面
+        result.put("pages",pages); //总页数
+        return result;
+    }
+
+
 
     @Override
     public Map<String, Object> selectCommunityDetail(Integer id) {
