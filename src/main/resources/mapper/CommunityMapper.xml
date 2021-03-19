@@ -11,15 +11,20 @@
             d.name as department,
             c.content,
             c.id,
+            c.title,
             c.register_id as registerId,
-            c.register_time as registerTime
+            c.register_time as registerTime,
+            u.id as menuId,
+            u.name as menuName
         FROM
             community c,
             member m,
-            department d
+            department d,
+            menu u
         WHERE
             c.member_id = m.id
         and m.department = d.id
+        and u.id = c.menu_id
         and c.id = #{communityId}
     </select>
 
@@ -30,15 +35,19 @@
             m.picture,
             c.id,
             c.title,
+            u.id as menuId,
+            u.name as menuName,
             c.register_time as registerTime,
             (select count(1) from com_comment where community_id = c.id) as commentCount,
             (select count(1) from com_like where community_id = c.id) as likesCount,
             (select count(1) from com_hits where community_id = c.id) as hitsCount
         FROM
             community c,
-            member m
+            member m,
+            menu u
         WHERE
             c.member_id = m.id
+        and u.id = c.menu_id
             <if test="menuId != null">
                 and c.menu_id = #{menuId}
             </if>
@@ -54,9 +63,11 @@
             count(1) cnt
         FROM
             community c,
-            member m
+            member m,
+            menu u
         WHERE
             c.member_id = m.id
+        and u.id = c.menu_id
             <if test="menuId != null">
                 and c.menu_id = #{menuId}
             </if>
