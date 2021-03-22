@@ -2,16 +2,24 @@ package com.community.aspn.util.mino;
 
 import com.community.aspn.util.AjaxResponse;
 import io.minio.ObjectWriteResponse;
+import org.apache.tomcat.util.http.fileupload.FileItemIterator;
+import org.apache.tomcat.util.http.fileupload.FileItemStream;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 import java.util.Iterator;
-import java.util.Map;
+import java.util.LinkedHashSet;
+import java.util.List;
 
 
 @RestController
@@ -51,6 +59,19 @@ public class MinIOFileUploadController {
             objectWriteResponse = minIOTemplate.putObject(fileName, inputStream, contentType);
             url = minIOProperties.getUrl() + objectWriteResponse.object();
         }
+        return AjaxResponse.success(url);
+    }
+
+    @PostMapping(value = "/minio/vue_md_Editor")
+    public @ResponseBody AjaxResponse vueMdEditorUploadImage(MultipartFile file) throws Exception{
+       String url = "";
+        String contentType = file.getContentType();
+        String fileName = MinIOFileUtil.getCommunityFileName(file.getOriginalFilename());
+        InputStream inputStream = file.getInputStream();
+
+        ObjectWriteResponse response = minIOTemplate.putObject(fileName, inputStream, contentType);
+        url = minIOProperties.getUrl() + response.object();
+
         return AjaxResponse.success(url);
     }
 
