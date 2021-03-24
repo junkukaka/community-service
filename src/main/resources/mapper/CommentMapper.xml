@@ -19,8 +19,29 @@
         and c.community_id = #{communityId}
     </select>
 
-    <select id="selectCommentCountByCommunityId" resultType="int">
+    <select id="selectCommentCountByCommunityId" resultType="java.lang.Integer">
         SELECT count(1) from com_comment where community_id = #{communityId}
+    </select>
+
+    <!-- member profile select comment by member id page list   -->
+    <select id="selectCommentByMemberId" resultType="java.util.Map">
+        select
+            a.id,
+            a.content,
+            b.title,
+            (select name from menu where id = b.menu_id) as menuName,
+            a.register_time as date
+        from
+            com_comment a left join
+            community b
+            on a.community_id = b.id and a.member_id = #{memberId}
+        order by a.id
+        LIMIT #{page},#{size}
+    </select>
+
+    <!-- member profile select comment by member id  count -->
+    <select id="selectCommentCountByMemberId" resultType="java.lang.Integer">
+        SELECT count(1) FROM com_comment where member_id = #{memberId}
     </select>
 
 

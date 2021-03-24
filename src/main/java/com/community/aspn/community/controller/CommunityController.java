@@ -92,6 +92,7 @@ public class CommunityController {
         Map<String, Integer> map = new HashMap<>();
         map.put("menuId", Integer.valueOf(request.getParameter("menuId")));
         map.put("page", Integer.valueOf(request.getParameter("page")));
+        map.put("itemsPerPage",Integer.parseInt(request.getParameter("itemsPerPage")));
         Map<String, Object> stringObjectMap = communityService.selectPageList(map);
         return AjaxResponse.success(stringObjectMap);
     }

@@ -11,4 +11,6 @@ import java.util.Map;
 public interface CommentMapper extends BaseMapper<ComComment> {
     List<Map<String,Object>> selectCommentByCommunityId(Integer communityId);
     Integer selectCommentCountByCommunityId(Integer communityId);
+    List<Map<String,Object>> selectCommentByMemberId(Map<String,Integer> args);
+    Integer selectCommentCountByMemberId(Integer memberId);
 }

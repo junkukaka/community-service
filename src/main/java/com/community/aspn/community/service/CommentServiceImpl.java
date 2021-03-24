@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,19 +23,16 @@ public class CommentServiceImpl implements CommentService{
         return commentMapper.insert(comComment);
     }
 
+    /**
+     * @Author nanguangjun
+     * @Description //delete comment by id
+     * @Date 15:28 2021/3/23
+     * @Param [id]
+     * @return void
+     **/
     @Override
-    public int updateCommentById(ComComment comComment) {
-        return 0;
-    }
-
-    @Override
-    public int deleteCommentById(ComComment comComment) {
-        return 0;
-    }
-
-    @Override
-    public ComComment selectById(Integer id) {
-        return null;
+    public void deleteCommentById(Integer id) {
+        commentMapper.deleteById(id);
     }
     
     /**
@@ -61,5 +59,36 @@ public class CommentServiceImpl implements CommentService{
     public Integer selectCommentCountByCommunityId(Integer communityId) {
         Integer integer = commentMapper.selectCommentCountByCommunityId(communityId);
         return integer;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description Profile page used, select comments list by member id
+     * @Date 14:55 2021/3/23
+     * @Param [args]
+     * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+     **/
+    @Override
+    public Map<String, Object> selectCommentPageListByMemberId(Map<String, Integer> params) {
+        Map<String, Object> result = new HashMap<>(); //最后返回值
+        int memberId = params.get("memberId");
+        int size = params.get("itemsPerPage");
+        int page = params.get("page");
+        Map<String,Integer> totalMapArgs = new HashMap<>();
+        totalMapArgs.put("memberId",memberId);
+        Integer total = commentMapper.selectCommentCountByMemberId(memberId);
+        int pages = total%size==0 ? total/size : total/size+1;
+
+        //分页查询传参
+        Map<String,Integer> args = new HashMap<>();
+        args.put("memberId",memberId);
+        args.put("page",(page-1)*size);
+        args.put("size",size);
+        List<Map<String, Object>> list = commentMapper.selectCommentByMemberId(args);
+
+        result.put("comments",list); //数据
+        result.put("page",page); //当前页面
+        result.put("pages",pages); //总页数
+        return result;
     }
 }
