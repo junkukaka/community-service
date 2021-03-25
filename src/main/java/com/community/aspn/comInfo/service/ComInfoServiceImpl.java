@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -157,6 +158,67 @@ public class ComInfoServiceImpl implements ComInfoService {
         resultMap.put("memberCollectYn",collectCount);
 
         return resultMap;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description //Profile page select likes by member id
+     * @Date 10:47 2021/3/25
+     * @Param [params]
+     * @return java.util.Map<java.lang.String,java.lang.Object>
+     **/
+    @Override
+    public Map<String, Object> selectLikesPageListByMemberId(Map<String, Integer> params) {
+        Map<String, Object> result = new HashMap<>(); //最后返回值
+        int memberId = params.get("memberId");
+        int size = params.get("itemsPerPage");
+        int page = params.get("page");
+        Map<String,Integer> totalMapArgs = new HashMap<>();
+        totalMapArgs.put("memberId",memberId);
+        Integer total = comCollectMapper.selectLikesPageListCountByMemberId(memberId);
+        int pages = total%size==0 ? total/size : total/size+1;
+
+        //分页查询传参
+        Map<String,Integer> args = new HashMap<>();
+        args.put("memberId",memberId);
+        args.put("page",(page-1)*size);
+        args.put("size",size);
+        List<Map<String, Object>> list = comCollectMapper.selectLikesPageListByMemberId(args);
+
+        result.put("likes",list); //数据
+        result.put("page",page); //当前页面
+        result.put("pages",pages); //总页数
+        return result;
+    }
+    /**
+     * @Author nanguangjun
+     * @Description //Profile page select collect by member id
+     * @Date 13:54 2021/3/25
+     * @Param [params]
+     * @return java.util.Map<java.lang.String,java.lang.Object>
+     **/
+    @Override
+    public Map<String, Object> selectCollectPageListByMemberId(Map<String, Integer> params) {
+        Map<String, Object> result = new HashMap<>(); //最后返回值
+        int memberId = params.get("memberId");
+        int size = params.get("itemsPerPage");
+        int page = params.get("page");
+        Map<String,Integer> totalMapArgs = new HashMap<>();
+        totalMapArgs.put("memberId",memberId);
+        Integer total = comCollectMapper.selectCollectPageListCountByMemberId(memberId);
+        int pages = total%size==0 ? total/size : total/size+1;
+
+        //分页查询传参
+        Map<String,Integer> args = new HashMap<>();
+        args.put("memberId",memberId);
+        args.put("page",(page-1)*size);
+        args.put("size",size);
+        List<Map<String, Object>> list = comCollectMapper.selectCollectPageListByMemberId(args);
+
+        result.put("collect",list); //数据
+        result.put("page",page); //当前页面
+        result.put("pages",pages); //总页数
+        return result;
     }
 
 }
