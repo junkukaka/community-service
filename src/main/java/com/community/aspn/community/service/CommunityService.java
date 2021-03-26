@@ -15,5 +15,5 @@ public interface CommunityService {
     Map<String,Object> selectPageList(Map<String,Integer> map);
     Map<String,Object> selectCommunityListByMember(Map<String,Integer> map);
     Map<String,Object> selectCommunityDetail(Integer id);
-
+    List<Map<String,Object>> selectCommunityInMainPage(Map<String,Integer> param);
 }

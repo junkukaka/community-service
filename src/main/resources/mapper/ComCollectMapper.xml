@@ -8,6 +8,7 @@
             a.community_id as communityId,
             a.member_id as memberId,
             b.title,
+            b.menu_id as menuId,
             (select name from menu where id = b.menu_id) as menuName,
             a.register_time as date
         FROM
@@ -30,6 +31,7 @@
             a.community_id as communityId,
             a.member_id as memberId,
             b.title,
+            b.menu_id as menuId,
             (select name from menu where id = b.menu_id) as menuName,
             a.register_time as date
         FROM

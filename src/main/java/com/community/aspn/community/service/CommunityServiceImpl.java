@@ -164,9 +164,21 @@ public class CommunityServiceImpl implements CommunityService{
     }
 
 
-
     @Override
     public Map<String, Object> selectCommunityDetail(Integer id) {
         return communityMapper.selectCommunityDetail(id);
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description //select community by main page
+     * @Date 9:42 2021/3/26
+     * @Param []
+     * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+     **/
+    @Override
+    public List<Map<String, Object>> selectCommunityInMainPage(Map<String,Integer> param) {
+        List<Map<String, Object>> list = communityMapper.selectCommunityInMainPage(param);
+        return list;
     }
 }
