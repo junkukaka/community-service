@@ -7,9 +7,8 @@ import java.util.Map;
 
 public interface CommentService {
     int insertComment(ComComment comComment);
-    int updateCommentById(ComComment comComment);
-    int deleteCommentById(ComComment comComment);
-    ComComment selectById(Integer id);
+    void deleteCommentById(Integer comComment);
     List<Map<String,Object>> selectCommentByCommunityId(Integer communityId);
     Integer selectCommentCountByCommunityId(Integer communityId);
+    Map<String, Object> selectCommentPageListByMemberId(Map<String,Integer> params);
 }

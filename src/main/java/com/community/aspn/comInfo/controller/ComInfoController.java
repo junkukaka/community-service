@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -88,6 +89,40 @@ public class ComInfoController {
     @PostMapping("/save/collect")
     public @ResponseBody AjaxResponse saveCollect(@RequestBody ComCollect comCollect){
         return AjaxResponse.success(comInfoService.saveCollete(comCollect));
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description //Profile page select likes
+     * @Date 13:57 2021/3/25
+     * @Param [request]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/likes/likesPageList")
+    public @ResponseBody AjaxResponse selectLikesPageList(HttpServletRequest request){
+        Map<String, Integer> map = new HashMap<>();
+        map.put("memberId", Integer.valueOf(request.getParameter("memberId")));
+        map.put("page", Integer.valueOf(request.getParameter("page")));
+        map.put("itemsPerPage",Integer.parseInt(request.getParameter("itemsPerPage")));
+        Map<String, Object> stringObjectMap = comInfoService.selectLikesPageListByMemberId(map);
+        return AjaxResponse.success(stringObjectMap);
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description //Profile page select collect
+     * @Date 13:57 2021/3/25
+     * @Param [request]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/collect/collectPageList")
+    public @ResponseBody AjaxResponse selectCollectPageList(HttpServletRequest request){
+        Map<String, Integer> map = new HashMap<>();
+        map.put("memberId", Integer.valueOf(request.getParameter("memberId")));
+        map.put("page", Integer.valueOf(request.getParameter("page")));
+        map.put("itemsPerPage",Integer.parseInt(request.getParameter("itemsPerPage")));
+        Map<String, Object> stringObjectMap = comInfoService.selectCollectPageListByMemberId(map);
+        return AjaxResponse.success(stringObjectMap);
     }
 
 

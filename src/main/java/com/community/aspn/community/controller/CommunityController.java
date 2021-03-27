@@ -92,7 +92,26 @@ public class CommunityController {
         Map<String, Integer> map = new HashMap<>();
         map.put("menuId", Integer.valueOf(request.getParameter("menuId")));
         map.put("page", Integer.valueOf(request.getParameter("page")));
+        map.put("itemsPerPage",Integer.parseInt(request.getParameter("itemsPerPage")));
         Map<String, Object> stringObjectMap = communityService.selectPageList(map);
         return AjaxResponse.success(stringObjectMap);
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description //main page community select
+     * @Date 9:52 2021/3/26
+     * @Param [request]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/communitys/mainPage")
+    public @ResponseBody AjaxResponse selectCommunityInMainPage(HttpServletRequest request){
+        Map<String,Integer> map = new HashMap<>();
+        if(request.getParameter("menuId") != null){
+            map.put("menuId", Integer.valueOf(request.getParameter("menuId")));
+        }
+        map.put("size",Integer.valueOf(request.getParameter("size")));
+        List<Map<String, Object>> maps = communityService.selectCommunityInMainPage(map);
+        return AjaxResponse.success(maps);
     }
 }

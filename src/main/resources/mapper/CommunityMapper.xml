@@ -28,6 +28,7 @@
         and c.id = #{communityId}
     </select>
 
+    <!-- select community by options pagelist   -->
     <select id="selectCommunityList" resultType="java.util.Map">
         SELECT
             m.id as memberId,
@@ -55,9 +56,10 @@
                 and c.member_id = #{memberId}
             </if>
         order by c.id desc
-        LIMIT #{start},#{end}
+        LIMIT #{page},#{size}
     </select>
 
+    <!-- select community by options count  -->
     <select id="selectCommunityListCount" resultType="java.lang.Integer">
         SELECT
             count(1) cnt
@@ -77,8 +79,29 @@
     </select>
 
 
-
-
-
+    <!-- select community in main page  -->
+    <select id="selectCommunityInMainPage" resultType="java.util.Map">
+        SELECT
+            m.id as memberId,
+            m.member_name as memberName,
+            m.picture,
+            c.id,
+            c.title,
+            u.id as menuId,
+            u.name as menuName,
+            c.register_time as registerTime
+        FROM
+            community c,
+            member m,
+            menu u
+        WHERE
+            c.member_id = m.id
+          and u.id = c.menu_id
+        <if test="menuId != null">
+            and c.menu_id = #{menuId}
+        </if>
+        order by c.id desc
+        LIMIT #{size}
+    </select>
 
 </mapper>
