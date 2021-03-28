@@ -1,0 +1,38 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    username: root
+    #公司虚拟机
+    url: jdbc:mysql://mxg_mysql:3306/test?useUnicode=true&characterEncoding=UTF8&serverTimezone=Hongkong
+    password: 123456
+
+    #公司本地主机
+    #    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF8&serverTimezone=Hongkong
+    #    password: root
+
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*Mapper.xml
+  global-config:
+    db-config:
+      #字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断"),NOT_EMPTY:"非空判断"
+      field-strategy: not_null
+
+# MinIo文件服务器
+minio:
+  endpoint: http://127.0.0.1:9000
+  accessKey: minioadmin
+  secretKey: minioadmin
+  bucketName: test
+  url: './file/test/'
+
+
+
+# 配置日志
+logging:
+  config: classpath:log4j2-test.xml
+
+
