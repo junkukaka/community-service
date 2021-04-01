@@ -36,9 +36,9 @@ public class MinoIOComponent {
         MultipartFile multipartFile = MinIOFileUtil.base64MutipartFile(base64Str);
         String contentType = multipartFile.getContentType();
         InputStream inputStream = multipartFile.getInputStream();
-        String communityFileName = MinIOFileUtil.getCommunityFileName(multipartFile.getOriginalFilename());
-        ObjectWriteResponse objectWriteResponse = minIOTemplate.putObject(communityFileName, inputStream, contentType);
-        return minIOProperties.getUrl() + objectWriteResponse.object();
+        String communityFileName = MinIOFileUtil.getFileName(multipartFile.getOriginalFilename());
+        ObjectWriteResponse objectWriteResponse = minIOTemplate.putObject(communityFileName,minIOProperties.getCommunityBucket(), inputStream, contentType);
+        return minIOProperties.getFilePath(minIOProperties.getCommunityBucket()) + objectWriteResponse.object();
     }
 
     /**

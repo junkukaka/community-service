@@ -50,35 +50,42 @@ public class MinIOFileUploadController {
             String str = itr.next();
             multipartFile = request.getFile(str);
             //获取文件名称和存储路径
-            String fileName = MinIOFileUtil.getCommunityFileName(multipartFile.getOriginalFilename());
+            String fileName = MinIOFileUtil.getFileName(multipartFile.getOriginalFilename());
             MultipartFile mpf = request.getFile(str);
             //获取文件类型 contentType
             String contentType = MinIOFileUtil.getContentType(multipartFile.getOriginalFilename());
             InputStream inputStream = mpf.getInputStream();
             //保存
-            objectWriteResponse = minIOTemplate.putObject(fileName, inputStream, contentType);
-            url = minIOProperties.getUrl() + objectWriteResponse.object();
+            String bucket = minIOProperties.getCommunityBucket();
+            objectWriteResponse = minIOTemplate.putObject(fileName,bucket, inputStream, contentType);
+            url = minIOProperties.getFilePath(bucket) + objectWriteResponse.object();
         }
         return AjaxResponse.success(url);
     }
 
+    /**
+     * @Author nanguangjun
+     * @Description // community Editor upload image
+     * @Date 16:54 2021/3/30
+     * @Param [file]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
     @PostMapping(value = "/minio/vue_md_Editor")
-    public @ResponseBody AjaxResponse vueMdEditorUploadImage(MultipartFile file) throws Exception{
-       String url = "";
+    public @ResponseBody AjaxResponse communityVueMdEditorUploadImage(MultipartFile file) throws Exception{
+        String url = "";
         String contentType = file.getContentType();
-        String fileName = MinIOFileUtil.getCommunityFileName(file.getOriginalFilename());
+        String fileName = MinIOFileUtil.getFileName(file.getOriginalFilename());
         InputStream inputStream = file.getInputStream();
-
-        ObjectWriteResponse response = minIOTemplate.putObject(fileName, inputStream, contentType);
-        url = minIOProperties.getUrl() + response.object();
-
+        String bucket = minIOProperties.getCommunityBucket();
+        ObjectWriteResponse response = minIOTemplate.putObject(fileName,bucket, inputStream, contentType);
+        url = minIOProperties.getFilePath(bucket) + response.object();
         return AjaxResponse.success(url);
     }
 
 
     /**
      * @Author nanguangjun
-     * @Description //关于用户的文件上传
+     * @Description // user upload picture
      * @Date 11:12 2021/2/25
      * @Param [request]
      * @return com.community.aspn.util.AjaxResponse
@@ -93,14 +100,15 @@ public class MinIOFileUploadController {
             String str = itr.next();
             multipartFile = request.getFile(str);
             //获取文件名称和存储路径
-            String fileName = MinIOFileUtil.getUserFileName(multipartFile.getOriginalFilename());
+            String fileName = MinIOFileUtil.getFileName(multipartFile.getOriginalFilename());
             MultipartFile mpf = request.getFile(str);
             //获取文件类型 contentType
             String contentType = MinIOFileUtil.getContentType(multipartFile.getOriginalFilename());
             InputStream inputStream = mpf.getInputStream();
             //保存
-            objectWriteResponse = minIOTemplate.putObject(fileName, inputStream, contentType);
-            url = minIOProperties.getUrl() + objectWriteResponse.object();
+            String sysBucket = minIOProperties.getSysBucket();
+            objectWriteResponse = minIOTemplate.putObject(fileName, sysBucket, inputStream, contentType);
+            url = minIOProperties.getFilePath(sysBucket) + objectWriteResponse.object();
         }
         return AjaxResponse.success(url);
     }

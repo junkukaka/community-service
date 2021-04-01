@@ -16,66 +16,39 @@ import java.util.regex.Pattern;
 
 public class MinIOFileUtil {
 
-    @Resource
-    MinIOTemplate minIOTemplate;
-
     private static final String REG = "(data:image\\/[a-z]{2,4}\\;base64\\,)[a-z,A-Z]([^\'\"]+)";
     public static final Pattern PATTERN = Pattern.compile(REG);
 
-    /**
-     * @Author nanguangjun
-     * @Description // 日期 / uuid.文件后缀
-     * @Date 17:22 2021/2/2
-     * @Param [原始图片名称]
-     * @return java.lang.String
-     **/
-    public static String getCommunityFileName(String img){
-        String randomUUIDString = getUUID();
-        String[] split = img.split("\\.");
-        String format = getFormatDate();
-        String path =  "image/community/" + format + "/" + randomUUIDString+ "." + split[1];
-        return path;
-    }
 
     /**
      * @Author nanguangjun
-     * @Description // 关于用户得文件修改
-     * @Date 11:04 2021/2/25
-     * @Param [img]
-     * @return java.lang.String
-     **/
-    public static String getUserFileName(String img){
-        String randomUUIDString = getUUID();
-        String[] split = img.split("\\.");
-        String format = getFormatDate();
-        String path =  "image/user/" + format + "/" + randomUUIDString+ "." + split[1];
-        return path;
-    }
-
-    /**
-     * @Author nanguangjun
-     * @Description //文件上传
-     * @Date 11:21 2021/2/25
+     * @Description // get file path+name
+     * @Date 17:17 2021/3/30
      * @Param [str]
      * @return java.lang.String
      **/
-    public static String getUploadFileName(String str){
+    public static String getFileName(String str){
         String randomUUIDString = getUUID();
         String[] split = str.split("\\.");
-        String format = getFormatDate();
-        String path =  "image/upload/" + format + "/" + randomUUIDString+ "." + split[1];
-        return path;
+        String date = getFormatDate();
+        String year = getFormatYear();
+        String month = getFormatMonth();
+        return year + "/" + month + "/" + date + "/" + randomUUIDString+ "." + split[1];
     }
 
-    /**
-     * @Author nanguangjun
-     * @Description // yyyy-MM-dd
-     * @Date 11:24 2021/2/25
-     * @Param []
-     * @return java.lang.String
-     **/
+
     public static String getFormatDate(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return simpleDateFormat.format(new Date());
+    }
+
+    public static String getFormatYear(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
+        return simpleDateFormat.format(new Date());
+    }
+
+    public static String getFormatMonth(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM");
         return simpleDateFormat.format(new Date());
     }
 

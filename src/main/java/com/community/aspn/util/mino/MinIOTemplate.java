@@ -74,35 +74,18 @@ public class MinIOTemplate {
                         .filename(filepath).build());
     }
 
-    /**
-     * 文件上传
-     * @param objectName 对象名称，文件名称
-     * @param inputStream 文件输入流
-     */
-    public ObjectWriteResponse putObject(String objectName, InputStream inputStream)
-            throws Exception {
-
-        return instance.putObject(
-                PutObjectArgs.builder()
-                        .bucket(minIo.getBucketName())
-                        .object(objectName).stream(
-                        inputStream, -1, 10485760)
-                        .build());
-    }
-
 
     /**
-     *
-     * @param objectName 对象名称，文件名称
-     * @param inputStream 文件输入流
-     * @param contentTY 文件类型
-     * @return
-     * @throws Exception
-     */
-    public ObjectWriteResponse putObject( String objectName, InputStream inputStream,String contentTY) throws Exception{
+     * @Author nanguangjun
+     * @Description //TODO 
+     * @Date 16:33 2021/3/30
+     * @Param [objectName, bucketName, inputStream, contentTY]
+     * @return io.minio.ObjectWriteResponse
+     **/
+    public ObjectWriteResponse putObject( String objectName,String bucketName, InputStream inputStream,String contentTY) throws Exception{
         return instance.putObject(
                 PutObjectArgs.builder()
-                        .bucket(minIo.getBucketName())
+                        .bucket(bucketName)
                         .contentType(contentTY)
                         .object(objectName).stream(
                         inputStream, -1, 10485760)

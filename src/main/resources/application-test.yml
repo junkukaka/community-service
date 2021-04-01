@@ -5,7 +5,7 @@ spring:
   datasource:
     username: root
     #公司虚拟机
-    url: jdbc:mysql://mxg_mysql:3306/test?useUnicode=true&characterEncoding=UTF8&serverTimezone=Hongkong
+    url: jdbc:mysql://mysql:3306/test?useUnicode=true&characterEncoding=UTF8&serverTimezone=Hongkong
     password: 123456
 
     #公司本地主机
@@ -23,11 +23,13 @@ mybatis-plus:
 
 # MinIo文件服务器
 minio:
-  endpoint: http://127.0.0.1:9000
+  endpoint: http://minio_aspn:9000
   accessKey: minioadmin
   secretKey: minioadmin
-  bucketName: test
-  url: './file/test/'
+  communityBucket: community
+  wikiBucket: wiki
+  sysBucket: sys
+  path: http://192.168.0.134:9000
 
 
 

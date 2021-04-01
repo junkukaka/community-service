@@ -39,6 +39,7 @@ public class CommunityServiceImpl implements CommunityService{
     public int insertCommunity(Community community) {
         community.setRegisterTime(new Date());
         community.setRegisterId(community.getMemberId());
+
         String content = community.getContent();
         //是否有截图，如果有截图，处理截图文件。
         if(MinIOFileUtil.ifBase64RegexMatcher(content)){
