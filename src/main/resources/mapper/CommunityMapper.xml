@@ -5,26 +5,24 @@
     <!-- community detail select   -->
     <select id="selectCommunityDetail" resultType="java.util.Map">
         SELECT
-            m.id as memberId,
-            m.member_name as memberName,
+            m.id AS memberId,
+            m.member_name AS memberName,
             m.picture,
-            d.name as department,
+            (select name from department WHERE id = m.department) department,
             c.content,
             c.id,
             c.title,
-            c.register_id as registerId,
-            c.register_time as registerTime,
-            u.id as menuId,
-            u.name as menuName
+            c.register_id AS registerId,
+            c.register_time AS registerTime,
+            u.id AS menuId,
+            u. NAME AS menuName
         FROM
             community c,
             member m,
-            department d,
             menu u
         WHERE
             c.member_id = m.id
-        and m.department = d.id
-        and u.id = c.menu_id
+        AND u.id = c.menu_id
         and c.id = #{communityId}
     </select>
 

@@ -4,6 +4,7 @@
 
     <!-- member profile select like by member id page list   -->
     <select id="selectLikesPageListByMemberId" resultType="java.util.Map">
+
         SELECT
             a.community_id as communityId,
             a.member_id as memberId,
@@ -12,10 +13,10 @@
             (select name from menu where id = b.menu_id) as menuName,
             a.register_time as date
         FROM
-            com_like a
-                LEFT JOIN community b
-                          on a.community_id = b.id
-                              and a.member_id = #{memberId}
+            com_like a,
+            community b
+        where a.community_id = b.id
+          and a.member_id = #{memberId}
         order by a.register_time desc
         LIMIT #{page},#{size}
     </select>
@@ -35,10 +36,10 @@
             (select name from menu where id = b.menu_id) as menuName,
             a.register_time as date
         FROM
-            com_collect a
-                LEFT JOIN community b
-                          on a.community_id = b.id
-                              and a.member_id = #{memberId}
+            com_collect a,
+            community b
+        where a.community_id = b.id
+          and a.member_id = #{memberId}
         order by a.register_time desc
         LIMIT #{page},#{size}
     </select>
