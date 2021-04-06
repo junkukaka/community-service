@@ -1,7 +1,7 @@
 package com.community.aspn.menu.controller;
 
-import com.community.aspn.menu.service.MenuService;
-import com.community.aspn.pojo.sys.Menu;
+import com.community.aspn.menu.service.CommunityMenuService;
+import com.community.aspn.pojo.sys.CommunityMenu;
 import com.community.aspn.util.AjaxResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/menu")
+@RequestMapping("/communityMenu")
 //@CrossOrigin(origins="*",maxAge=3600)
-public class MenuController {
+public class CommunityMenuController {
 
     @Resource
-    MenuService menuService;
+    CommunityMenuService communityMenuService;
 
     /**
      * @Author nanguangjun
@@ -26,8 +26,8 @@ public class MenuController {
      **/
     @GetMapping("/menus/{id}")
     public @ResponseBody AjaxResponse getMenuById(@PathVariable Integer id){
-        Menu menu = menuService.getMenuById(id);
-        return AjaxResponse.success(menu);
+        CommunityMenu communityMenu = communityMenuService.getMenuById(id);
+        return AjaxResponse.success(communityMenu);
     }
 
     /**
@@ -38,8 +38,8 @@ public class MenuController {
      * @return com.community.aspn.util.AjaxResponse
      **/
     @PostMapping("/menus")
-    public @ResponseBody AjaxResponse InsertMenu(@RequestBody Menu menu){
-        int m = menuService.insertMenu(menu);
+    public @ResponseBody AjaxResponse InsertMenu(@RequestBody CommunityMenu communityMenu){
+        int m = communityMenuService.insertMenu(communityMenu);
         return AjaxResponse.success(m);
     }
 
@@ -51,8 +51,8 @@ public class MenuController {
      * @return com.community.aspn.util.AjaxResponse
      **/
     @PutMapping("/menus")
-    public @ResponseBody AjaxResponse updateMenu(@RequestBody Menu menu){
-        int i = menuService.updateMenu(menu);
+    public @ResponseBody AjaxResponse updateMenu(@RequestBody CommunityMenu communityMenu){
+        int i = communityMenuService.updateMenu(communityMenu);
         return AjaxResponse.success(i);
     }
 
@@ -64,9 +64,9 @@ public class MenuController {
      * @return com.community.aspn.util.AjaxResponse
      **/
     @PostMapping("/menus/condition")
-    public @ResponseBody AjaxResponse getMenusByCondition(@RequestBody Menu menu){
-        System.out.print(menu.toString());
-        return AjaxResponse.success(menuService.getMenusByCondition(menu));
+    public @ResponseBody AjaxResponse getMenusByCondition(@RequestBody CommunityMenu communityMenu){
+        System.out.print(communityMenu.toString());
+        return AjaxResponse.success(communityMenuService.getMenusByCondition(communityMenu));
     }
 
     /**
@@ -78,7 +78,7 @@ public class MenuController {
      **/
     @DeleteMapping("/menus/{id}")
     public @ResponseBody AjaxResponse deleteMenuById(@PathVariable Integer id){
-        menuService.deleteMenuById(id);
+        communityMenuService.deleteMenuById(id);
         return AjaxResponse.success();
     }
 
@@ -91,7 +91,7 @@ public class MenuController {
      **/
     @GetMapping("/menus/tree")
     public @ResponseBody AjaxResponse selectMenuTree(){
-        List<Map<String, Object>> menuTree = menuService.getMenuTree();
+        List<Map<String, Object>> menuTree = communityMenuService.getMenuTree();
         return  AjaxResponse.success(menuTree);
     }
 

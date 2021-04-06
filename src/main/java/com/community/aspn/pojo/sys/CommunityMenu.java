@@ -8,8 +8,8 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@TableName("menu")
-public class Menu {
+@TableName("community_menu")
+public class CommunityMenu {
     @TableId(type = IdType.AUTO)
     private Integer id;
     private String name;

@@ -1,11 +1,10 @@
 package com.community.aspn.community.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.community.aspn.community.mapper.CommunityMapper;
-import com.community.aspn.menu.mapper.MenuMapper;
+import com.community.aspn.menu.mapper.CommunityMenuMapper;
 import com.community.aspn.pojo.community.Community;
-import com.community.aspn.pojo.sys.Menu;
+import com.community.aspn.pojo.sys.CommunityMenu;
 import com.community.aspn.util.mino.MinIOFileUtil;
 import com.community.aspn.util.mino.MinoIOComponent;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,7 @@ public class CommunityServiceImpl implements CommunityService{
     CommunityMapper communityMapper;
 
     @Resource
-    MenuMapper menuMapper;
+    CommunityMenuMapper communityMenuMapper;
 
     @Resource
     MinoIOComponent minoIOComponent;
@@ -124,9 +123,9 @@ public class CommunityServiceImpl implements CommunityService{
         args.put("size",size);
         List<Map<String, Object>> list = communityMapper.selectCommunityList(args);
 
-        Menu menu = menuMapper.selectById(menuId);
+        CommunityMenu communityMenu = communityMenuMapper.selectById(menuId);
 
-        result.put("menuName",menu.getName());
+        result.put("menuName", communityMenu.getName());
         result.put("communitys",list); //数据
         result.put("page",page); //当前页面
         result.put("pages",pages); //总页数

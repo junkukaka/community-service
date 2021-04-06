@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.community.aspn.menu.mapper.MenuMapper">
-    <select id="selectMenuById2" resultType="com.community.aspn.pojo.sys.Menu">
-        select * from menu where id = #{id}
+<mapper namespace="com.community.aspn.menu.mapper.CommunityMenuMapper">
+    <select id="selectMenuById2" resultType="com.community.aspn.pojo.sys.CommunityMenu">
+        select * from community_menu where id = #{id}
     </select>
 
-    <select id="selectMenuByTier" resultType="com.community.aspn.pojo.sys.Menu">
-        select * from menu where tier = #{tier} and use_yn = 'Y'
+    <select id="selectMenuByTier" resultType="com.community.aspn.pojo.sys.CommunityMenu">
+        select * from community_menu where tier = #{tier} and use_yn = 'Y'
     </select>
 
-    <select id="selectByFather" resultType="com.community.aspn.pojo.sys.Menu">
-        select * from menu where father = #{father} and use_yn = 'Y'
+    <select id="selectByFather" resultType="com.community.aspn.pojo.sys.CommunityMenu">
+        select * from community_menu where father = #{father} and use_yn = 'Y'
     </select>
 </mapper>

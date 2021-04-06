@@ -19,7 +19,7 @@
         FROM
             community c,
             member m,
-            menu u
+            community_menu u
         WHERE
             c.member_id = m.id
         AND u.id = c.menu_id
@@ -43,7 +43,7 @@
         FROM
             community c,
             member m,
-            menu u
+            community_menu u
         WHERE
             c.member_id = m.id
         and u.id = c.menu_id
@@ -64,7 +64,7 @@
         FROM
             community c,
             member m,
-            menu u
+            community_menu u
         WHERE
             c.member_id = m.id
         and u.id = c.menu_id
@@ -91,7 +91,7 @@
         FROM
             community c,
             member m,
-            menu u
+            community_menu u
         WHERE
             c.member_id = m.id
           and u.id = c.menu_id

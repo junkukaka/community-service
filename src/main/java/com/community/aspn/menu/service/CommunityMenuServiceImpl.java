@@ -1,8 +1,8 @@
 package com.community.aspn.menu.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.community.aspn.menu.mapper.MenuMapper;
-import com.community.aspn.pojo.sys.Menu;
+import com.community.aspn.menu.mapper.CommunityMenuMapper;
+import com.community.aspn.pojo.sys.CommunityMenu;
 import org.springframework.stereotype.Service;
 
 
@@ -10,10 +10,10 @@ import javax.annotation.Resource;
 import java.util.*;
 
 @Service
-public class MenuServiceImpl implements MenuService{
+public class CommunityMenuServiceImpl implements CommunityMenuService {
 
     @Resource
-    MenuMapper menuMapper;
+    CommunityMenuMapper communityMenuMapper;
 
     
     /**
@@ -24,9 +24,9 @@ public class MenuServiceImpl implements MenuService{
      * @return int
      **/
     @Override
-    public int insertMenu(Menu menu) {
-        menu.setRegisterTime(new Date());
-        int insert = menuMapper.insert(menu);
+    public int insertMenu(CommunityMenu communityMenu) {
+        communityMenu.setRegisterTime(new Date());
+        int insert = communityMenuMapper.insert(communityMenu);
         return insert;
     }
     
@@ -38,9 +38,9 @@ public class MenuServiceImpl implements MenuService{
      * @return int
      **/
     @Override
-    public int updateMenu(Menu menu) {
-        menu.setUpdateTime(new Date());
-        return menuMapper.updateById(menu);
+    public int updateMenu(CommunityMenu communityMenu) {
+        communityMenu.setUpdateTime(new Date());
+        return communityMenuMapper.updateById(communityMenu);
     }
     
     /**
@@ -53,7 +53,7 @@ public class MenuServiceImpl implements MenuService{
      **/
     @Override
     public void deleteMenuById(Integer id) {
-        menuMapper.deleteById(id);
+        communityMenuMapper.deleteById(id);
     }
     
     /**
@@ -64,8 +64,8 @@ public class MenuServiceImpl implements MenuService{
      * @return com.community.aspn.pojo.sys.Menu
      **/
     @Override
-    public Menu getMenuById(Integer id) {
-        return menuMapper.selectById(id);
+    public CommunityMenu getMenuById(Integer id) {
+        return communityMenuMapper.selectById(id);
     }
 
 
@@ -77,22 +77,22 @@ public class MenuServiceImpl implements MenuService{
      * @return java.util.List<com.community.aspn.pojo.sys.Menu>
      **/
     @Override
-    public List<Menu> getMenusByCondition(Menu menu) {
-        QueryWrapper<Menu> query = new QueryWrapper<>();
+    public List<CommunityMenu> getMenusByCondition(CommunityMenu communityMenu) {
+        QueryWrapper<CommunityMenu> query = new QueryWrapper<>();
         //菜单等级查询
-        if(menu.getTier() != null && !"".equals(menu.getTier())){
-            query.eq("tier",menu.getTier());
+        if(communityMenu.getTier() != null && !"".equals(communityMenu.getTier())){
+            query.eq("tier", communityMenu.getTier());
         //添加父目录条件
         }
-        if(menu.getFather() != null && !"".equals(menu.getFather())){
-            query.eq("father",menu.getFather());
+        if(communityMenu.getFather() != null && !"".equals(communityMenu.getFather())){
+            query.eq("father", communityMenu.getFather());
         //使用状态
         }
-        if(menu.getUseYn() != null && !"".equals(menu.getUseYn())){
-            query.eq("use_yn",menu.getUseYn());
+        if(communityMenu.getUseYn() != null && !"".equals(communityMenu.getUseYn())){
+            query.eq("use_yn", communityMenu.getUseYn());
         }
 
-        return menuMapper.selectList(query);
+        return communityMenuMapper.selectList(query);
 
 
     }
@@ -106,16 +106,16 @@ public class MenuServiceImpl implements MenuService{
      * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
      **/
     public List<Map<String,Object>> getMenuTree(){
-        List<Menu> first = menuMapper.selectMenuByTier(1);
-        List<Menu> second = menuMapper.selectMenuByTier(2);
-        List<Menu> third = menuMapper.selectMenuByTier(3);
+        List<CommunityMenu> first = communityMenuMapper.selectMenuByTier(1);
+        List<CommunityMenu> second = communityMenuMapper.selectMenuByTier(2);
+        List<CommunityMenu> third = communityMenuMapper.selectMenuByTier(3);
         //临时2级菜单
         List<Map<String,Object>> secondTmp = new ArrayList<>();
         //2级菜单封装
         for (int i = 0; i < second.size(); i++) {
             //单个对象
             Map<String,Object> mapTmp = new HashMap<>(); //2级临时菜单
-            List<Menu> thirdTem= new ArrayList<>(); //3级临时菜单
+            List<CommunityMenu> thirdTem= new ArrayList<>(); //3级临时菜单
             int secondId = second.get(i).getId();
             for (int j = 0; j < third.size(); j++) {
                 int thirdFather = third.get(j).getFather();
