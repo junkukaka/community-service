@@ -10,6 +10,7 @@ import com.community.aspn.util.mino.MinoIOComponent;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -40,11 +41,14 @@ public class CommunityServiceImpl implements CommunityService{
         community.setRegisterId(community.getMemberId());
 
         String content = community.getContent();
-        //是否有截图，如果有截图，处理截图文件。
+        /*是否有截图，如果有截图，处理截图文件。
         if(MinIOFileUtil.ifBase64RegexMatcher(content)){
             String newContent = minoIOComponent.base64RegexReplace(content);
             community.setContent(newContent);
-        }
+        }*/
+        //替换图片内容
+        String DBContent = minoIOComponent.beForeFileSaveInDB(content);
+        community.setContent(DBContent);
         return communityMapper.insert(community);
     }
 
@@ -76,6 +80,7 @@ public class CommunityServiceImpl implements CommunityService{
      **/
     @Override
     public Community selectCommunityById(Integer id) {
+
         return communityMapper.selectById(id);
     }
 
@@ -106,7 +111,7 @@ public class CommunityServiceImpl implements CommunityService{
      * @Param [params]
      * @return java.util.Map<java.lang.String,java.lang.Object>
      **/
-    public Map<String,Object> selectPageList(Map<String, Integer> params){
+    public Map<String,Object> selectPageList(Map<String, Integer> params,HttpServletRequest request){
         Map<String, Object> result = new HashMap<>(); //最后返回值
         int menuId = params.get("menuId");
         int page = params.get("page");
@@ -122,6 +127,12 @@ public class CommunityServiceImpl implements CommunityService{
         args.put("page",(page-1)*size);
         args.put("size",size);
         List<Map<String, Object>> list = communityMapper.selectCommunityList(args);
+        //图片地址处理
+        for (int i = 0; i < list.size(); i++) {
+            String picture =
+                    minoIOComponent.afterGetContentFromDBToFront(list.get(i).get("picture").toString(),request.getRemoteAddr());
+            list.get(i).put("picture",picture);
+        }
 
         CommunityMenu communityMenu = communityMenuMapper.selectById(menuId);
 
@@ -164,9 +175,21 @@ public class CommunityServiceImpl implements CommunityService{
     }
 
 
+    /**
+     * @Author nanguangjun
+     * @Description // community detail
+     * @Date 10:06 2021/4/9
+     * @Param [id, request]
+     * @return java.util.Map<java.lang.String,java.lang.Object>
+     **/
     @Override
-    public Map<String, Object> selectCommunityDetail(Integer id) {
-        return communityMapper.selectCommunityDetail(id);
+    public Map<String, Object> selectCommunityDetail(Integer id, HttpServletRequest request) {
+        Map<String, Object> map = communityMapper.selectCommunityDetail(id);
+        String picture = minoIOComponent.afterGetContentFromDBToFront(map.get("picture").toString(),request.getRemoteAddr());
+        String content = minoIOComponent.afterGetContentFromDBToFront(map.get("content").toString(), request.getRemoteAddr());
+        map.put("content",content);
+        map.put("picture",picture);
+        return map;
     }
 
     /**
@@ -177,8 +200,14 @@ public class CommunityServiceImpl implements CommunityService{
      * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
      **/
     @Override
-    public List<Map<String, Object>> selectCommunityInMainPage(Map<String,Integer> param) {
+    public List<Map<String, Object>> selectCommunityInMainPage(Map<String,Integer> param,HttpServletRequest request) {
         List<Map<String, Object>> list = communityMapper.selectCommunityInMainPage(param);
+        //图片地址处理
+        for (int i = 0; i < list.size(); i++) {
+            String picture =
+                    minoIOComponent.afterGetContentFromDBToFront(list.get(i).get("picture").toString(),request.getRemoteAddr());
+            list.get(i).put("picture",picture);
+        }
         return list;
     }
 }

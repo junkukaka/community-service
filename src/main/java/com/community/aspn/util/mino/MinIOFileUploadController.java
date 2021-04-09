@@ -2,10 +2,6 @@ package com.community.aspn.util.mino;
 
 import com.community.aspn.util.AjaxResponse;
 import io.minio.ObjectWriteResponse;
-import org.apache.tomcat.util.http.fileupload.FileItemIterator;
-import org.apache.tomcat.util.http.fileupload.FileItemStream;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -13,13 +9,10 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 
 import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
+
 
 
 @RestController
@@ -32,6 +25,9 @@ public class MinIOFileUploadController {
 
     @Resource
     MinIOProperties minIOProperties;
+
+    @Resource
+    MinoIOComponent minoIOComponent;
 
     /**
      * @Author nanguangjun
@@ -71,14 +67,20 @@ public class MinIOFileUploadController {
      * @return com.community.aspn.util.AjaxResponse
      **/
     @PostMapping(value = "/minio/vue_md_Editor")
-    public @ResponseBody AjaxResponse communityVueMdEditorUploadImage(MultipartFile file) throws Exception{
+    public @ResponseBody AjaxResponse communityVueMdEditorUploadImage(MultipartFile file, HttpServletRequest  request) throws Exception{
         String url = "";
+        System.out.println(request.getRemoteAddr());
         String contentType = file.getContentType();
         String fileName = MinIOFileUtil.getFileName(file.getOriginalFilename());
         InputStream inputStream = file.getInputStream();
         String bucket = minIOProperties.getCommunityBucket();
         ObjectWriteResponse response = minIOTemplate.putObject(fileName,bucket, inputStream, contentType);
-        url = minIOProperties.getFilePath(bucket) + response.object();
+        //是否是 局域网
+        if(request.getRemoteAddr().substring(0,7).equals(minIOProperties.getLocalIpPrefix())){
+            url = minIOProperties.getLocalFilePath(bucket) + response.object();
+        }else {
+            url = minIOProperties.getRemoteFilePath(bucket) + response.object();
+        }
         return AjaxResponse.success(url);
     }
 
@@ -108,7 +110,12 @@ public class MinIOFileUploadController {
             //保存
             String sysBucket = minIOProperties.getSysBucket();
             objectWriteResponse = minIOTemplate.putObject(fileName, sysBucket, inputStream, contentType);
-            url = minIOProperties.getFilePath(sysBucket) + objectWriteResponse.object();
+            //是否是 局域网
+            if(request.getRemoteAddr().substring(0,7).equals(minIOProperties.getLocalIpPrefix())){
+                url = minIOProperties.getLocalFilePath(sysBucket) + objectWriteResponse.object();
+            }else {
+                url = minIOProperties.getRemoteFilePath(sysBucket) + objectWriteResponse.object();
+            }
         }
         return AjaxResponse.success(url);
     }

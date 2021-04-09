@@ -74,6 +74,60 @@ class AspnApplicationTests {
 //            System.out.println(str+" \\\\. "+str.matches(regex));
 //        }
 //    }
+    @Test
+    public void testIPReplace(){
+        String target = "#@#MINIO#@#";
+        String str = "http://192.168.72.132:9000/community/2021/2021-04/2021-04-06/e54ee717-5a81-485a-bb4c-c6cd14eac373.png";
+        String replace = str.replace("192.168.72.132:9000", target);
+        System.out.println(replace);
+    }
+
+    @Test
+    public void testMinIOReplace(){
+        String target = "192.168.72.132:9000";
+        String str = "http://#@#MINIO#@#/community/2021/2021-04/2021-04-06/e54ee717-5a81-485a-bb4c-c6cd14eac373.png";
+        String replace = str.replace("#@#MINIO#@#", target);
+        System.out.println(replace);
+    }
+
+    @Test
+    public void testIp(){
+        String pattern = "192.168";
+        String ip = "192.168.72.132";
+        System.out.println(ip.substring(0,7));
+    }
+
+    @Test
+    public void testsIp(){
+        String pattern = "http://192.168.[0-9]*.[0-9]*:9000";
+        String content = "![desc](http://192.168.72.132:9000/community/2021/2021-04/2021-04-08/adbae455-6fba-403c-9523-08b29cb4a2b8.png){{{width=\"auto\" height=\"auto\"}}}";
+        Pattern r = Pattern.compile(pattern);
+        Matcher matcher = r.matcher(content);
+        String replace = content;
+        while (matcher.find()){
+            String group = matcher.group();
+            replace = replace.replace(group, "@-@MINIO@-@");
+            System.out.println(replace);
+        }
+    }
+
+    @Test
+    public void testsIps(){
+        String pattern = "@-@MINIO@-@";
+        String content = "![desc](@-@MINIO@-@/community/2021/2021-04/2021-04-08/adbae455-6fba-403c-9523-08b29cb4a2b8.png){{{width=\"auto\" height=\"auto\"}}}";
+        Pattern r = Pattern.compile(pattern);
+        Matcher matcher = r.matcher(content);
+        String replace = content;
+        while (matcher.find()){
+            String group = matcher.group();
+            replace = replace.replace(group, "http://192.168.72.132:9000");
+            System.out.println(replace);
+        }
+    }
+
+
+
+
 
 
 }

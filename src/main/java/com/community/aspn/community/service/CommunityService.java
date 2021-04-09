@@ -3,6 +3,7 @@ package com.community.aspn.community.service;
 
 import com.community.aspn.pojo.community.Community;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -12,8 +13,8 @@ public interface CommunityService {
     Community selectCommunityById(Integer id);
     int deleteCommunityById(Integer id);
     List<Community> selectAll(Map<String,Object> map);
-    Map<String,Object> selectPageList(Map<String,Integer> map);
+    Map<String,Object> selectPageList(Map<String,Integer> map,HttpServletRequest request);
     Map<String,Object> selectCommunityListByMember(Map<String,Integer> map);
-    Map<String,Object> selectCommunityDetail(Integer id);
-    List<Map<String,Object>> selectCommunityInMainPage(Map<String,Integer> param);
+    Map<String,Object> selectCommunityDetail(Integer id, HttpServletRequest request);
+    List<Map<String,Object>> selectCommunityInMainPage(Map<String,Integer> param,HttpServletRequest request);
 }

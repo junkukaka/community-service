@@ -7,6 +7,7 @@ import com.community.aspn.util.TokenUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,8 +54,8 @@ public class MemberController {
      * @return com.community.aspn.util.AjaxResponse
      **/
     @PostMapping("/members/login")
-    public @ResponseBody AjaxResponse logIn(@RequestBody Member member){
-        Member login = memberservice.login(member);
+    public @ResponseBody AjaxResponse logIn(@RequestBody Member member, HttpServletRequest request){
+        Member login = memberservice.login(member,request);
 
         Map<String, Object> map = new HashMap<>();
         if(login != null){

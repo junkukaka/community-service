@@ -39,9 +39,9 @@ public class CommentController {
      * @return com.community.aspn.util.AjaxResponse
      **/
     @GetMapping("/comments/{communityId}")
-    public @ResponseBody AjaxResponse getCommentsByCommunityId(@PathVariable Integer communityId){
+    public @ResponseBody AjaxResponse getCommentsByCommunityId(@PathVariable Integer communityId,HttpServletRequest request){
         //comment list select
-        List<Map<String, Object>> list = commentService.selectCommentByCommunityId(communityId);
+        List<Map<String, Object>> list = commentService.selectCommentByCommunityId(communityId,request);
         //comment count
         Integer integer = commentService.selectCommentCountByCommunityId(communityId);
         Map<String, Object> map = new HashMap<>();

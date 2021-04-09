@@ -3,9 +3,12 @@ package com.community.aspn.member.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.community.aspn.pojo.member.Member;
 import com.community.aspn.member.mapper.MemberMapper;
+import com.community.aspn.util.mino.MinIOProperties;
+import com.community.aspn.util.mino.MinoIOComponent;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +26,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Resource
     MemberMapper memberMapper;
+
+    @Resource
+    MinoIOComponent minoIOComponent;
+
+    @Resource
+    MinIOProperties minIOProperties;
     /**
      * @Author nanguangjun
      * @Description // 注册 ， 新增用户使用
@@ -54,6 +63,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Map<String,String> updateMember(Member member) {
         member.setUpdateTime(new Date());
+        //如果包含图片的话
+        if(member.getPicture()!= null){
+            String url = minoIOComponent.beForeFileSaveInDB(member.getPicture());
+            member.setPicture(url);
+        }
         memberMapper.updateMemberDynamic(member);
         Map<String, String> msg = new HashMap<>();
         msg.put("code","1");
@@ -127,13 +141,17 @@ public class MemberServiceImpl implements MemberService {
      * @return com.community.aspn.pojo.Member.Member
      **/
     @Override
-    public Member login(Member member) {
+    public Member login(Member member, HttpServletRequest request) {
         QueryWrapper<Member> query = new QueryWrapper<>();
         //用户名，密码验证
         query.eq("login_id", member.getLoginId())
                 .eq("password", member.getPassword());
-        Member u = memberMapper.selectOne(query);
-        return memberMapper.selectOne(query);
+        Member m = memberMapper.selectOne(query);
+        if(m.getPicture() != null){
+            String url = minoIOComponent.afterGetContentFromDBToFront(m.getPicture(), request.getRemoteAddr());
+            m.setPicture(url);
+        }
+        return m;
     }
 
     /**

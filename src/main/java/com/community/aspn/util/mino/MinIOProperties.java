@@ -12,7 +12,11 @@ public class MinIOProperties {
     private String communityBucket;
     private String wikiBucket;
     private String sysBucket;
-    private String path;
+    private String localAddr;
+    private String remoteAddr;
+    private String realAddr;
+    private String patternAddr;
+    private String localIpPrefix;
 
 
     /**
@@ -23,6 +27,30 @@ public class MinIOProperties {
      * @return java.lang.String
      **/
     public String getFilePath(String bucketName){
-        return this.getPath() + "/" + bucketName + "/";
+        return this.getLocalAddr() + "/" + bucketName + "/";
     }
+
+    /**
+     * @Author nanguangjun
+     * @Description // in the office environment
+     * @Date 9:27 2021/4/9
+     * @Param [bucketName]
+     * @return java.lang.String
+     **/
+    public String getLocalFilePath(String bucketName){
+        return this.getRealAddr() + "/" + bucketName + "/";
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description //in the remote addr
+     * @Date 9:29 2021/4/9
+     * @Param [bucketName]
+     * @return java.lang.String
+     **/
+    public String getRemoteFilePath(String bucketName){
+        return this.getRemoteAddr() + "/" + bucketName + "/";
+    }
+
+
 }

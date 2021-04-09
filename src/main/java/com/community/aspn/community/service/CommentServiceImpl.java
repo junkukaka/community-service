@@ -2,9 +2,11 @@ package com.community.aspn.community.service;
 
 import com.community.aspn.community.mapper.CommentMapper;
 import com.community.aspn.pojo.community.ComComment;
+import com.community.aspn.util.mino.MinoIOComponent;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +17,9 @@ public class CommentServiceImpl implements CommentService{
 
     @Resource
     CommentMapper commentMapper;
+
+    @Resource
+    MinoIOComponent minoIOComponent;
 
     @Override
     public int insertComment(ComComment comComment) {
@@ -43,8 +48,14 @@ public class CommentServiceImpl implements CommentService{
      * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
      **/
     @Override
-    public List<Map<String, Object>> selectCommentByCommunityId(Integer communityId) {
+    public List<Map<String, Object>> selectCommentByCommunityId(Integer communityId, HttpServletRequest request) {
         List<Map<String, Object>> list = commentMapper.selectCommentByCommunityId(communityId);
+        //图片地址处理
+        for (int i = 0; i < list.size(); i++) {
+            String picture =
+                    minoIOComponent.afterGetContentFromDBToFront(list.get(i).get("picture").toString(),request.getRemoteAddr());
+            list.get(i).put("picture",picture);
+        }
         return list;
     }
 
