@@ -7,6 +7,11 @@ spring:
     #公司虚拟机
     url: jdbc:mysql://192.168.72.132:33306/test?useUnicode=true&characterEncoding=UTF8&serverTimezone=Hongkong
     password: 123456
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 15
+      auto-commit: true
+
 
     #公司本地主机
 #    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF8&serverTimezone=Hongkong

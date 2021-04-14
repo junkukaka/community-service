@@ -95,6 +95,21 @@ public class CommunityMenuController {
         return  AjaxResponse.success(menuTree);
     }
 
+    /**
+     * @Author nanguangjun
+     * @Description //修改菜单顺序
+     * @Date 16:21 2021/4/12
+     * @Param [list]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @PostMapping("/sortMenu")
+    public @ResponseBody AjaxResponse sortMenu(@RequestBody List<CommunityMenu> list){
+        for (int i = 0; i < list.size(); i++) {
+            communityMenuService.updateMenu(list.get(i));
+        }
+        return AjaxResponse.success();
+    }
+
 
 
 }

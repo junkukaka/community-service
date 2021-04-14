@@ -33,7 +33,7 @@ public class Member extends Model<Member> implements Serializable {
     //备注
     private String remark;
     //用户权限
-    private int authority;
+    private Integer authority;
     private Integer registerId;
     private Date registerTime;
     private Integer updateId;

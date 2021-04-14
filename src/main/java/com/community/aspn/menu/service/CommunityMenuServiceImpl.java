@@ -81,15 +81,15 @@ public class CommunityMenuServiceImpl implements CommunityMenuService {
         QueryWrapper<CommunityMenu> query = new QueryWrapper<>();
         //菜单等级查询
         if(communityMenu.getTier() != null && !"".equals(communityMenu.getTier())){
-            query.eq("tier", communityMenu.getTier());
+            query.eq("tier", communityMenu.getTier()).orderByAsc("sort");
         //添加父目录条件
         }
         if(communityMenu.getFather() != null && !"".equals(communityMenu.getFather())){
-            query.eq("father", communityMenu.getFather());
+            query.eq("father", communityMenu.getFather()).orderByAsc("sort");
         //使用状态
         }
         if(communityMenu.getUseYn() != null && !"".equals(communityMenu.getUseYn())){
-            query.eq("use_yn", communityMenu.getUseYn());
+            query.eq("use_yn", communityMenu.getUseYn()).orderByAsc("sort");
         }
 
         return communityMenuMapper.selectList(query);
@@ -131,6 +131,7 @@ public class CommunityMenuServiceImpl implements CommunityMenuService {
             mapTmp.put("tier",second.get(i).getTier());
             mapTmp.put("name",second.get(i).getName());
             mapTmp.put("father",second.get(i).getFather());
+            mapTmp.put("sort",second.get(i).getSort());
             secondTmp.add(mapTmp);
         }
         //最终菜单
@@ -154,6 +155,7 @@ public class CommunityMenuServiceImpl implements CommunityMenuService {
             mapTmp2.put("tier",first.get(i).getTier());
             mapTmp2.put("name",first.get(i).getName());
             mapTmp2.put("father",first.get(i).getFather());
+            mapTmp2.put("sort",second.get(i).getSort());
             finalList.add(mapTmp2);
         }
 

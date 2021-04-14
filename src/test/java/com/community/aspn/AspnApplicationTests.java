@@ -61,19 +61,22 @@ class AspnApplicationTests {
 //        System.out.println(t);
 //    }
 //
-//    @Test
-//    void testEmailRegex(){
-//        String regex = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
-//        String[] str1 = {"lu.jiayu@ncbakery.com",
-//                "cs1@chefchoice-china.com",
-//                "cs2@dd.com",
-//                "aa.b@qq.com","1123@163.com","113fe@11.com",
-//                "han. @sohu.com.cn","han.c@sohu.com.cn.cm.cm",
-//                "","张吗"};
-//        for (String str:str1){
-//            System.out.println(str+" \\\\. "+str.matches(regex));
-//        }
-//    }
+    @Test
+    void testEmailRegex(){
+        String regex = "^([a-z0-9A-Z]+[-|\\.|_]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+        String[] str1 = {"lu.jiayu@ncbakery.com",
+                "cs1@chefchoice-china.com",
+                "cs2@dd.com",
+                "skyzhang@zidan.com.cn",
+                "zhanjin_cai@163.com",
+                "2450068377@qq.com",
+                "aa.b@qq.com","1123@163.com","113fe@11.com",
+                "han. @sohu.com.cn","han.c@sohu.com.cn.cm.cm",
+                "","张吗"};
+        for (String str:str1){
+            System.out.println(str+" \\\\. "+str.matches(regex));
+        }
+    }
     @Test
     public void testIPReplace(){
         String target = "#@#MINIO#@#";

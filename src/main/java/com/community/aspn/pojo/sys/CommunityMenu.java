@@ -17,6 +17,7 @@ public class CommunityMenu {
     private Integer tier;
     //父类菜单
     private Integer father;
+    private Integer sort;
     private Character useYn;
     private Integer registerId;
     private Date registerTime;
