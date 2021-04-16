@@ -36,7 +36,7 @@ minio:
   # 内网minio
   localAddr: http://192.168.0.134:9000
   # 外网minio
-  remoteAddr: http://36.111.189.86:9000
+  remoteAddr: http://36.97.142.107:9000
   # 实际存储数据库,使用占位符代替
   realAddr: '@-@MINIO@-@'
   # 是否据王判断正则

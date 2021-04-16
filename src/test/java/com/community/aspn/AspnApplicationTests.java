@@ -66,6 +66,7 @@ class AspnApplicationTests {
         String regex = "^([a-z0-9A-Z]+[-|\\.|_]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
         String[] str1 = {"lu.jiayu@ncbakery.com",
                 "cs1@chefchoice-china.com",
+                "skyzhang@zidan.com.cn",
                 "cs2@dd.com",
                 "skyzhang@zidan.com.cn",
                 "zhanjin_cai@163.com",
@@ -103,7 +104,7 @@ class AspnApplicationTests {
     @Test
     public void testsIp(){
         String pattern = "http://192.168.[0-9]*.[0-9]*:9000";
-        String content = "![desc](http://192.168.72.132:9000/community/2021/2021-04/2021-04-08/adbae455-6fba-403c-9523-08b29cb4a2b8.png){{{width=\"auto\" height=\"auto\"}}}";
+        String content = "![desc](http://192.168.1.132:9000/community/2021/2021-04/2021-04-08/adbae455-6fba-403c-9523-08b29cb4a2b8.png){{{width=\"auto\" height=\"auto\"}}}";
         Pattern r = Pattern.compile(pattern);
         Matcher matcher = r.matcher(content);
         String replace = content;
@@ -123,7 +124,7 @@ class AspnApplicationTests {
         String replace = content;
         while (matcher.find()){
             String group = matcher.group();
-            replace = replace.replace(group, "http://192.168.72.132:9000");
+            replace = replace.replace(group, "http://192.168.1.134:9000");
             System.out.println(replace);
         }
     }

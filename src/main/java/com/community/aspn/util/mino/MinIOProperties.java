@@ -38,7 +38,7 @@ public class MinIOProperties {
      * @return java.lang.String
      **/
     public String getLocalFilePath(String bucketName){
-        return this.getRealAddr() + "/" + bucketName + "/";
+        return this.getLocalAddr() + "/" + bucketName + "/";
     }
 
     /**
