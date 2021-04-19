@@ -8,15 +8,18 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@TableName("wiki_item")
-public class WikiItem {
+@TableName("wiki_his")
+public class WikiHis {
     @TableId(type = IdType.AUTO)
     private Integer id;
-    private Integer masterId;
-    private Integer memberId;
+    private Integer wikiId;
+    private String title;
+    private Integer menuId;
+    private String picture;
+    private String memberId;
+    private Integer sort;
     private String content; //内容
     private String comment; //改动说明
-
 
     private Integer registerId;
     private Date registerTime;

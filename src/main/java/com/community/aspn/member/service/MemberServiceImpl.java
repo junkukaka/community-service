@@ -30,8 +30,6 @@ public class MemberServiceImpl implements MemberService {
     @Resource
     MinoIOComponent minoIOComponent;
 
-    @Resource
-    MinIOProperties minIOProperties;
     /**
      * @Author nanguangjun
      * @Description // 注册 ， 新增用户使用
@@ -129,8 +127,13 @@ public class MemberServiceImpl implements MemberService {
      * @return com.community.aspn.pojo.Member.Member
      **/
     @Override
-    public Member getMemberById(Integer id) {
-        return memberMapper.selectById(id);
+    public Member getMemberById(Integer id,HttpServletRequest request) {
+        Member member = memberMapper.selectById(id);
+        if(member.getPicture() != null){
+            String url = minoIOComponent.afterGetContentFromDBToFront(member.getPicture(),request.getRemoteAddr());
+            member.setPicture(url);
+        }
+        return member;
     }
 
     /**

@@ -1,48 +1,47 @@
 package com.community.aspn.menu.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.community.aspn.menu.mapper.CommunityMenuMapper;
-import com.community.aspn.pojo.sys.CommunityMenu;
+import com.community.aspn.menu.mapper.WikiMenuMapper;
+import com.community.aspn.pojo.sys.WikiMenu;
 import org.springframework.stereotype.Service;
-
 
 import javax.annotation.Resource;
 import java.util.*;
 
 @Service
-public class CommunityMenuServiceImpl implements CommunityMenuService {
+public class WikiMenuServiceImpl implements WikiMenuService {
 
     @Resource
-    CommunityMenuMapper communityMenuMapper;
+    WikiMenuMapper wikiMenuMapper;
 
-    
+
     /**
      * @Author nanguangjun
-     * @Description //新增菜单 
+     * @Description //新增菜单
      * @Date 15:59 2020/12/24
      * @Param [menu]
      * @return int
      **/
     @Override
-    public int insertMenu(CommunityMenu communityMenu) {
-        communityMenu.setRegisterTime(new Date());
-        int insert = communityMenuMapper.insert(communityMenu);
+    public int insertMenu(WikiMenu wikiMenu) {
+        wikiMenu.setRegisterTime(new Date());
+        int insert = wikiMenuMapper.insert(wikiMenu);
         return insert;
     }
-    
+
     /**
      * @Author nanguangjun
-     * @Description // 更新菜单 
+     * @Description // 更新菜单
      * @Date 15:59 2020/12/24
      * @Param [menu]
      * @return int
      **/
     @Override
-    public int updateMenu(CommunityMenu communityMenu) {
-        communityMenu.setUpdateTime(new Date());
-        return communityMenuMapper.updateById(communityMenu);
+    public int updateMenu(WikiMenu wikiMenu) {
+        wikiMenu.setUpdateTime(new Date());
+        return wikiMenuMapper.updateById(wikiMenu);
     }
-    
+
     /**
      * @Author nanguangjun
      * @Description //删除菜单
@@ -53,9 +52,9 @@ public class CommunityMenuServiceImpl implements CommunityMenuService {
      **/
     @Override
     public void deleteMenuById(Integer id) {
-        communityMenuMapper.deleteById(id);
+        wikiMenuMapper.deleteById(id);
     }
-    
+
     /**
      * @Author nanguangjun
      * @Description //根据ID查询
@@ -64,8 +63,8 @@ public class CommunityMenuServiceImpl implements CommunityMenuService {
      * @return com.community.aspn.pojo.sys.Menu
      **/
     @Override
-    public CommunityMenu getMenuById(Integer id) {
-        return communityMenuMapper.selectById(id);
+    public WikiMenu getMenuById(Integer id) {
+        return wikiMenuMapper.selectById(id);
     }
 
 
@@ -77,22 +76,21 @@ public class CommunityMenuServiceImpl implements CommunityMenuService {
      * @return java.util.List<com.community.aspn.pojo.sys.Menu>
      **/
     @Override
-    public List<CommunityMenu> getMenusByCondition(CommunityMenu communityMenu) {
-        QueryWrapper<CommunityMenu> query = new QueryWrapper<>();
+    public List<WikiMenu> getMenusByCondition(WikiMenu wikiMenu) {
+        QueryWrapper<WikiMenu> query = new QueryWrapper<>();
         //菜单等级查询
-        if(communityMenu.getTier() != null && !"".equals(communityMenu.getTier())){
-            query.eq("tier", communityMenu.getTier()).orderByAsc("sort");
+        if(wikiMenu.getTier() != null && !"".equals(wikiMenu.getTier())){
+            query.eq("tier", wikiMenu.getTier()).orderByAsc("sort");
         //添加父目录条件
         }
-        if(communityMenu.getFather() != null && !"".equals(communityMenu.getFather())){
-            query.eq("father", communityMenu.getFather()).orderByAsc("sort");
+        if(wikiMenu.getFather() != null && !"".equals(wikiMenu.getFather())){
+            query.eq("father", wikiMenu.getFather()).orderByAsc("sort");
         //使用状态
         }
-        if(communityMenu.getUseYn() != null && !"".equals(communityMenu.getUseYn())){
-            query.eq("use_yn", communityMenu.getUseYn()).orderByAsc("sort");
+        if(wikiMenu.getUseYn() != null && !"".equals(wikiMenu.getUseYn())){
+            query.eq("use_yn", wikiMenu.getUseYn()).orderByAsc("sort");
         }
-
-        return communityMenuMapper.selectList(query);
+        return wikiMenuMapper.selectList(query);
 
 
     }
@@ -106,16 +104,16 @@ public class CommunityMenuServiceImpl implements CommunityMenuService {
      * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
      **/
     public List<Map<String,Object>> getMenuTree(){
-        List<CommunityMenu> first = communityMenuMapper.selectMenuByTier(1);
-        List<CommunityMenu> second = communityMenuMapper.selectMenuByTier(2);
-        List<CommunityMenu> third = communityMenuMapper.selectMenuByTier(3);
+        List<WikiMenu> first = wikiMenuMapper.selectMenuByTier(1);
+        List<WikiMenu> second = wikiMenuMapper.selectMenuByTier(2);
+        List<WikiMenu> third = wikiMenuMapper.selectMenuByTier(3);
         //临时2级菜单
         List<Map<String,Object>> secondTmp = new ArrayList<>();
         //2级菜单封装
         for (int i = 0; i < second.size(); i++) {
             //单个对象
             Map<String,Object> mapTmp = new HashMap<>(); //2级临时菜单
-            List<CommunityMenu> thirdTem= new ArrayList<>(); //3级临时菜单
+            List<WikiMenu> thirdTem= new ArrayList<>(); //3级临时菜单
             int secondId = second.get(i).getId();
             for (int j = 0; j < third.size(); j++) {
                 int thirdFather = third.get(j).getFather();

@@ -41,8 +41,8 @@ public class MemberController {
      * @return com.community.aspn.util.AjaxResponse
      **/
     @GetMapping("/members/{id}")
-    public @ResponseBody AjaxResponse getmemberById(@PathVariable int id){
-        Member memberById = memberservice.getMemberById(id);
+    public @ResponseBody AjaxResponse getmemberById(@PathVariable int id,HttpServletRequest request){
+        Member memberById = memberservice.getMemberById(id,request);
         return AjaxResponse.success(memberById);
     }
 

@@ -1,11 +1,12 @@
 package com.community.aspn.menu.mapper;
 
-import com.community.aspn.pojo.sys.CommunityMenu;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.community.aspn.pojo.sys.WikiMenu;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
 
 @Mapper
-public interface WikiMenuMapper {
-    ArrayList<CommunityMenu> selectMenuByTier(Integer tier);
+public interface WikiMenuMapper extends BaseMapper<WikiMenu> {
+    ArrayList<WikiMenu> selectMenuByTier(Integer tier);
 }

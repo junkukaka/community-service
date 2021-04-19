@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.community.aspn.wiki.mapper.WikiMapper">
+    <select id="selectWikiList" resultType="java.util.Map">
+        select * from wiki_menu where tier = #{tier} and use_yn = 'Y' order by sort
+    </select>
+</mapper>
