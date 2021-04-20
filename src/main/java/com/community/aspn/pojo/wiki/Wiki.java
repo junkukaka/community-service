@@ -16,7 +16,6 @@ public class Wiki {
     private Integer hisId;
     private Integer menuId;
     private String picture;
-    private Integer sort;
 
     private Integer registerId;
     private Date registerTime;

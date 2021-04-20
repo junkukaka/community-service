@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface WikiService {
-    int saveWiki(Map<String,Object> params);
+    WikiHis saveWikiHis(WikiHis wikiHis, Boolean flag);
+    Wiki insertWiki(WikiHis wikiHis);
+    Wiki activeWikiHis(WikiHis wikiHis);
     WikiHis selectWikiHisByID(WikiHis wikiHis);
-    List<Wiki> wikiList(Wiki wiki,HttpServletRequest request);
+    List<Map<String, Object>> wikiList(Wiki wiki, HttpServletRequest request);
     List<Wiki> wikiListMain(Map<String,Object> params,HttpServletRequest request);
     Map<String,Object> selectWikiDetail(Wiki wiki,HttpServletRequest request);
 }

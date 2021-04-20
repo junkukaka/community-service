@@ -1,7 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.community.aspn.wiki.mapper.WikiMapper">
+    <insert id="addWiki" useGeneratedKeys="true" keyProperty="id">
+        insert into wiki (title,his_id,menu_id,picture,register_id,register_time)
+        values (#{title},#{hisId},#{menuId},#{picture},#{registerId},#{registerTime})
+    </insert>
+
+
     <select id="selectWikiList" resultType="java.util.Map">
-        select * from wiki_menu where tier = #{tier} and use_yn = 'Y' order by sort
+        SELECT
+            id,
+            title,
+            picture,
+            (select member_name from member where id = w.register_id) as registerName,
+            (select member_name from member where id = w.update_id) as updateName
+        FROM
+            wiki w
+        where w.menu_id = #{menuId}
+        order by title
     </select>
+
+
+
+
+
+<!--    <insert id="addWikiHis" useGeneratedKeys="true" keyProperty="id">-->
+<!--        insert into wiki_his (wiki_id,title,menu_id,picture,member_id,content,information,register_id,register_time)-->
+<!--        values (#{wikiId},#{title},#{menuId},#{picture},#{memberId},#{content},#{information},#{registerId},#{registerTime})-->
+<!--    </insert>-->
 </mapper>

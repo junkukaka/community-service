@@ -16,10 +16,9 @@ public class WikiHis {
     private String title;
     private Integer menuId;
     private String picture;
-    private String memberId;
-    private Integer sort;
+    private Integer memberId;
     private String content; //内容
-    private String comment; //改动说明
+    private String information; //改动说明
 
     private Integer registerId;
     private Date registerTime;
