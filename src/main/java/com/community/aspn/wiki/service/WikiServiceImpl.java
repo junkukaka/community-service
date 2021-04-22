@@ -1,5 +1,6 @@
 package com.community.aspn.wiki.service;
 
+
 import com.community.aspn.pojo.wiki.Wiki;
 import com.community.aspn.pojo.wiki.WikiHis;
 import com.community.aspn.util.mino.MinoIOComponent;
@@ -8,7 +9,6 @@ import com.community.aspn.wiki.mapper.WikiMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +34,6 @@ public class WikiServiceImpl implements WikiService{
      **/
     @Override
     public WikiHis saveWikiHis(WikiHis wikiHis, Boolean flag) {
-        Integer response = 0;
         WikiHis savedWikiHis = null;
         //if it has wikiHis ID update
         if(wikiHis.getId()!= null){
@@ -45,8 +44,12 @@ public class WikiServiceImpl implements WikiService{
         }else {
             wikiHis.setRegisterId(wikiHis.getMenuId());
             wikiHis.setRegisterTime(new Date());
-            Wiki wiki = this.insertWiki(wikiHis);// insert wiki before wikiHis
-            wikiHis.setWikiId(wiki.getId()); // set wikiId from wiki master
+            wikiHis.setUpdateTime(new Date());
+            wikiHis.setUpdateId(wikiHis.getMemberId());
+            if(wikiHis.getWikiId() == null){ // if this is new kiki
+                Wiki wiki = this.insertWiki(wikiHis);// insert wiki before wikiHis
+                wikiHis.setWikiId(wiki.getId()); // set wikiId from wiki master
+            }
             wikiHisMapper.insert(wikiHis); //save wikiHis
             savedWikiHis = wikiHis;
         }
@@ -120,8 +123,19 @@ public class WikiServiceImpl implements WikiService{
      * @return com.community.aspn.pojo.wiki.WikiHis
      **/
     @Override
-    public WikiHis selectWikiHisByID(WikiHis wikiHis) {
-        return null;
+    public WikiHis selectWikiHisByID(Integer id,String remoteAddr) {
+        WikiHis wikiHis = wikiHisMapper.selectById(id);
+        //判断是否是active wiki 如果是active wiki 就把ID删掉
+        if(wikiHis.getHisYn() == 1){
+            wikiHis.setId(null);
+        }
+        String content = minoIOComponent.afterGetContentFromDBToFront(wikiHis.getContent(), remoteAddr);
+        wikiHis.setContent(content);
+        if(wikiHis.getPicture() != null){
+            String picture = minoIOComponent.afterGetContentFromDBToFront(wikiHis.getPicture(), remoteAddr);
+            wikiHis.setPicture(picture);
+        }
+        return wikiHis;
     }
 
     /**
@@ -179,8 +193,37 @@ public class WikiServiceImpl implements WikiService{
         Wiki wiki = wikiMapper.selectById(id);
         WikiHis wikiHis = wikiHisMapper.selectById(wiki.getHisId());
         String content = minoIOComponent.afterGetContentFromDBToFront(wikiHis.getContent(), remoteAddr);
+        if(wikiHis.getPicture() != null){
+            String picture = minoIOComponent.afterGetContentFromDBToFront(wikiHis.getPicture(), remoteAddr);
+            wikiHis.setPicture(picture);
+        }
         wikiHis.setContent(content);
         return wikiHis;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // wiki profile page select wikiHis by memberId
+     * @Date 10:16 2021/4/22
+     * @Param [memberId]
+     * @return java.util.List<com.community.aspn.pojo.wiki.WikiHis>
+     **/
+    @Override
+    public List<Map<String, Object>> selectWikiHisProfile(Integer memberId) {
+        List<Map<String, Object>> list = wikiMapper.selectWikiHisProfile(memberId);
+        return list;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description //TODO
+     * @Date 14:59 2021/4/22
+     * @Param [id]
+     * @return void
+     **/
+    @Override
+    public void deleteWikiHistoryById(Integer id) {
+        wikiHisMapper.deleteById(id);
     }
 
 

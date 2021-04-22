@@ -14,4 +14,5 @@ public interface WikiMapper extends BaseMapper<Wiki> {
     Integer addWiki(Wiki wiki);
     List<Map<String,Object>> selectWikiList(Wiki wiki);
     List<Map<String,Object>> selectWikiMainList(Integer count);
+    List<Map<String,Object>> selectWikiHisProfile(Integer memberId);
 }

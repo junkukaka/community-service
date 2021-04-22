@@ -98,4 +98,42 @@ public class WikiController {
         return AjaxResponse.success(maps);
     }
 
+    /**
+     * @Author nanguangjun
+     * @Description //TODO
+     * @Date 10:25 2021/4/22
+     * @Param [memberId]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/wikiProfileList/{memberId}")
+    public AjaxResponse selectWikiHisProfile(@PathVariable Integer memberId){
+        List<Map<String, Object>> list = wikiService.selectWikiHisProfile(memberId);
+        return AjaxResponse.success(list);
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description //delete wikiHis by id
+     * @Date 15:50 2021/4/22
+     * @Param [id]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @DeleteMapping("/wikiHis/{id}")
+    public AjaxResponse deleteWikiHistoryById(@PathVariable Integer id){
+        wikiService.deleteWikiHistoryById(id);
+        return AjaxResponse.success();
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description //TODO
+     * @Date 15:53 2021/4/22
+     * @Param [id]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/wikiHis/{id}")
+    public AjaxResponse selectWikiHisById(@PathVariable Integer id,HttpServletRequest request){
+        WikiHis wikiHis = wikiService.selectWikiHisByID(id,request.getRemoteAddr());
+        return AjaxResponse.success(wikiHis);
+    }
 }

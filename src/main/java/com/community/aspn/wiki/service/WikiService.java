@@ -10,8 +10,10 @@ public interface WikiService {
     WikiHis saveWikiHis(WikiHis wikiHis, Boolean flag);
     Wiki insertWiki(WikiHis wikiHis);
     Wiki activeWikiHis(WikiHis wikiHis);
-    WikiHis selectWikiHisByID(WikiHis wikiHis);
+    WikiHis selectWikiHisByID(Integer id,String remoteAddr);
     List<Map<String, Object>> wikiList(Wiki wiki, String remoteAddr);
     List<Map<String, Object>> wikiMainList(Integer count, String remoteAddr);
     WikiHis selectWikiDetail(Integer id,String remoteAddr);
+    List<Map<String, Object>> selectWikiHisProfile(Integer memberId);
+    void deleteWikiHistoryById(Integer id);
 }

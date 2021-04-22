@@ -35,4 +35,23 @@
         LIMIT #{count}
     </select>
 
+
+    <!-- wiki profile   -->
+    <select id="selectWikiHisProfile" resultType="java.util.Map">
+        SELECT
+            w.id,
+            w.wiki_id as wikiId,
+            w.title,
+            w.member_id as memberId,
+            m.id as menuId,
+            m.name as menuName,
+            w.update_time as date
+        FROM
+            wiki_his w,
+            wiki_menu m
+        where w.menu_id = m.id
+        and (w.his_yn is null or w.his_yn != 1)
+        and w.member_id = #{memberId}
+    </select>
+
 </mapper>
