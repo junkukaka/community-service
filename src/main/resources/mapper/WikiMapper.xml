@@ -54,4 +54,26 @@
         and w.member_id = #{memberId}
     </select>
 
+    <!-- wiki WikiHisList   -->
+    <select id="selectWikiHisList" resultType="java.util.Map">
+        SELECT
+            w.id as wikiId,
+            s.id as wikiHisId,
+            s.title,
+            s.information,
+            s.update_time as updateTime,
+            s.member_id as memberId,
+            m.picture,
+            m.member_name as memberName
+        FROM
+            wiki w,
+            wiki_his s,
+            member m
+        where w.id = s.wiki_id
+          and s.member_id = m.id
+          and w.id = #{wikiId}
+    </select>
+
+
+
 </mapper>

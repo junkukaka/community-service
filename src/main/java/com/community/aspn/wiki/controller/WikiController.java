@@ -136,4 +136,10 @@ public class WikiController {
         WikiHis wikiHis = wikiService.selectWikiHisByID(id,request.getRemoteAddr());
         return AjaxResponse.success(wikiHis);
     }
+
+    @GetMapping("/wikiHisList/{wikiId}")
+    public AjaxResponse selectWikiHisList(@PathVariable Integer wikiId,HttpServletRequest request){
+        List<Map<String, Object>> list = wikiService.selectWikiHisList(wikiId, request.getRemoteAddr());
+        return AjaxResponse.success(list);
+    }
 }
