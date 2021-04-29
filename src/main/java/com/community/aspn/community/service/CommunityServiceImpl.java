@@ -39,17 +39,8 @@ public class CommunityServiceImpl implements CommunityService{
     public int insertCommunity(Community community) {
         community.setRegisterTime(new Date());
         community.setRegisterId(community.getMemberId());
-
-        String content = community.getContent();
-        /*是否有截图，如果有截图，处理截图文件。
-        if(MinIOFileUtil.ifBase64RegexMatcher(content)){
-            String newContent = minoIOComponent.base64RegexReplace(content);
-            community.setContent(newContent);
-        }*/
-        //替换图片内容
-        String DBContent = minoIOComponent.beForeFileSaveInDB(content);
-        community.setContent(DBContent);
-        return communityMapper.insert(community);
+        Community c = this.mdYnContent(community);
+        return communityMapper.insert(c);
     }
 
     /**
@@ -62,13 +53,32 @@ public class CommunityServiceImpl implements CommunityService{
     @Override
     public int updateCommunity(Community community) {
         community.setUpdateTime(new Date());
+        Community c = this.mdYnContent(community);
+        return communityMapper.updateById(c);
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // 判断是不是mdEditor
+     * @Date 16:34 2021/4/29
+     * @Param [community]
+     * @return com.community.aspn.pojo.community.Community
+     **/
+    public Community mdYnContent(Community community){
         String content = community.getContent();
-        //是否有截图，如果有截图，处理截图文件。
-        if(MinIOFileUtil.ifBase64RegexMatcher(content)){
-            String newContent = minoIOComponent.base64RegexReplace(content);
-            community.setContent(newContent);
+        //
+        if(community.getMdYn() == 1){
+            //替换图片内容
+            String DBContent = minoIOComponent.beForeFileSaveInDB(content);
+            community.setContent(DBContent);
+        }else{
+            //是否有截图，如果有截图，处理截图文件。
+            if(MinIOFileUtil.ifBase64RegexMatcher(content)){
+                String newContent = minoIOComponent.base64RegexReplace(content);
+                community.setContent(minoIOComponent.beForeFileSaveInDB(newContent));
+            }
         }
-        return communityMapper.updateById(community);
+        return community;
     }
 
     /**

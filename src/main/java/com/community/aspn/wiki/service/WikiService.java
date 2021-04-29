@@ -16,5 +16,6 @@ public interface WikiService {
     WikiHis selectWikiDetail(Integer id,String remoteAddr);
     List<Map<String, Object>> selectWikiHisProfile(Integer memberId);
     List<Map<String, Object>> selectWikiHisList(Integer wikiId, String remoteAddr);
+    void backToThePastWikiHis(WikiHis wikiHis);
     void deleteWikiHistoryById(Integer id);
 }

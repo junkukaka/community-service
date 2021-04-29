@@ -126,9 +126,6 @@ public class WikiServiceImpl implements WikiService{
     public WikiHis selectWikiHisByID(Integer id,String remoteAddr) {
         WikiHis wikiHis = wikiHisMapper.selectById(id);
         //判断是否是active wiki 如果是active wiki 就把ID删掉
-        if(wikiHis.getHisYn() == 1){
-            wikiHis.setId(null);
-        }
         String content = minoIOComponent.afterGetContentFromDBToFront(wikiHis.getContent(), remoteAddr);
         wikiHis.setContent(content);
         if(wikiHis.getPicture() != null){
@@ -231,6 +228,27 @@ public class WikiServiceImpl implements WikiService{
             }
         }
         return list;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description //Back to the past wiki
+     * @Date 13:52 2021/4/28
+     * @Param [wikiHis]
+     * @return com.community.aspn.pojo.wiki.WikiHis
+     **/
+    @Override
+    public void backToThePastWikiHis(WikiHis wikiHis) {
+        Integer wikiId = wikiHis.getWikiId();
+        Wiki wiki = wikiMapper.selectById(wikiId);
+        WikiHis his = wikiHisMapper.selectById(wikiHis.getId());
+        //setting wiki
+        wiki.setPicture(his.getPicture());
+        wiki.setTitle(his.getTitle());
+        wiki.setHisId(his.getId());
+        wiki.setUpdateTime(new Date());
+        wiki.setUpdateId(wikiHis.getUpdateId());
+        wikiMapper.updateById(wiki);
     }
 
     /**

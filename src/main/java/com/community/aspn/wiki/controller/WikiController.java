@@ -142,4 +142,17 @@ public class WikiController {
         List<Map<String, Object>> list = wikiService.selectWikiHisList(wikiId, request.getRemoteAddr());
         return AjaxResponse.success(list);
     }
+
+    /**
+     * @Author nanguangjun
+     * @Description // wiwki back to the history
+     * @Date 14:02 2021/4/28
+     * @Param [wikiHis]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @PutMapping("/backToTheHis")
+    public AjaxResponse backToThePastWikiHis(@RequestBody WikiHis wikiHis){
+        wikiService.backToThePastWikiHis(wikiHis);
+        return AjaxResponse.success();
+    }
 }

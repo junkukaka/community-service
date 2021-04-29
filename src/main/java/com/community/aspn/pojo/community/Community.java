@@ -14,6 +14,8 @@ public class Community {
     private Integer id;
     private Integer menuId;
     private String title;
+    private Integer mdYn;
+    private Integer useYn;
     private String content;
     private Integer memberId;
 

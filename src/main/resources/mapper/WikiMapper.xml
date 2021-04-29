@@ -58,6 +58,7 @@
     <select id="selectWikiHisList" resultType="java.util.Map">
         SELECT
             w.id as wikiId,
+            w.his_id as hisId,
             s.id as wikiHisId,
             s.title,
             s.information,
@@ -72,6 +73,7 @@
         where w.id = s.wiki_id
           and s.member_id = m.id
           and w.id = #{wikiId}
+        order by s.update_time desc
     </select>
 
 
