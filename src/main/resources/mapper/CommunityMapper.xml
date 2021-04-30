@@ -12,6 +12,8 @@
             c.content,
             c.id,
             c.title,
+            c.md_yn as mdYn,
+            c.use_yn as useYn,
             c.register_id AS registerId,
             c.register_time AS registerTime,
             u.id AS menuId,
