@@ -150,6 +150,9 @@ public class MemberServiceImpl implements MemberService {
         query.eq("login_id", member.getLoginId())
                 .eq("password", member.getPassword());
         Member m = memberMapper.selectOne(query);
+        if(m == null){
+            return null;
+        }
         if(m.getPicture() != null){
             String url = minoIOComponent.afterGetContentFromDBToFront(m.getPicture(), request.getRemoteAddr());
             m.setPicture(url);
