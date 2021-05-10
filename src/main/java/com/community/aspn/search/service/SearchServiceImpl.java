@@ -1,29 +1,22 @@
 package com.community.aspn.search.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.community.aspn.community.mapper.CommunityMapper;
-import com.community.aspn.pojo.community.Community;
 import com.community.aspn.pojo.sys.Search;
-import com.community.aspn.pojo.sys.SearchHis;
-import com.community.aspn.search.mapper.SearchHisMapper;
 import com.community.aspn.search.mapper.SearchMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class SearchServiceImpl implements SearchService{
 
     @Resource
     SearchMapper searchMapper;
-
-    @Resource
-    SearchHisMapper searchHisMapper;
-
 
     /**
      * @Author nanguangjun
@@ -41,7 +34,6 @@ public class SearchServiceImpl implements SearchService{
         }else if("COMMUNITY".equals(ty)){
             result = this.communitySearch(search);
         }
-        this.insertSearchHis(search); //insert search his
         this.insertSearch(search); //insert search
         return result;
     }
@@ -60,20 +52,6 @@ public class SearchServiceImpl implements SearchService{
         return searchMapper.selectList(searchQueryWrapper);
     }
 
-    /**
-     * @Author nanguangjun
-     * @Description // search history insert
-     * @Date 16:57 2021/5/7
-     * @Param [search]
-     * @return void
-     **/
-    private void insertSearchHis(Search search){
-        SearchHis searchHis = new SearchHis();
-        searchHis.setContent(search.getContent());
-        searchHis.setTy(search.getTy());
-        searchHis.setRegisterTime(new Date());
-        searchHisMapper.insert(searchHis);
-    }
 
     /**
      * @Author nanguangjun
@@ -83,19 +61,17 @@ public class SearchServiceImpl implements SearchService{
      * @return void
      **/
     private void insertSearch(Search search){
-        QueryWrapper<Search> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("content",search.getContent());
-        queryWrapper.eq("ty",search.getTy());
-        Search s = searchMapper.selectOne(queryWrapper);
-        //if it search content is exist than update this search
-        if(s != null){
-            s.setUpdateTime(new Date());
-            s.setUpdateId(1);
-            searchMapper.updateSearch(s);
-        }else { //if not exist than insert new search
-            search.setCnt(0);
+        String substring = UUID.randomUUID().toString().substring(0,7);
+        String yyyyMMddHHmm = new SimpleDateFormat("yyyyMMddHHmm").format(new Date());
+        String id = yyyyMMddHHmm+substring;
+        search.setId(id);
+        search.setRegisterTime(new Date());
+        try {
             searchMapper.insert(search);
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
     }
 
 

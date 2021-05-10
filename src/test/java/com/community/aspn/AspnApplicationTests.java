@@ -10,7 +10,10 @@ import com.community.aspn.util.TokenUtil;
 import com.community.aspn.util.mino.MinIOFileUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.util.DigestUtils;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -127,6 +130,13 @@ class AspnApplicationTests {
             replace = replace.replace(group, "http://192.168.1.134:9000");
             System.out.println(replace);
         }
+    }
+
+    @Test
+    public void testMd5() throws NoSuchAlgorithmException {
+        // spring自带工具包DigestUtils
+        System.out.println(DigestUtils.md5DigestAsHex("asd".getBytes()));
+        // 81dc9bdb52d04dc20036dbd8313ed055
     }
 
 

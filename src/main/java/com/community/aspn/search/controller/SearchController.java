@@ -24,7 +24,7 @@ public class SearchController {
      **/
     @PostMapping("/comprehensive")
     public @ResponseBody AjaxResponse comprehensiveSearch(@RequestBody Search search){
-        if( search.getContent() == null || "".equals(search.getContent().trim()) ){
+        if( search.getContent() == null || "".equals(search.getContent()) ){
             return AjaxResponse.success(0);
         }else {
             return AjaxResponse.success(searchService.search(search));

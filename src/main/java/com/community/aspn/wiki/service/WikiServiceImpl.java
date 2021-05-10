@@ -36,7 +36,7 @@ public class WikiServiceImpl implements WikiService{
     public WikiHis saveWikiHis(WikiHis wikiHis, Boolean flag) {
         WikiHis savedWikiHis = null;
         //if it has wikiHis ID update
-        if(wikiHis.getId()!= null){
+        if(wikiHis.getId()!= null && 0 == wikiHis.getHisYn()){
             wikiHis.setUpdateTime(new Date());
             wikiHis.setUpdateId(wikiHis.getMenuId());
             wikiHisMapper.updateById(wikiHis);
@@ -46,6 +46,7 @@ public class WikiServiceImpl implements WikiService{
             wikiHis.setRegisterTime(new Date());
             wikiHis.setUpdateTime(new Date());
             wikiHis.setUpdateId(wikiHis.getMemberId());
+            wikiHis.setHisYn(0);
             if(wikiHis.getWikiId() == null){ // if this is new kiki
                 Wiki wiki = this.insertWiki(wikiHis);// insert wiki before wikiHis
                 wikiHis.setWikiId(wiki.getId()); // set wikiId from wiki master

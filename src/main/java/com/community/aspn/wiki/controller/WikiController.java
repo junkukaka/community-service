@@ -38,6 +38,7 @@ public class WikiController {
         wikiHis.setMemberId(Integer.parseInt(params.get("memberId").toString()));
         wikiHis.setContent(minoIOComponent.beForeFileSaveInDB(params.get("content").toString()));
         wikiHis.setInformation(params.get("information").toString());
+        wikiHis.setHisYn(Integer.parseInt(params.get("hisYn").toString()));
         if(params.get("picture") != null){
             String picture = minoIOComponent.beForeFileSaveInDB(params.get("picture").toString());
             wikiHis.setPicture(picture);

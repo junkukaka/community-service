@@ -8,14 +8,12 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@TableName("search")
+@TableName("search_his")
 public class Search {
     @TableId
+    private String id;
     private String content;
     private String ty;
-    private int cnt;
     private Integer registerId;
     private Date registerTime;
-    private Integer updateId;
-    private Date updateTime;
 }

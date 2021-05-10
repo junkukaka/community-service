@@ -43,6 +43,7 @@ public class MemberController {
     @GetMapping("/members/{id}")
     public @ResponseBody AjaxResponse getmemberById(@PathVariable int id,HttpServletRequest request){
         Member memberById = memberservice.getMemberById(id,request);
+        memberById.setPassword(null);
         return AjaxResponse.success(memberById);
     }
 
@@ -56,7 +57,28 @@ public class MemberController {
     @PostMapping("/members/login")
     public @ResponseBody AjaxResponse logIn(@RequestBody Member member, HttpServletRequest request){
         Member login = memberservice.login(member,request);
+        Map<String, Object> map = new HashMap<>();
+        if(login != null){
+            map.put("member",login);
+            String token= TokenUtil.sign(login);
+            map.put("token",token);
+        }else {
+            map.put("member", 0);
+        }
+        return AjaxResponse.success(map);
+    }
 
+
+    /**
+     * @Author nanguangjun
+     * @Description // check session
+     * @Date 13:44 2021/5/10
+     * @Param [member, request]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @PostMapping("/members/checkSession")
+    public @ResponseBody AjaxResponse checkSession(@RequestBody Member member, HttpServletRequest request){
+        Member login = memberservice.checkSession(member,request);
         Map<String, Object> map = new HashMap<>();
         if(login != null){
             map.put("member",login);

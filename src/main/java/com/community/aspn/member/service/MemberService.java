@@ -12,6 +12,7 @@ public interface MemberService {
     public void deleteMember(Integer id);
     public Member getMemberById(Integer id,HttpServletRequest request);
     public Member login(Member member, HttpServletRequest request);
+    public Member checkSession(Member member, HttpServletRequest request);
     public List<Member> getAllMember();
     public List<Map<String,Object>> getDepartment();
 }

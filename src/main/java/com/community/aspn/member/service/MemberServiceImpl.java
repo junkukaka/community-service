@@ -6,9 +6,11 @@ import com.community.aspn.member.mapper.MemberMapper;
 import com.community.aspn.util.mino.MinIOProperties;
 import com.community.aspn.util.mino.MinoIOComponent;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +47,8 @@ public class MemberServiceImpl implements MemberService {
             return msg;
         }
         member.setRegisterTime(new Date());
+        //use spring md5
+        member.setPassword(DigestUtils.md5DigestAsHex(member.getPassword().getBytes()));
         memberMapper.insert(member);
         msg.put("code","1");
         msg.put("msg","회원가입 성공");
@@ -66,6 +70,8 @@ public class MemberServiceImpl implements MemberService {
             String url = minoIOComponent.beForeFileSaveInDB(member.getPicture());
             member.setPicture(url);
         }
+        member.setPassword(null);
+        member.setUpdateTime(new Date());
         memberMapper.updateMemberDynamic(member);
         Map<String, String> msg = new HashMap<>();
         msg.put("code","1");
@@ -145,6 +151,31 @@ public class MemberServiceImpl implements MemberService {
      **/
     @Override
     public Member login(Member member, HttpServletRequest request) {
+        QueryWrapper<Member> query = new QueryWrapper<>();
+        //用户名，密码验证
+        String pw = DigestUtils.md5DigestAsHex(member.getPassword().getBytes());
+        query.eq("login_id", member.getLoginId())
+                .eq("password", pw);
+        Member m = memberMapper.selectOne(query);
+        if(m == null){
+            return null;
+        }
+        if(m.getPicture() != null){
+            String url = minoIOComponent.afterGetContentFromDBToFront(m.getPicture(), request.getRemoteAddr());
+            m.setPicture(url);
+        }
+        return m;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // check session
+     * @Date 13:43 2021/5/10
+     * @Param [member, request]
+     * @return com.community.aspn.pojo.member.Member
+     **/
+    @Override
+    public Member checkSession(Member member, HttpServletRequest request) {
         QueryWrapper<Member> query = new QueryWrapper<>();
         //用户名，密码验证
         query.eq("login_id", member.getLoginId())

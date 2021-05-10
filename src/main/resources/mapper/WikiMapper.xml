@@ -9,29 +9,34 @@
 
     <select id="selectWikiList" resultType="java.util.Map">
         SELECT
-            id,
-            title,
-            picture,
+            w.id,
+            w.title,
+            w.picture,
             (select member_name from member where id = w.register_id) as registerName,
             (select member_name from member where id = w.update_id) as updateName
         FROM
-            wiki w
+            wiki w,
+            wiki_his s
         where w.menu_id = #{menuId}
-        and his_id is not null
+          and w.his_id = s.id
+          and s.his_yn = 1
+          and w.his_id is not null
         order by title
     </select>
 
     <select id="selectWikiMainList" resultType="java.util.Map">
         SELECT
-            id,
-            title,
-            picture,
+            w.id,
+            w.title,
+            w.picture,
             (select member_name from member where id = w.register_id) as registerName,
             (select member_name from member where id = w.update_id) as updateName
         FROM
-            wiki w
-        where his_id is not null
-        order by w.update_id desc
+            wiki w,
+            wiki_his s
+        where w.his_id = s.id
+          and s.his_yn = 1
+          and w.his_id is not null
         LIMIT #{count}
     </select>
 
