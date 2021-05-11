@@ -78,6 +78,7 @@
         where w.id = s.wiki_id
           and s.member_id = m.id
           and w.id = #{wikiId}
+          and s.his_yn = 1
         order by s.update_time desc
     </select>
 
