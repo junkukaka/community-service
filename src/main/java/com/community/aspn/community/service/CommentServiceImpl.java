@@ -52,9 +52,11 @@ public class CommentServiceImpl implements CommentService{
         List<Map<String, Object>> list = commentMapper.selectCommentByCommunityId(communityId);
         //图片地址处理
         for (int i = 0; i < list.size(); i++) {
-            String picture =
-                    minoIOComponent.afterGetContentFromDBToFront(list.get(i).get("picture").toString(),request.getRemoteAddr());
-            list.get(i).put("picture",picture);
+            if(list.get(i).get("picture") != null){
+                String picture =
+                        minoIOComponent.afterGetContentFromDBToFront(list.get(i).get("picture").toString(),request.getRemoteAddr());
+                list.get(i).put("picture",picture);
+            }
         }
         return list;
     }

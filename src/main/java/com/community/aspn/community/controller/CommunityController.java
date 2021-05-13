@@ -104,14 +104,9 @@ public class CommunityController {
      * @Param [request]
      * @return com.community.aspn.util.AjaxResponse
      **/
-    @GetMapping("/communitys/mainPage")
-    public @ResponseBody AjaxResponse selectCommunityInMainPage(HttpServletRequest request){
-        Map<String,Integer> map = new HashMap<>();
-        if(request.getParameter("menuId") != null){
-            map.put("menuId", Integer.valueOf(request.getParameter("menuId")));
-        }
-        map.put("size",Integer.valueOf(request.getParameter("size")));
-        List<Map<String, Object>> maps = communityService.selectCommunityInMainPage(map,request);
+    @PostMapping("/communitys/mainPage")
+    public @ResponseBody AjaxResponse selectCommunityInMainPage(@RequestBody Map<String,Integer> param, HttpServletRequest request){
+        List<Map<String, Object>> maps = communityService.selectCommunityInMainPage(param,request);
         return AjaxResponse.success(maps);
     }
 }
