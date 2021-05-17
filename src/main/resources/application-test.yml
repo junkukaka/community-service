@@ -7,6 +7,9 @@ server:
 
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource

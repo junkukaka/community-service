@@ -139,9 +139,13 @@ public class CommunityServiceImpl implements CommunityService{
         List<Map<String, Object>> list = communityMapper.selectCommunityList(args);
         //图片地址处理
         for (int i = 0; i < list.size(); i++) {
-            String picture =
-                    minoIOComponent.afterGetContentFromDBToFront(list.get(i).get("picture").toString(),request.getRemoteAddr());
-            list.get(i).put("picture",picture);
+            if(list.get(i).get("picture") != null){
+                String picture =
+                        minoIOComponent.afterGetContentFromDBToFront(list.get(i).get("picture").toString(),request.getRemoteAddr());
+                list.get(i).put("picture",picture);
+            }else {
+                list.get(i).put("picture","");
+            }
         }
 
         CommunityMenu communityMenu = communityMenuMapper.selectById(menuId);
@@ -195,7 +199,10 @@ public class CommunityServiceImpl implements CommunityService{
     @Override
     public Map<String, Object> selectCommunityDetail(Integer id, HttpServletRequest request) {
         Map<String, Object> map = communityMapper.selectCommunityDetail(id);
-        String picture = minoIOComponent.afterGetContentFromDBToFront(map.get("picture").toString(),request.getRemoteAddr());
+        String picture = "";
+        if(map.get("picture") != null){
+            picture = minoIOComponent.afterGetContentFromDBToFront(map.get("picture").toString(),request.getRemoteAddr());
+        }
         String content = minoIOComponent.afterGetContentFromDBToFront(map.get("content").toString(), request.getRemoteAddr());
         map.put("content",content);
         map.put("picture",picture);
@@ -214,9 +221,13 @@ public class CommunityServiceImpl implements CommunityService{
         List<Map<String, Object>> list = communityMapper.selectCommunityInMainPage(param);
         //图片地址处理
         for (int i = 0; i < list.size(); i++) {
-            String picture =
-                    minoIOComponent.afterGetContentFromDBToFront(list.get(i).get("picture").toString(),request.getRemoteAddr());
-            list.get(i).put("picture",picture);
+            if(list.get(i).get("picture") != null){
+                String picture =
+                        minoIOComponent.afterGetContentFromDBToFront(list.get(i).get("picture").toString(),request.getRemoteAddr());
+                list.get(i).put("picture",picture);
+            }else {
+                list.get(i).put("picture","");
+            }
         }
         return list;
     }

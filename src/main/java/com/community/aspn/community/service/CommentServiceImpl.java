@@ -56,6 +56,8 @@ public class CommentServiceImpl implements CommentService{
                 String picture =
                         minoIOComponent.afterGetContentFromDBToFront(list.get(i).get("picture").toString(),request.getRemoteAddr());
                 list.get(i).put("picture",picture);
+            }else {
+                list.get(i).put("picture","");
             }
         }
         return list;
