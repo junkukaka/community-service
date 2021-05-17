@@ -207,4 +207,28 @@ public class MemberServiceImpl implements MemberService {
     public List<Map<String,Object>> getDepartment() {
         return memberMapper.getDepartment();
     }
+
+    /**
+     * @Author nanguangjun
+     * @Description // chang password
+     * @Date 15:05 2021/5/17
+     * @Param [pw]
+     * @return int
+     **/
+    @Override
+    public int changPassword(Map<String, Object> pw) {
+        String password  = pw.get("new").toString();
+        String confirm = pw.get("confirm").toString();
+        Integer id = Integer.parseInt(pw.get("id").toString());
+        if(!password.equals(confirm)){
+           return 0;
+        }
+        Member member = new Member();
+        member.setPassword(DigestUtils.md5DigestAsHex(password.getBytes()));
+        member.setId(id);
+        member.setUpdateTime(new Date());
+        member.setUpdateId(id);
+        memberMapper.updateById(member);
+        return 1;
+    }
 }

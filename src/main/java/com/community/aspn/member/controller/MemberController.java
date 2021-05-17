@@ -128,5 +128,11 @@ public class MemberController {
         return AjaxResponse.success(allMember);
     }
 
+    @PutMapping("/members/password")
+    public @ResponseBody AjaxResponse passwordChang(@RequestBody Map<String,Object> pw){
+        int i = memberservice.changPassword(pw);
+        return AjaxResponse.success(i);
+    }
+
 
 }

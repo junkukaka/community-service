@@ -15,4 +15,5 @@ public interface MemberService {
     public Member checkSession(Member member, HttpServletRequest request);
     public List<Member> getAllMember();
     public List<Map<String,Object>> getDepartment();
+    public int changPassword(Map<String,Object> pw);
 }

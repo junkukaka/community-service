@@ -136,7 +136,7 @@ class AspnApplicationTests {
     public void testMd5() throws NoSuchAlgorithmException {
         // spring自带工具包DigestUtils
         System.out.println(DigestUtils.md5DigestAsHex("asd".getBytes()));
-        // 81dc9bdb52d04dc20036dbd8313ed055
+        // 7815696ecbf1c96e6894b779456d330e
     }
 
 
