@@ -9,4 +9,5 @@ import java.util.ArrayList;
 @Mapper
 public interface WikiMenuMapper extends BaseMapper<WikiMenu> {
     ArrayList<WikiMenu> selectMenuByTier(Integer tier);
+    ArrayList<Integer> selectUnderFirstMenu (Integer menuId);
 }

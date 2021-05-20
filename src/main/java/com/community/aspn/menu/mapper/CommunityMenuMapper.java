@@ -9,4 +9,5 @@ import java.util.ArrayList;
 @Mapper
 public interface CommunityMenuMapper extends BaseMapper<CommunityMenu> {
     ArrayList<CommunityMenu> selectMenuByTier(Integer tier);
+    ArrayList<Integer> selectUnderFirstMenu (Integer menuId);
 }

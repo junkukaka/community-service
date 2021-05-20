@@ -49,9 +49,10 @@
         WHERE
             c.member_id = m.id
         and u.id = c.menu_id
-            <if test="menuId != null">
-                and c.menu_id = #{menuId}
-            </if>
+            and c.menu_id in
+            <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
             <if test="memberId != null">
                 and c.member_id = #{memberId}
             </if>
@@ -70,9 +71,10 @@
         WHERE
             c.member_id = m.id
         and u.id = c.menu_id
-            <if test="menuId != null">
-                and c.menu_id = #{menuId}
-            </if>
+            and c.menu_id in
+            <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
             <if test="memberId != null">
                 and c.member_id = #{memberId}
             </if>

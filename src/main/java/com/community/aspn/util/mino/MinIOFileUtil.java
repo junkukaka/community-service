@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 
 public class MinIOFileUtil {
 
-    private static final String REG = "(data:image\\/[a-z]{2,4}\\;base64\\,)[a-z,A-Z]([^\'\"]+)";
+    private static final String REG = "(data:image\\/[a-z]{2,4}\\;base64\\,)[a-z,A-Z,/]([^\'\"]+)";
     public static final Pattern PATTERN = Pattern.compile(REG);
 
 

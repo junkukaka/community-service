@@ -1,6 +1,9 @@
 package com.community.aspn.wiki.service;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.community.aspn.menu.mapper.WikiMenuMapper;
+import com.community.aspn.pojo.sys.WikiMenu;
 import com.community.aspn.pojo.wiki.Wiki;
 import com.community.aspn.pojo.wiki.WikiHis;
 import com.community.aspn.util.mino.MinoIOComponent;
@@ -9,6 +12,7 @@ import com.community.aspn.wiki.mapper.WikiMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +28,9 @@ public class WikiServiceImpl implements WikiService{
 
     @Resource
     MinoIOComponent minoIOComponent;
+
+    @Resource
+    WikiMenuMapper wikiMenuMapper;
 
     /**
      * @Author nanguangjun
@@ -146,7 +153,8 @@ public class WikiServiceImpl implements WikiService{
     @Override
     public List<Map<String, Object>> wikiList(Wiki wiki, String remoteAddr) {
         String p = "";
-        List<Map<String, Object>> wikis = wikiMapper.selectWikiList(wiki);
+        List<Integer> menuIdList = this.getMenuList(wiki);
+        List<Map<String, Object>> wikis = wikiMapper.selectWikiList(menuIdList);
         //图片处理
         for (int i = 0; i < wikis.size(); i++) {
             if(wikis.get(i).get("picture") != null){
@@ -155,6 +163,40 @@ public class WikiServiceImpl implements WikiService{
             }
         }
         return wikis;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // menu id list
+     * @Date 16:11 2021/5/20
+     * @Param [wiki]
+     * @return java.util.List<java.lang.Integer>
+     **/
+    private List<Integer> getMenuList(Wiki wiki){
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        Integer menuId = wiki.getMenuId();
+        WikiMenu wikiMenu = wikiMenuMapper.selectById(menuId);
+        result.add(menuId);
+        if(wikiMenu.getTier().equals(3)){
+            return result;
+        //2级菜单
+        }else if(wikiMenu.getTier().equals(2)){
+            QueryWrapper<WikiMenu> secondQuery = new QueryWrapper<>();
+            secondQuery.eq("tier",3).eq("father",menuId);
+            List<WikiMenu> wikiMenus = wikiMenuMapper.selectList(secondQuery);
+            //把所有的 子菜单得id 放进去
+            for (int i = 0; i < wikiMenus.size(); i++) {
+                result.add(wikiMenus.get(i).getId());
+            }
+        //1级菜单
+        }else {
+            ArrayList<Integer> list = wikiMenuMapper.selectUnderFirstMenu(menuId);
+            //把所有子菜单得id 放进去
+            for (int i = 0; i < list.size(); i++) {
+                result.add(list.get(i));
+            }
+        }
+        return result;
     }
 
     /**

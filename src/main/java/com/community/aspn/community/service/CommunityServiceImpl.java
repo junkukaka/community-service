@@ -5,16 +5,15 @@ import com.community.aspn.community.mapper.CommunityMapper;
 import com.community.aspn.menu.mapper.CommunityMenuMapper;
 import com.community.aspn.pojo.community.Community;
 import com.community.aspn.pojo.sys.CommunityMenu;
+import com.community.aspn.pojo.sys.WikiMenu;
+import com.community.aspn.pojo.wiki.Wiki;
 import com.community.aspn.util.mino.MinIOFileUtil;
 import com.community.aspn.util.mino.MinoIOComponent;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CommunityServiceImpl implements CommunityService{
@@ -27,6 +26,7 @@ public class CommunityServiceImpl implements CommunityService{
 
     @Resource
     MinoIOComponent minoIOComponent;
+
 
     /**
      * @Author nanguangjun
@@ -126,14 +126,15 @@ public class CommunityServiceImpl implements CommunityService{
         int menuId = params.get("menuId");
         int page = params.get("page");
         int size = params.get("itemsPerPage");
-        Map<String,Integer> totalMapArgs = new HashMap<>();
-        totalMapArgs.put("menuId",menuId);
+        List<Integer> menuList = this.getMenuList(menuId);
+        Map<String,Object> totalMapArgs = new HashMap<>();
+        totalMapArgs.put("list",menuList);
         Integer total = communityMapper.selectCommunityListCount(totalMapArgs); //select total
         int pages = total%size==0 ? total/size : total/size+1;
 
         //分页查询传参
-        Map<String,Integer> args = new HashMap<>();
-        args.put("menuId",menuId);
+        Map<String,Object> args = new HashMap<>();
+        args.put("list",menuList);
         args.put("page",(page-1)*size);
         args.put("size",size);
         List<Map<String, Object>> list = communityMapper.selectCommunityList(args);
@@ -159,6 +160,39 @@ public class CommunityServiceImpl implements CommunityService{
 
     /**
      * @Author nanguangjun
+     * @Description // menu id list
+     * @Date 16:11 2021/5/20
+     * @Param [wiki]
+     * @return java.util.List<java.lang.Integer>
+     **/
+    private List<Integer> getMenuList(Integer menuId){
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        CommunityMenu communityMenu = communityMenuMapper.selectById(menuId);
+        result.add(menuId);
+        if(communityMenu.getTier().equals(3)){
+            return result;
+            //2级菜单
+        }else if(communityMenu.getTier().equals(2)){
+            QueryWrapper<CommunityMenu> secondQuery = new QueryWrapper<>();
+            secondQuery.eq("tier",3).eq("father",menuId);
+            List<CommunityMenu> wikiMenus = communityMenuMapper.selectList(secondQuery);
+            //把所有的 子菜单得id 放进去
+            for (int i = 0; i < wikiMenus.size(); i++) {
+                result.add(wikiMenus.get(i).getId());
+            }
+            //1级菜单
+        }else {
+            ArrayList<Integer> list = communityMenuMapper.selectUnderFirstMenu(menuId);
+            //把所有子菜单得id 放进去
+            for (int i = 0; i < list.size(); i++) {
+                result.add(list.get(i));
+            }
+        }
+        return result;
+    }
+
+    /**
+     * @Author nanguangjun
      * @Description // select community list by member
      * @Date 14:22 2021/3/18
      * @Param [params]
@@ -170,13 +204,13 @@ public class CommunityServiceImpl implements CommunityService{
         int memberId = params.get("memberId");
         int size = params.get("itemsPerPage");
         int page = params.get("page");
-        Map<String,Integer> totalMapArgs = new HashMap<>();
-        totalMapArgs.put("memberId",memberId);
+        Map<String,Object> totalMapArgs = new HashMap<>();
+        totalMapArgs.put("memberId",memberId); //get menu id list
         Integer total = communityMapper.selectCommunityListCount(totalMapArgs); //select total
         int pages = total%size==0 ? total/size : total/size+1;
 
         //分页查询传参
-        Map<String,Integer> args = new HashMap<>();
+        Map<String,Object> args = new HashMap<>();
         args.put("memberId",memberId);
         args.put("page",(page-1)*size);
         args.put("size",size);

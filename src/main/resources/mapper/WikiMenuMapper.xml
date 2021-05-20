@@ -4,4 +4,13 @@
     <select id="selectMenuByTier" resultType="com.community.aspn.pojo.sys.WikiMenu">
         select * from wiki_menu where tier = #{tier} and use_yn = 'Y' order by sort
     </select>
+
+    <!-- 一级菜单下面得所有菜单   -->
+    <select id="selectUnderFirstMenu" resultType="java.lang.Integer">
+        select id from wiki_menu where father = #{menuId} and tier = 2
+        union all
+        select id from wiki_menu where tier = 3 and father in (select id from wiki_menu where father = #{menuId} and tier = 2)
+    </select>
+
+
 </mapper>
