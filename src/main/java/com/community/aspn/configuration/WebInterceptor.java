@@ -49,6 +49,7 @@ public class WebInterceptor implements WebMvcConfigurer {
         excludePath.add("/communityMenu/menus/tree"); //菜单
         excludePath.add("/community/communitys/pageList"); //论坛
         excludePath.add("/member/members/department"); // department
+        excludePath.add("/member/memberApplication"); // memberApplication
         registry.addInterceptor(tokenInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(excludePath);

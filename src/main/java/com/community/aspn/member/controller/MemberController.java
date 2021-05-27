@@ -2,6 +2,7 @@ package com.community.aspn.member.controller;
 
 import com.community.aspn.pojo.member.Member;
 import com.community.aspn.member.service.MemberService;
+import com.community.aspn.pojo.member.MemberApp;
 import com.community.aspn.util.AjaxResponse;
 import com.community.aspn.util.TokenUtil;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,23 @@ public class MemberController {
         Map<String, String> stringStringMap = memberservice.insertMember(member);
         return AjaxResponse.success(stringStringMap);
     }
+
+    /**
+     * @Author nanguangjun
+     * @Description // member application
+     * @Date 9:32 2021/5/25
+     * @Param [memberApp]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @PostMapping("/memberApplication")
+    public @ResponseBody AjaxResponse memberApplication(@RequestBody MemberApp memberApp){
+        try {
+            return AjaxResponse.success(memberservice.memberApplication(memberApp));
+        } catch (Exception e){
+            return AjaxResponse.error(memberservice.memberApplication(memberApp));
+        }
+    }
+
 
     /**
      * @Author nanguangjun
@@ -110,7 +128,7 @@ public class MemberController {
      * @return com.community.aspn.util.AjaxResponse
      **/
     @PutMapping("/members")
-    public @ResponseBody AjaxResponse updatemember(@RequestBody Member member){
+    public @ResponseBody AjaxResponse updateMember(@RequestBody Member member){
         Map<String, String> stringStringMap = memberservice.updateMember(member);
         return AjaxResponse.success(stringStringMap);
     }
@@ -128,11 +146,64 @@ public class MemberController {
         return AjaxResponse.success(allMember);
     }
 
+    /**
+     * @Author nanguangjun
+     * @Description // 비밀번호 수정
+     * @Date 13:24 2021/5/26
+     * @Param [pw]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
     @PutMapping("/members/password")
     public @ResponseBody AjaxResponse passwordChang(@RequestBody Map<String,Object> pw){
         int i = memberservice.changPassword(pw);
         return AjaxResponse.success(i);
     }
+
+    /**
+     * @Author nanguangjun
+     * @Description //get member application
+     * @Date 13:30 2021/5/26
+     * @Param []
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/getAllAppMember")
+    public @ResponseBody AjaxResponse getAllAppMember(){
+        List<Map<String, Object>> allAppMember = memberservice.getAllAppMember();
+        return AjaxResponse.success(allAppMember);
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // 신청회원을 회원으로 변경 요청
+     * @Date 10:34 2021/5/27
+     * @Param [ids]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @PostMapping("/appMemberToRealMember")
+    public @ResponseBody AjaxResponse appMemberToRealMember(@RequestBody List<Integer> ids){
+        if (ids.size() == 0){
+            return AjaxResponse.error();
+        }
+        memberservice.appMemberToRealMember(ids);
+        return AjaxResponse.success();
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // 신청회원을 삭제
+     * @Date 13:45 2021/5/27
+     * @Param [ids]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @PostMapping("/appMemberDelete")
+    public @ResponseBody AjaxResponse appMemberDelete(@RequestBody List<Integer> ids){
+        if (ids.size() == 0){
+            return AjaxResponse.error();
+        }
+        memberservice.appMemberDelete(ids);
+        return AjaxResponse.success();
+    }
+
 
 
 }

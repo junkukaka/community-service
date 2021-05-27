@@ -11,4 +11,5 @@ import java.util.Map;
 public interface MemberMapper extends BaseMapper<Member> {
     List<Map<String,Object>> getDepartment();
     void updateMemberDynamic(Member member);
+    List<Map<String,Object>> getAllAppMember();
 }

@@ -24,4 +24,26 @@
         where id =#{id}
     </update>
 
+    <select id="getAllAppMember" resultType="java.util.Map">
+        SELECT
+            m.id,
+            m.member_name as memberName,
+            m.member_yn as memberYn,
+            m.login_id as loginId,
+            m.email,
+            m.picture,
+            date_format(m.register_time,'%Y-%m-%d %H:%i:%S') as registerTime,
+            d.name as department,
+            m.comment,
+            m.phone
+        FROM
+            member_app m,
+            department d
+        WHERE
+            m.department = d.id
+        and m.member_yn = 'N'
+        order by m.register_time
+    </select>
+
+
 </mapper>

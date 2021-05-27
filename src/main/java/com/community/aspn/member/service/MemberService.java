@@ -1,19 +1,35 @@
 package com.community.aspn.member.service;
 
 import com.community.aspn.pojo.member.Member;
+import com.community.aspn.pojo.member.MemberApp;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
 public interface MemberService {
-    public Map<String,String> insertMember(Member member);
-    public Map<String,String> updateMember(Member member);
-    public void deleteMember(Integer id);
-    public Member getMemberById(Integer id,HttpServletRequest request);
-    public Member login(Member member, HttpServletRequest request);
-    public Member checkSession(Member member, HttpServletRequest request);
-    public List<Member> getAllMember();
-    public List<Map<String,Object>> getDepartment();
-    public int changPassword(Map<String,Object> pw);
+    Map<String, String> insertMember(Member member);
+
+    Map<String, String> updateMember(Member member);
+
+    Member getMemberById(Integer id, HttpServletRequest request);
+
+    Member login(Member member, HttpServletRequest request);
+
+    Member checkSession(Member member, HttpServletRequest request);
+
+    List<Member> getAllMember();
+
+    List<Map<String, Object>> getDepartment();
+
+    int changPassword(Map<String, Object> pw);
+
+    Map<String, String> memberApplication(MemberApp memberApp);
+
+    List<Map<String,Object>> getAllAppMember();
+
+    void appMemberToRealMember(List<Integer> ids);
+
+    void appMemberDelete(List<Integer> ids);
+
 }

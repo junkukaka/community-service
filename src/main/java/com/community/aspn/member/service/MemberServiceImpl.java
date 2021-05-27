@@ -1,8 +1,10 @@
 package com.community.aspn.member.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.community.aspn.member.mapper.MemberAppMapper;
 import com.community.aspn.pojo.member.Member;
 import com.community.aspn.member.mapper.MemberMapper;
+import com.community.aspn.pojo.member.MemberApp;
 import com.community.aspn.util.mino.MinIOProperties;
 import com.community.aspn.util.mino.MinoIOComponent;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Resource
     MinoIOComponent minoIOComponent;
+
+    @Resource
+    MemberAppMapper memberAppMapper;
 
     /**
      * @Author nanguangjun
@@ -89,22 +94,28 @@ public class MemberServiceImpl implements MemberService {
     public Map<String,String> checkMemberOne(Member member){
         Map<String, String> msg = new HashMap<>();
         //loginId 验证
-        Integer loginId = memberMapper.selectCount(new QueryWrapper<Member>().eq("login_id", member.getLoginId()));
-        if(loginId> 0){
+        Integer loginIdMember = memberMapper.selectCount(new QueryWrapper<Member>().eq("login_id", member.getLoginId()));
+        Integer loginIdApp = memberAppMapper.selectCount(new QueryWrapper<MemberApp>().eq("login_id", member.getLoginId()));
+        Integer login = loginIdMember + loginIdApp;
+        if(login > 0){
             msg.put("code","0");
             msg.put("msg","중복된 login 입니다.");
             return msg;
         }
 
         //检查邮箱
-        Integer email = memberMapper.selectCount(new QueryWrapper<Member>().eq("email", member.getEmail()));
+        Integer emailMember = memberMapper.selectCount(new QueryWrapper<Member>().eq("email", member.getEmail()));
+        Integer emailApp = memberAppMapper.selectCount(new QueryWrapper<MemberApp>().eq("email", member.getEmail()));
+        Integer email = emailMember + emailApp;
         if(email> 0){
             msg.put("code","0");
             msg.put("msg","중복된 메일 주소 입니다.");
             return msg;
         }
         //检查手机
-        Integer phone = memberMapper.selectCount(new QueryWrapper<Member>().eq("phone", member.getPhone()));
+        Integer phoneMember = memberMapper.selectCount(new QueryWrapper<Member>().eq("phone", member.getPhone()));
+        Integer phoneApp = memberAppMapper.selectCount(new QueryWrapper<MemberApp>().eq("phone", member.getPhone()));
+        Integer phone = phoneMember + phoneApp;
         if(phone> 0){
             msg.put("code","0");
             msg.put("msg","중복된 핸드폰 번호 입니다.");
@@ -113,17 +124,6 @@ public class MemberServiceImpl implements MemberService {
         return msg;
     }
 
-    /**
-     * @Author nanguangjun
-     * @Description //删除用户
-     * @Date 9:24 2020/12/25
-     * @Param [id]
-     * @return void
-     **/
-    @Override
-    public void deleteMember(Integer id) {
-        memberMapper.deleteById(id);
-    }
 
     /**
      * @Author nanguangjun
@@ -230,5 +230,96 @@ public class MemberServiceImpl implements MemberService {
         member.setUpdateId(id);
         memberMapper.updateById(member);
         return 1;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // member application
+     * @Date 9:35 2021/5/25
+     * @Param [memberApp]
+     * @return int
+     **/
+    @Override
+    public Map<String, String> memberApplication(MemberApp memberApp) {
+        memberApp.setMemberYn("N");
+        memberApp.setRegisterTime(new Date());
+        Member member = new Member();
+        member.setLoginId(memberApp.getLoginId());
+        member.setEmail(memberApp.getEmail());
+        member.setPhone(memberApp.getPhone());
+        Map<String, String> resultMap = this.checkMemberOne(member);
+        if (!"0".equals(resultMap.get("code"))) {
+            memberAppMapper.insert(memberApp);
+            resultMap.put("code", "1");
+            resultMap.put("msg", "신청 성공!");
+        }
+        return resultMap;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // get member application
+     * @Date 13:27 2021/5/26
+     * @Param []
+     * @return java.util.List<com.community.aspn.pojo.member.MemberApp>
+     **/
+    @Override
+    public List<Map<String,Object>> getAllAppMember() {
+        return memberMapper.getAllAppMember();
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // 신청회원을 정규 회원을로 변경
+     * @Date 17:03 2021/5/26
+     * @Param [ids]
+     * @return void
+     **/
+    @Override
+    public void appMemberToRealMember(List<Integer> ids) {
+        MemberApp memberApp;
+        for (int i = 0; i < ids.size(); i++) {
+            memberApp = memberAppMapper.selectById(ids.get(i));
+            this.appMemberInsertMember(memberApp);
+        }
+    }
+
+    /**
+     * @Author
+     * @Description // 신청 회원 삭제
+     * @Date 13:49 2021/5/27
+     * @Param [ids]
+     * @return void
+     **/
+    @Override
+    public void appMemberDelete(List<Integer> ids) {
+        for (int i = 0; i < ids.size(); i++) {
+            memberAppMapper.deleteById(ids.get(i));
+        }
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // member insert by memberApp
+     * @Date 17:06 2021/5/26
+     * @Param [memberApp]
+     * @return void
+     **/
+    private void appMemberInsertMember(MemberApp memberApp){
+        Member member = new Member();
+        member.setLoginId(memberApp.getLoginId());
+        member.setMemberName(memberApp.getMemberName());
+        member.setPassword(memberApp.getPassword());
+        member.setEmail(memberApp.getEmail());
+        member.setDepartment(memberApp.getDepartment());
+        member.setRegisterTime(new Date());
+        member.setStatus("ON");
+        if(memberApp.getPicture() != null){
+            member.setPicture(member.getPicture());
+        }
+        memberMapper.insert(member);
+        //update memberApp
+        memberApp.setMemberYn("Y");
+        memberAppMapper.updateById(memberApp);
     }
 }

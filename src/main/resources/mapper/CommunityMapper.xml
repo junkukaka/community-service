@@ -48,12 +48,14 @@
             community_menu u
         WHERE
             c.member_id = m.id
-        and u.id = c.menu_id
-            and c.menu_id in
-            <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
-                #{id}
-            </foreach>
-            <if test="memberId != null">
+            and u.id = c.menu_id
+            <if test='list!=null and list.size()>0'>
+                and c.menu_id in
+                <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="memberId!=null">
                 and c.member_id = #{memberId}
             </if>
         order by c.id desc
@@ -71,15 +73,16 @@
         WHERE
             c.member_id = m.id
         and u.id = c.menu_id
-            and c.menu_id in
-            <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
-                #{id}
-            </foreach>
-            <if test="memberId != null">
+            <if test='list!=null and list.size()>0'>
+                and c.menu_id in
+                <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="memberId!=null">
                 and c.member_id = #{memberId}
             </if>
     </select>
-
 
     <!-- select community in main page  -->
     <select id="selectCommunityInMainPage" resultType="java.util.Map">
@@ -99,7 +102,7 @@
         WHERE
             c.member_id = m.id
           and u.id = c.menu_id
-        <if test="menuId != null">
+        <if test="menuId!=null">
             and c.menu_id = #{menuId}
         </if>
         order by c.id desc
