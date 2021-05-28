@@ -96,13 +96,17 @@ public class MemberController {
      **/
     @PostMapping("/members/checkSession")
     public @ResponseBody AjaxResponse checkSession(@RequestBody Member member, HttpServletRequest request){
-        Member login = memberservice.checkSession(member,request);
-        Map<String, Object> map = new HashMap<>();
-        if(login != null){
-            map.put("member",login);
-            String token= TokenUtil.sign(login);
-            map.put("token",token);
-        }else {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try {
+            Member login = memberservice.checkSession(member,request);
+            if(login != null){
+                map.put("member",login);
+                String token= TokenUtil.sign(login);
+                map.put("token",token);
+            }else {
+                map.put("member", 0);
+            }
+        }catch (Exception e){
             map.put("member", 0);
         }
         return AjaxResponse.success(map);
@@ -140,10 +144,10 @@ public class MemberController {
      * @Param []
      * @return com.community.aspn.util.AjaxResponse
      **/
-    @GetMapping("/members/getAll")
-    public @ResponseBody AjaxResponse getAllmembers(){
-        List<Member> allMember = memberservice.getAllMember();
-        return AjaxResponse.success(allMember);
+    @GetMapping("/members/getAllMemberByAdmin")
+    public @ResponseBody AjaxResponse getAllMemberByAdmin(){
+        List<Map<String, Object>> allMemberByAdmin = memberservice.getAllMemberByAdmin();
+        return AjaxResponse.success(allMemberByAdmin);
     }
 
     /**

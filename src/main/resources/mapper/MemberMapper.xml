@@ -45,5 +45,26 @@
         order by m.register_time
     </select>
 
+    <!-- 회원조회 admin 페이지  -->
+    <select id="getAllMemberByAdmin" resultType="java.util.Map">
+        SELECT
+            m.id,
+            m.login_id as loginId,
+            m.status,
+            m.member_name as memberName,
+            m.email,
+            m.phone,
+            m.department,
+            d.`name` as departmentName,
+            date_format(m.register_time,'%Y-%m-%d %H:%i:%S') as registerTime,
+            date_format(m.update_time,'%Y-%m-%d %H:%i:%S') as updateTime
+        FROM
+            member m,
+            department d
+        WHERE
+            m.department = d.id
+        order by m.status,m.update_time desc
+    </select>
+
 
 </mapper>

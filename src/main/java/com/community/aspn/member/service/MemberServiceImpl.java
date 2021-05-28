@@ -156,15 +156,7 @@ public class MemberServiceImpl implements MemberService {
         String pw = DigestUtils.md5DigestAsHex(member.getPassword().getBytes());
         query.eq("login_id", member.getLoginId())
                 .eq("password", pw);
-        Member m = memberMapper.selectOne(query);
-        if(m == null){
-            return null;
-        }
-        if(m.getPicture() != null){
-            String url = minoIOComponent.afterGetContentFromDBToFront(m.getPicture(), request.getRemoteAddr());
-            m.setPicture(url);
-        }
-        return m;
+        return getMember(request, query);
     }
 
     /**
@@ -180,6 +172,10 @@ public class MemberServiceImpl implements MemberService {
         //用户名，密码验证
         query.eq("login_id", member.getLoginId())
                 .eq("password", member.getPassword());
+        return getMember(request, query);
+    }
+
+    private Member getMember(HttpServletRequest request, QueryWrapper<Member> query) {
         Member m = memberMapper.selectOne(query);
         if(m == null){
             return null;
@@ -191,17 +187,6 @@ public class MemberServiceImpl implements MemberService {
         return m;
     }
 
-    /**
-     * @Author nanguangjun
-     * @Description // 获取所有用户
-     * @Date 9:36 2020/12/25
-     * @Param []
-     * @return java.util.List<com.community.aspn.pojo.Member.Member>
-     **/
-    @Override
-    public List<Member> getAllMember() {
-        return memberMapper.selectList(null);
-    }
 
     @Override
     public List<Map<String,Object>> getDepartment() {
@@ -266,6 +251,18 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<Map<String,Object>> getAllAppMember() {
         return memberMapper.getAllAppMember();
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // 회원조회  admin 페이지
+     * @Date 15:53 2021/5/28
+     * @Param []
+     * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+     **/
+    @Override
+    public List<Map<String, Object>> getAllMemberByAdmin() {
+        return memberMapper.getAllMemberByAdmin();
     }
 
     /**

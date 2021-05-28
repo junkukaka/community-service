@@ -18,8 +18,6 @@ public interface MemberService {
 
     Member checkSession(Member member, HttpServletRequest request);
 
-    List<Member> getAllMember();
-
     List<Map<String, Object>> getDepartment();
 
     int changPassword(Map<String, Object> pw);
@@ -27,6 +25,8 @@ public interface MemberService {
     Map<String, String> memberApplication(MemberApp memberApp);
 
     List<Map<String,Object>> getAllAppMember();
+
+    List<Map<String,Object>> getAllMemberByAdmin();
 
     void appMemberToRealMember(List<Integer> ids);
 
