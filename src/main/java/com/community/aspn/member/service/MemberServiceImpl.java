@@ -155,7 +155,8 @@ public class MemberServiceImpl implements MemberService {
         //用户名，密码验证
         String pw = DigestUtils.md5DigestAsHex(member.getPassword().getBytes());
         query.eq("login_id", member.getLoginId())
-                .eq("password", pw);
+                .eq("password", pw)
+                .eq("status","ON");
         return getMember(request, query);
     }
 

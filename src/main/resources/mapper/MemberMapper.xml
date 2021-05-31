@@ -17,6 +17,7 @@
                 <if test="duty!= null">duty = #{duty},</if>
                 <if test="phone!= null">phone = #{phone},</if>
                 <if test="remark!= null">remark = #{remark},</if>
+                <if test="status!= null">status = #{status},</if>
                 <if test="authority!= null">authority = #{authority},</if>
                 <if test="updateId!= null">update_id = #{updateId},</if>
                 <if test="updateTime!= null">update_time = #{updateTime},</if>
@@ -63,7 +64,7 @@
             department d
         WHERE
             m.department = d.id
-        order by m.status,m.update_time desc
+        order by m.status desc,m.update_time desc
     </select>
 
 

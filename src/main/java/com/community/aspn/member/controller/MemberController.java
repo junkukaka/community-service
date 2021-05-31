@@ -133,8 +133,12 @@ public class MemberController {
      **/
     @PutMapping("/members")
     public @ResponseBody AjaxResponse updateMember(@RequestBody Member member){
-        Map<String, String> stringStringMap = memberservice.updateMember(member);
-        return AjaxResponse.success(stringStringMap);
+        try {
+            Map<String, String> stringStringMap = memberservice.updateMember(member);
+            return AjaxResponse.success(stringStringMap);
+        }catch (Exception e){
+            return AjaxResponse.error();
+        }
     }
 
     /**
