@@ -26,7 +26,7 @@
           and s.his_yn = 1
           and w.menu_id = m.id
           and w.his_id is not null
-        order by m.tier,w.title
+        order by w.update_time desc,m.tier,w.title
     </select>
 
     <select id="selectWikiMainList" resultType="java.util.Map">
@@ -42,11 +42,12 @@
         where w.his_id = s.id
           and s.his_yn = 1
           and w.his_id is not null
+        ORDER BY w.update_time DESC
         LIMIT #{count}
     </select>
 
 
-    <!-- wiki profile   -->
+    <!-- wiki profile Editing   -->
     <select id="selectWikiHisProfile" resultType="java.util.Map">
         SELECT
             w.id,
@@ -62,6 +63,28 @@
         where w.menu_id = m.id
         and (w.his_yn is null or w.his_yn != 1)
         and w.member_id = #{memberId}
+    </select>
+
+    <!-- wiki profile Edited   -->
+    <select id="selectWikiEditedProfile" resultType="java.util.Map">
+        SELECT
+            w.id,
+            w.title,
+            w.menu_id as menuId,
+            m.name as menuName
+        FROM
+            wiki w,
+            wiki_his h,
+            wiki_menu m
+        WHERE
+            w.id = h.wiki_id
+          and w.menu_id = m.id
+          and h.update_id =  #{memberId}
+        group by
+            w.id,
+            w.title,
+            w.menu_id,
+            m.name
     </select>
 
     <!-- wiki WikiHisList   -->
@@ -84,7 +107,7 @@
           and s.member_id = m.id
           and w.id = #{wikiId}
           and s.his_yn = 1
-        order by s.update_time desc
+        order by w.update_time desc
     </select>
 
 

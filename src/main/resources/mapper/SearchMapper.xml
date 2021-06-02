@@ -15,6 +15,22 @@
             a.his_id = b.id
           and a.menu_id = c.id
           and (a.title like CONCAT('%',#{content},'%') or b.content like CONCAT('%',#{content},'%'))
+        union
+        SELECT
+            a.id,
+            a.title,
+            a.menu_id as menuId,
+            c.name as menuName
+        FROM
+            wiki a,
+            wiki_his b,
+            wiki_menu c,
+            member m
+        WHERE
+            a.his_id = b.id
+          and a.menu_id = c.id
+          and a.update_id = m.id
+          and m.member_name like CONCAT('%',#{content},'%')
     </select>
 
     <select id="communitySearch" resultType="java.util.Map">
@@ -29,6 +45,20 @@
         WHERE
             a.menu_id = b.id
         and (a.title like CONCAT('%',#{content},'%') or a.content like CONCAT('%',#{content},'%'))
+        union
+        SELECT
+            a.id,
+            a.title,
+            a.menu_id as menuId,
+            b.name as menuName
+        FROM
+            community a,
+            community_menu b,
+            member m
+        WHERE
+            a.menu_id = b.id
+        and a.member_id = m.id
+        and m.member_name like CONCAT('%',#{content},'%')
     </select>
 
     <update id="updateSearch">

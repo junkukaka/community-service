@@ -5,9 +5,12 @@ import com.community.aspn.pojo.sys.WikiMenu;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @Mapper
 public interface WikiMenuMapper extends BaseMapper<WikiMenu> {
     ArrayList<WikiMenu> selectMenuByTier(Integer tier);
     ArrayList<Integer> selectUnderFirstMenu (Integer menuId);
+    ArrayList<Map<String,Object>> getDashboardTier2(Integer menuId);
+    ArrayList<Map<String,Object>> getDashboardTier3(Integer menuId);
 }

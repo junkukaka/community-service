@@ -110,6 +110,18 @@ public class CommunityMenuController {
         return AjaxResponse.success();
     }
 
+    /**
+     * @Author nanguangjun
+     * @Description // get dashboard by menuId
+     * @Date 14:00 2021/6/1
+     * @Param [menuId]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/dashboard/{menuId}")
+    public @ResponseBody AjaxResponse getDashboard(@PathVariable Integer menuId){
+        return AjaxResponse.success(communityMenuService.getDashboard(menuId));
+    }
+
 
 
 }

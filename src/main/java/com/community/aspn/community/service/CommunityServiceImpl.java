@@ -5,8 +5,6 @@ import com.community.aspn.community.mapper.CommunityMapper;
 import com.community.aspn.menu.mapper.CommunityMenuMapper;
 import com.community.aspn.pojo.community.Community;
 import com.community.aspn.pojo.sys.CommunityMenu;
-import com.community.aspn.pojo.sys.WikiMenu;
-import com.community.aspn.pojo.wiki.Wiki;
 import com.community.aspn.util.mino.MinIOFileUtil;
 import com.community.aspn.util.mino.MinoIOComponent;
 import org.springframework.stereotype.Service;
@@ -264,5 +262,17 @@ public class CommunityServiceImpl implements CommunityService{
             }
         }
         return list;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // get community MenuId by id
+     * @Date 10:45 2021/6/2
+     * @Param [id]
+     * @return java.lang.Integer
+     **/
+    @Override
+    public Integer getCommunityMenuId(Integer id) {
+        return communityMapper.selectById(id).getMenuId();
     }
 }

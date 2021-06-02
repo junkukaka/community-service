@@ -306,5 +306,31 @@ public class WikiServiceImpl implements WikiService{
         wikiHisMapper.deleteById(id);
     }
 
+    /**
+     * @Author nanguangjun
+     * @Description // get menuId by wiki ID
+     * @Date 17:43 2021/6/1
+     * @Param [id]
+     * @return java.lang.Integer
+     **/
+    @Override
+    public Integer getWikiMenuId(Integer id) {
+        return wikiMapper.selectById(id).getMenuId();
+    }
+
+
+    /**
+     * @Author nanguangjun
+     * @Description // select wikiEdited list by member id
+     * @Date 15:08 2021/6/2
+     * @Param [memberId]
+     * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+     **/
+    @Override
+    public List<Map<String, Object>> selectWikiEditedProfile(Integer memberId) {
+        List<Map<String, Object>> list = wikiMapper.selectWikiEditedProfile(memberId);
+        return list;
+    }
+
 
 }

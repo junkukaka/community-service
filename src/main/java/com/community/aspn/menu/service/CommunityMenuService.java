@@ -7,10 +7,17 @@ import java.util.List;
 import java.util.Map;
 
 public interface CommunityMenuService {
-    public int insertMenu(CommunityMenu communityMenu);
-    public int updateMenu(CommunityMenu communityMenu);
-    public void deleteMenuById(Integer id);
-    public CommunityMenu getMenuById(Integer id);
-    public List<CommunityMenu> getMenusByCondition(CommunityMenu communityMenu);
-    public List<Map<String,Object>> getMenuTree();
+    int insertMenu(CommunityMenu communityMenu);
+
+    int updateMenu(CommunityMenu communityMenu);
+
+    void deleteMenuById(Integer id);
+
+    CommunityMenu getMenuById(Integer id);
+
+    List<CommunityMenu> getMenusByCondition(CommunityMenu communityMenu);
+
+    List<Map<String, Object>> getMenuTree();
+
+    List<Map<String, Object>> getDashboard(Integer menuId);
 }

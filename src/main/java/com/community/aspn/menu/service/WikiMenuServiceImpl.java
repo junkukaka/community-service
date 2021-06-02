@@ -160,4 +160,28 @@ public class WikiMenuServiceImpl implements WikiMenuService {
         return finalList;
     }
 
+    /**
+     * @Author nanguangjun
+     * @Description // get dashboard by menuId
+     * @Date 14:05 2021/6/1
+     * @Param [menuId]
+     * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+     **/
+    @Override
+    public List<Map<String, Object>> getDashboard(Integer menuId) {
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        HashMap<String, Object> map = new HashMap<>();
+        WikiMenu wikiMenu = wikiMenuMapper.selectById(menuId);
+        if(wikiMenu.getTier() == 1){
+            map.put("menuId",wikiMenu.getId());
+            map.put("text",wikiMenu.getName());
+            resultList.add(map);
+            return resultList;
+        }else if(wikiMenu.getTier() == 2){
+            return wikiMenuMapper.getDashboardTier2(menuId);
+        }else {
+            return wikiMenuMapper.getDashboardTier3(menuId);
+        }
+    }
+
 }

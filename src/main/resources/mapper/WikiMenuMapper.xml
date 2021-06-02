@@ -13,4 +13,34 @@
     </select>
 
 
+    <!-- 二级导航   -->
+    <select id="getDashboardTier2" resultType="java.util.Map">
+        select id as menuId, name as text from
+            (
+                select id,name from wiki_menu where id = (
+                    select father from wiki_menu where id = #{menuId}
+                ) and tier =1
+                UNION all
+                select id,name from wiki_menu where id = #{menuId}
+            ) menus
+    </select>
+
+    <!-- 3级导航   -->
+    <select id="getDashboardTier3" resultType="java.util.Map">
+        select id as menuId, name as text from
+        (
+            select id,name from wiki_menu where id = (
+                select father from wiki_menu where id = (
+                    select father from wiki_menu where id = #{menuId} and tier = 3
+                ) and tier = 2
+            ) and tier =1
+            UNION all
+            select id,name from wiki_menu where id = (
+                select father from wiki_menu where id = #{menuId} and tier = 3
+            ) and tier = 2
+            UNION all
+            select id,name from wiki_menu where id = #{menuId} and tier = 3
+        ) menus
+    </select>
+
 </mapper>

@@ -109,4 +109,17 @@ public class CommunityController {
         List<Map<String, Object>> maps = communityService.selectCommunityInMainPage(param,request);
         return AjaxResponse.success(maps);
     }
+
+    /**
+     * @Author nanguangjun
+     * @Description // get community menu Id by Id
+     * @Date 10:45 2021/6/2
+     * @Param [id]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/getCommunityMenuId/{id}")
+    public @ResponseBody AjaxResponse getCommunityMenuId(@PathVariable Integer id){
+        Integer menuId = communityService.getCommunityMenuId(id);
+        return AjaxResponse.success(menuId);
+    }
 }

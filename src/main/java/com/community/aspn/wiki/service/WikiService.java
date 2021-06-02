@@ -18,4 +18,6 @@ public interface WikiService {
     List<Map<String, Object>> selectWikiHisList(Integer wikiId, String remoteAddr);
     void backToThePastWikiHis(WikiHis wikiHis);
     void deleteWikiHistoryById(Integer id);
+    Integer getWikiMenuId(Integer id);
+    List<Map<String, Object>> selectWikiEditedProfile(Integer memberId);
 }

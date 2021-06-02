@@ -13,6 +13,8 @@ public interface WikiMapper extends BaseMapper<Wiki> {
     Integer addWiki(Wiki wiki);
     List<Map<String,Object>> selectWikiList(List<Integer> menuIdList);
     List<Map<String,Object>> selectWikiMainList(Integer count);
-    List<Map<String,Object>> selectWikiHisProfile(Integer memberId);
     List<Map<String,Object>> selectWikiHisList(Integer wikiId);
+    List<Map<String,Object>> selectWikiHisProfile(Integer memberId);
+    List<Map<String,Object>> selectWikiEditedProfile(Integer memberId);
+
 }

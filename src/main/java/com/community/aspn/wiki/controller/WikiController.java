@@ -114,6 +114,19 @@ public class WikiController {
 
     /**
      * @Author nanguangjun
+     * @Description //TODO
+     * @Date 10:25 2021/4/22
+     * @Param [memberId]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/wikiProfileEditedList/{memberId}")
+    public AjaxResponse selectWikiEditedProfile(@PathVariable Integer memberId){
+        List<Map<String, Object>> list = wikiService.selectWikiEditedProfile(memberId);
+        return AjaxResponse.success(list);
+    }
+
+    /**
+     * @Author nanguangjun
      * @Description //delete wikiHis by id
      * @Date 15:50 2021/4/22
      * @Param [id]
@@ -155,5 +168,11 @@ public class WikiController {
     public AjaxResponse backToThePastWikiHis(@RequestBody WikiHis wikiHis){
         wikiService.backToThePastWikiHis(wikiHis);
         return AjaxResponse.success();
+    }
+
+    @GetMapping("/getWikiMenuId/{id}")
+    public AjaxResponse getWikiMenuId(@PathVariable Integer id){
+        Integer menuId = wikiService.getWikiMenuId(id);
+        return AjaxResponse.success(menuId);
     }
 }

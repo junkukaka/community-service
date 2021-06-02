@@ -6,10 +6,17 @@ import java.util.List;
 import java.util.Map;
 
 public interface WikiMenuService {
-    public int insertMenu(WikiMenu wikiMenu);
-    public int updateMenu(WikiMenu wikiMenu);
-    public void deleteMenuById(Integer id);
-    public WikiMenu getMenuById(Integer id);
-    public List<WikiMenu> getMenusByCondition(WikiMenu wikiMenu);
-    public List<Map<String,Object>> getMenuTree();
+    int insertMenu(WikiMenu wikiMenu);
+
+    int updateMenu(WikiMenu wikiMenu);
+
+    void deleteMenuById(Integer id);
+
+    WikiMenu getMenuById(Integer id);
+
+    List<WikiMenu> getMenusByCondition(WikiMenu wikiMenu);
+
+    List<Map<String, Object>> getMenuTree();
+
+    List<Map<String, Object>> getDashboard(Integer menuId);
 }

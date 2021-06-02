@@ -3,6 +3,7 @@ package com.community.aspn.menu.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.community.aspn.menu.mapper.CommunityMenuMapper;
 import com.community.aspn.pojo.sys.CommunityMenu;
+import com.community.aspn.pojo.sys.WikiMenu;
 import org.springframework.stereotype.Service;
 
 
@@ -160,6 +161,31 @@ public class CommunityMenuServiceImpl implements CommunityMenuService {
         }
 
         return finalList;
+    }
+
+
+    /**
+    * @Author nanguangjun
+    * @Description // get dashboard by id
+    * @Date 10:59 2021/6/2
+    * @Param [menuId]
+    * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+    **/
+    @Override
+    public List<Map<String, Object>> getDashboard(Integer menuId) {
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        HashMap<String, Object> map = new HashMap<>();
+        CommunityMenu communityMenu = communityMenuMapper.selectById(menuId);
+        if(communityMenu.getTier() == 1){
+            map.put("menuId",communityMenu.getId());
+            map.put("text",communityMenu.getName());
+            resultList.add(map);
+            return resultList;
+        }else if(communityMenu.getTier() == 2){
+            return communityMenuMapper.getDashboardTier2(menuId);
+        }else {
+            return communityMenuMapper.getDashboardTier3(menuId);
+        }
     }
 
 }
