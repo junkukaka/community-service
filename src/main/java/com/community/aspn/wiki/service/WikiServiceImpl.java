@@ -45,11 +45,11 @@ public class WikiServiceImpl implements WikiService{
         //if it has wikiHis ID update
         if(wikiHis.getId()!= null && 0 == wikiHis.getHisYn()){
             wikiHis.setUpdateTime(new Date());
-            wikiHis.setUpdateId(wikiHis.getMenuId());
+            wikiHis.setUpdateId(wikiHis.getMemberId());
             wikiHisMapper.updateById(wikiHis);
             savedWikiHis = wikiHis;
         }else {
-            wikiHis.setRegisterId(wikiHis.getMenuId());
+            wikiHis.setRegisterId(wikiHis.getMemberId());
             wikiHis.setRegisterTime(new Date());
             wikiHis.setUpdateTime(new Date());
             wikiHis.setUpdateId(wikiHis.getMemberId());

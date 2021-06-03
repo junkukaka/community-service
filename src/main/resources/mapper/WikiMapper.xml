@@ -79,7 +79,8 @@
         WHERE
             w.id = h.wiki_id
           and w.menu_id = m.id
-          and h.update_id =  #{memberId}
+          and h.member_id =  #{memberId}
+          and h.his_yn = 1
         group by
             w.id,
             w.title,
