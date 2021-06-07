@@ -157,7 +157,26 @@ public class MemberServiceImpl implements MemberService {
         query.eq("login_id", member.getLoginId())
                 .eq("password", pw)
                 .eq("status","ON");
-        return getMember(request, query);
+        Member m = getMember(request, query);
+        if(m != null){
+            this.updateLoginTime(m);
+        }
+        return m;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // update member login time
+     * @Date 8:48 2021/6/4
+     * @Param [member]
+     * @return void
+     **/
+    private void updateLoginTime(Member member){
+        Member m = new Member();
+        m.setUpdateTime(new Date());
+        m.setUpdateId(member.getId());
+        m.setId(member.getId());
+        memberMapper.updateById(m);
     }
 
     /**
@@ -173,7 +192,11 @@ public class MemberServiceImpl implements MemberService {
         //用户名，密码验证
         query.eq("login_id", member.getLoginId())
                 .eq("password", member.getPassword());
-        return getMember(request, query);
+        Member m = getMember(request, query);
+        if(m != null){
+            this.updateLoginTime(m);
+        }
+        return m;
     }
 
     private Member getMember(HttpServletRequest request, QueryWrapper<Member> query) {
