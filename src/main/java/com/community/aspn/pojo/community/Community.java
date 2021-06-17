@@ -18,6 +18,7 @@ public class Community {
     private Integer useYn;
     private String content;
     private Integer memberId;
+    private String docId;
 
     private Integer registerId;
     private Date registerTime;

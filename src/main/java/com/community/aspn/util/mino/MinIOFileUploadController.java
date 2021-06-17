@@ -26,8 +26,6 @@ public class MinIOFileUploadController {
     @Resource
     MinIOProperties minIOProperties;
 
-    @Resource
-    MinoIOComponent minoIOComponent;
 
     /**
      * @Author nanguangjun
@@ -43,7 +41,8 @@ public class MinIOFileUploadController {
         ObjectWriteResponse objectWriteResponse;
         String url = "";
         while (itr .hasNext()){
-            String str = itr.next();
+            String str;
+            str = itr.next();
             multipartFile = request.getFile(str);
             //获取文件名称和存储路径
             String fileName = MinIOFileUtil.getFileName(multipartFile.getOriginalFilename());

@@ -10,7 +10,7 @@ public class MinIOProperties {
     private String accessKey;
     private String secretKey;
     private String communityBucket;
-    private String wikiBucket;
+    private String uploadBucket;
     private String sysBucket;
     private String localAddr;
     private String remoteAddr;

@@ -41,7 +41,6 @@ minio:
   accessKey: minioadmin
   secretKey: minioadmin
   communityBucket: community
-  wikiBucket: wiki
   sysBucket: sys
   # 内网minio
   localAddr: http://192.168.0.134:9000

@@ -71,7 +71,8 @@
             w.id,
             w.title,
             w.menu_id as menuId,
-            m.name as menuName
+            m.name as menuName,
+            date_format(w.update_time,'%Y-%m-%d %H:%i:%S') as updateTime
         FROM
             wiki w,
             wiki_his h,
@@ -85,7 +86,10 @@
             w.id,
             w.title,
             w.menu_id,
-            m.name
+            m.name,
+            m.register_time,
+            m.update_time
+        ORDER BY w.update_time desc
     </select>
 
     <!-- wiki WikiHisList   -->

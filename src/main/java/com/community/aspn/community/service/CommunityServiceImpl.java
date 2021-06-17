@@ -38,7 +38,8 @@ public class CommunityServiceImpl implements CommunityService{
         community.setRegisterTime(new Date());
         community.setRegisterId(community.getMemberId());
         Community c = this.mdYnContent(community);
-        return communityMapper.insert(c);
+        communityMapper.insert(c);
+        return c.getId();
     }
 
     /**
