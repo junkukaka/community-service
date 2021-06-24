@@ -12,7 +12,7 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     username: root
     #公司虚拟机
-    url: jdbc:mysql://192.168.72.136:33306/test?useUnicode=true&characterEncoding=UTF8&serverTimezone=Hongkong
+    url: jdbc:mysql://192.168.72.137:33306/test?useUnicode=true&characterEncoding=UTF8&serverTimezone=Hongkong
     password: 123456
     hikari:
       ## 最小空闲连接数量
@@ -41,16 +41,16 @@ mybatis-plus:
 
 # MinIo文件服务器
 minio:
-  endpoint: http://192.168.72.136:9000
+  endpoint: http://192.168.72.137:9000
   accessKey: minioadmin
   secretKey: minioadmin
   communityBucket: community
   uploadBucket: upload
   sysBucket: sys
   # 内网minio
-  localAddr: http://192.168.72.136:9000
+  localAddr: http://192.168.72.137:9000
   # 外网minio
-  remoteAddr: http://192.168.72.136:9000
+  remoteAddr: http://192.168.72.137:9000
   # 实际存储数据库,使用占位符代替
   realAddr: '@-@MINIO@-@'
   # 是否据王判断正则

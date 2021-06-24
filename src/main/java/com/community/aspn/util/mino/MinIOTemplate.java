@@ -99,7 +99,6 @@ public class MinIOTemplate {
      */
     public void removeObject(String bucketName, String objectName)
             throws Exception {
-
         instance.removeObject(RemoveObjectArgs.builder()
                 .bucket(bucketName)
                 .object(objectName)

@@ -138,4 +138,34 @@ public class MinoIOComponent {
     }
 
 
+    /**
+     * @Author nanguangjun
+     * @Description //删除文件
+     * @Date 14:06 2021/6/18
+     * @Param [bucketName, objectName]
+     * @return void
+     **/
+    public void deleteFile(String filePath){
+        //@-@MINIO@-@/upload/2021/2021-06/2021-06-17/b284a739-2149-4a15-a143-5df68dbd40ba.png
+        String[] split = filePath.split("/");
+        String bucketName = split[1];
+        StringBuffer buffer = new StringBuffer("/");
+        for (int i = 2; i < split.length; i++) {
+            buffer.append(split[i]);
+            if(i < split.length -1){
+                buffer.append("/");
+            }
+        }
+        String objectName = buffer.toString();
+        try {
+            minIOTemplate.removeObject(bucketName,objectName);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+
 }

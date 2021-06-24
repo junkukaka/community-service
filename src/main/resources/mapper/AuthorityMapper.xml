@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.community.aspn.authority.mapper.AuthorityMapper">
+
+    <!-- authority community item -->
+    <select id="getAuthorityCommunityList" resultType="java.util.Map">
+        SELECT
+            b.id AS id,
+            b.a_id AS aId,
+            a.name AS authorityName,
+            c.id as menuId,
+            c.name AS menuName,
+            b.view_yn AS viewYn,
+            b.edit_yn AS editYn
+        FROM
+            authority a,
+            authority_community b,
+            community_menu c
+        WHERE
+            a.id = b.a_id
+          AND b.menu_id = c.id
+          AND b.a_id = #{aId}
+    </select>
+
+    <!-- authority wiki item -->
+    <select id="getAuthorityWikiList" resultType="java.util.Map">
+        SELECT
+            b.id AS id,
+            b.a_id AS aId,
+            a.name AS authorityName,
+            c.id as menuId,
+            c.name AS menuName,
+            b.view_yn AS viewYn,
+            b.edit_yn AS editYn
+        FROM
+            authority a,
+            authority_wiki b,
+            wiki_menu c
+        WHERE
+            a.id = b.a_id
+          AND b.menu_id = c.id
+          AND b.a_id = #{aId}
+    </select>
+
+
+
+</mapper>

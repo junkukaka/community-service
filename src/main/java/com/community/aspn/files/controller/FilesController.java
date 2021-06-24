@@ -9,7 +9,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/files")
@@ -62,4 +64,16 @@ public class FilesController {
         List<Files> files = filesService.deleteFileById(id,request.getRemoteAddr());
         return AjaxResponse.success(files);
     }
+
+    @GetMapping("/getDetailPageList")
+    public @ResponseBody AjaxResponse getDetailPageList(HttpServletRequest request){
+        String id = request.getParameter("id");
+        String flag = request.getParameter("flag");
+        Map<String, String> map = new HashMap<>();
+        map.put("id",id);
+        map.put("flag",flag);
+        List<Files> result = filesService.getDetailPageList(map, request.getRemoteAddr());
+        return AjaxResponse.success(result);
+    }
+
 }

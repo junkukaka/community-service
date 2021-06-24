@@ -2,7 +2,9 @@ package com.community.aspn.files.service;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.community.aspn.community.mapper.CommunityMapper;
 import com.community.aspn.files.mapper.FilesMapper;
+import com.community.aspn.pojo.community.Community;
 import com.community.aspn.pojo.sys.Files;
 import com.community.aspn.util.mino.MinIOFileUtil;
 import com.community.aspn.util.mino.MinIOProperties;
@@ -16,10 +18,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 
 @Service
@@ -37,6 +36,9 @@ public class FilesServiceImpl implements FilesService {
 
     @Resource
     MinoIOComponent minoIOComponent;
+    
+    @Resource
+    CommunityMapper communityMapper;
 
     /**
      * @Author nanguangjun
@@ -127,7 +129,8 @@ public class FilesServiceImpl implements FilesService {
     @Override
     public List<Files> deleteFileById(Integer id,String remoteAddr) {
         Files files = filesMapper.selectById(id);
-        filesMapper.deleteById(id); //delete by id
+        filesMapper.deleteById(id); //delete by id from db
+        minoIOComponent.deleteFile(files.getFilePath()); // delete file from minio
         QueryWrapper<Files> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("doc_id",files.getDocId());
         List<Files> list = filesMapper.selectList(queryWrapper);
@@ -148,6 +151,26 @@ public class FilesServiceImpl implements FilesService {
         List<Files> files = filesMapper.selectList(queryWrapper);
         this.getFilesListToFront(files,remoteAddr);
         return files;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description //
+     * @Date 9:35 2021/6/18
+     * @Param [docId, remoteAddr]
+     * @return java.util.List<com.community.aspn.pojo.sys.Files>
+     **/
+    @Override
+    public List<Files> getDetailPageList(Map<String,String> map, String remoteAddr) {
+        List<Files> result = null;
+        if ("C".equals(map.get("flag"))){
+            Community community = communityMapper.selectById(Integer.parseInt(map.get("id")));
+            if(community.getDocId() != null || !"".equals(community.getDocId())){
+                List filesList = filesMapper.selectList(new QueryWrapper<Files>().eq("doc_id",community.getDocId()));
+                result = this.getFilesListToFront(filesList,remoteAddr);
+            }
+        }
+        return result;
     }
 
     /**

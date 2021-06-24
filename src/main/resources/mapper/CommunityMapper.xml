@@ -17,7 +17,8 @@
             c.register_id AS registerId,
             c.register_time AS registerTime,
             u.id AS menuId,
-            u. NAME AS menuName
+            u.NAME AS menuName,
+            c.doc_id as docId
         FROM
             community c,
             member m,
