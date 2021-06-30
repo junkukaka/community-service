@@ -11,9 +11,11 @@ import com.community.aspn.pojo.sys.Authority;
 import com.community.aspn.pojo.sys.AuthorityCommunity;
 import com.community.aspn.pojo.sys.AuthorityWiki;
 import com.community.aspn.pojo.sys.Department;
+import com.sun.corba.se.impl.ior.OldJIDLObjectKeyTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -94,8 +96,9 @@ public class AuthorityServiceImpl implements AuthorityService {
      **/
     @Override
     public List<Map<String, Object>> insertAuthorityItem(List<Integer> menus, Integer aId, Integer memberId,String flag) {
-        for (int i = 0; i < menus.size(); i++) {
-            Object obj = this.setAuthorityCommunity(aId, memberId, menus.get(i),flag);
+        List<Integer> notExistsMenus = this.getNotExistsMenus(menus, aId, flag);
+        for (int i = 0; i < notExistsMenus.size(); i++) {
+            Object obj = this.setAuthorityCommunity(aId, memberId, notExistsMenus.get(i),flag);
             if("C".equals(flag)){ //community insert
                 authorityCommunityMapper.insert((AuthorityCommunity) obj);
             }else { //wiki insert
@@ -120,6 +123,93 @@ public class AuthorityServiceImpl implements AuthorityService {
             return authorityMapper.getAuthorityWikiList(aId);
         }
     }
+
+    /**
+     * @Author nanguangjun
+     * @Description // delete authority item by id
+     * @Date 10:18 2021/6/25
+     * @Param [id, flag]
+     * @return void
+     **/
+    @Override
+    public void deleteAuthorityItem(Integer id,String flag) {
+        if("C".equals(flag)){
+            authorityCommunityMapper.deleteById(id);
+        }else {
+            authorityWikiMapper.deleteById(id);
+        }
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // authority item 권한 수정
+     * @Date 16:25 2021/6/25
+     * @Param [id, flag, viewYn, editYn, memberId]
+     * @return void
+     **/
+    @Override
+    public void updateAuthorityItem(Integer id, String flag, Integer viewYn, Integer editYn,Integer memberId) {
+        if("C".equals(flag)){
+            AuthorityCommunity authorityCommunity =
+                    (AuthorityCommunity) this.setUpdateAuthorityItem(id, flag, viewYn, editYn, memberId);
+            authorityCommunityMapper.updateById(authorityCommunity);
+        }else {
+            AuthorityWiki authorityWiki =
+                    (AuthorityWiki) this.setUpdateAuthorityItem(id, flag, viewYn, editYn, memberId);
+            authorityWikiMapper.updateById(authorityWiki);
+        }
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // get not exist menuId by aId, when insert authority item table
+     * @Date 8:54 2021/6/25
+     * @Param [menus, authority Master id]
+     * @return java.util.List<java.lang.Integer>
+     **/
+    private List<Integer> getNotExistsMenus(List<Integer> menus, Integer aId,String flag){
+        List<Integer> result = new ArrayList<>();
+        if("C".equals(flag)){
+            List<Integer> communityList = new ArrayList<>();
+            List<AuthorityCommunity> communities =
+                    authorityCommunityMapper.selectList(new QueryWrapper<AuthorityCommunity>().eq("a_id", aId));
+            for (int i = 0; i < communities.size(); i++) {
+                 communityList.add(communities.get(i).getMenuId());
+            }
+            communityList.removeAll(menus); //差集
+            menus.addAll(communityList); //无重复并集
+        }else {
+            List<Integer> wikiList = new ArrayList<>();
+            List<AuthorityWiki> wikis =
+                    authorityWikiMapper.selectList(new QueryWrapper<AuthorityWiki>().eq("a_id", aId));
+            for (int i = 0; i < wikis.size(); i++) {
+                wikiList.add(wikis.get(i).getMenuId());
+            }
+            wikiList.removeAll(menus); //差集
+            menus.addAll(wikiList); //无重复并集
+        }
+        return menus;
+    }
+
+    private Object setUpdateAuthorityItem(Integer id, String flag, Integer viewYn, Integer editYn,Integer memberId){
+        if("C".equals(flag)){
+            AuthorityCommunity authorityCommunity = new AuthorityCommunity();
+            authorityCommunity.setId(id);
+            authorityCommunity.setViewYn(viewYn);
+            authorityCommunity.setEditYn(editYn);
+            authorityCommunity.setUpdateTime(new Date());
+            authorityCommunity.setUpdateId(memberId);
+            return authorityCommunity;
+        }else {
+            AuthorityWiki authorityWiki = new AuthorityWiki();
+            authorityWiki.setId(id);
+            authorityWiki.setViewYn(viewYn);
+            authorityWiki.setEditYn(editYn);
+            authorityWiki.setUpdateTime(new Date());
+            authorityWiki.setUpdateId(memberId);
+            return authorityWiki;
+        }
+    };
 
     /**
      * @Author nanguangjun

@@ -197,26 +197,6 @@ public class AuthorityController {
         }
     }
 
-    /**
-     * @Author nanguangjun
-     * @Description //  delete authority by id
-     * @Date 9:29 2021/6/23
-     * @Param [id]
-     * @return com.community.aspn.util.AjaxResponse
-     **/
-    @DeleteMapping("/deleteAuthorityItem/{id}")
-    public AjaxResponse deleteAuthorityItem(@PathVariable Integer id){
-        try {
-            int result = authorityService.deleteAuthority(id);
-            if(result > 0){
-                return AjaxResponse.success();
-            }else {
-                return AjaxResponse.error("사용중의 권한을 삭제 할수 없습니다.");
-            }
-        }catch (Exception e){
-            return AjaxResponse.error(e);
-        }
-    }
 
     @PostMapping("/addItems")
     public AjaxResponse insertAuthorityItem(@RequestBody Map<String,Object> request){
@@ -234,6 +214,30 @@ public class AuthorityController {
         String flag = request.getParameter("flag");
         List<Map<String, Object>> result = authorityService.getAuthorityItems(aId, flag);
         return AjaxResponse.success(result);
+    }
+
+    @PostMapping("/deleteItem")
+    public AjaxResponse deleteAuthorityItem(@RequestBody Map<String,Object> request){
+        int aId = Integer.parseInt(request.get("aId").toString());
+        String flag = request.get("flag").toString();
+        authorityService.deleteAuthorityItem(aId,flag);
+        return AjaxResponse.success();
+    }
+
+    @PutMapping("/editItem")
+    public AjaxResponse deleteEditItem(@RequestBody Map<String,Object> request){
+        try {
+            Integer id = Integer.parseInt(request.get("id").toString());
+            String flag = request.get("flag").toString();
+            Integer viewYn = Integer.parseInt(request.get("viewYn").toString());
+            Integer editYn = Integer.parseInt(request.get("editYn").toString());
+            Integer memberId = Integer.parseInt(request.get("memberId").toString());
+            authorityService.updateAuthorityItem(id,flag,viewYn,editYn,memberId);
+            return AjaxResponse.success();
+        }catch (Exception e){
+            return AjaxResponse.error(e);
+        }
+
     }
 
 

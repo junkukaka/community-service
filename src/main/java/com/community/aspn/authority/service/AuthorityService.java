@@ -23,5 +23,7 @@ public interface AuthorityService {
     //Authority item
     List<Map<String,Object>> insertAuthorityItem(List<Integer> menus, Integer aId, Integer memberId,String flag);
     List<Map<String,Object>> getAuthorityItems(Integer aId, String flag);
+    void deleteAuthorityItem(Integer id,String flag);
+    void updateAuthorityItem(Integer id,String flag,Integer viewYn,Integer editYn,Integer memberId);
 
 }
