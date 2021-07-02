@@ -11,7 +11,7 @@ public interface WikiService {
     Wiki insertWiki(WikiHis wikiHis);
     Wiki activeWikiHis(WikiHis wikiHis);
     WikiHis selectWikiHisByID(Integer id,String remoteAddr);
-    List<Map<String, Object>> wikiList(Wiki wiki, String remoteAddr);
+    Map<String, Object> selectPageList(Map<String, Integer> map, String remoteAddr);
     List<Map<String, Object>> wikiMainList(Integer count, String remoteAddr);
     WikiHis selectWikiDetail(Integer id,String remoteAddr);
     List<Map<String, Object>> selectWikiHisProfile(Integer memberId);

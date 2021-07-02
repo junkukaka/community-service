@@ -1,5 +1,6 @@
 package com.community.aspn.community.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.community.aspn.community.mapper.CommentMapper;
 import com.community.aspn.pojo.community.ComComment;
 import com.community.aspn.util.mino.MinoIOComponent;
@@ -105,5 +106,43 @@ public class CommentServiceImpl implements CommentService{
         result.put("page",page); //当前页面
         result.put("pages",pages); //总页数
         return result;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // community 留言消息提醒List
+     * @Date 9:47 2021/6/30
+     * @Param [memberId]
+     * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+     **/
+    @Override
+    public List<Map<String, Object>> getMyCommunityComment(Integer memberId) {
+        List<Map<String, Object>> myCommunityComment = commentMapper.getMyCommunityComment(memberId);
+        return myCommunityComment;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description //  community 留言消息提醒count
+     * @Date 10:05 2021/6/30
+     * @Param [memberId]
+     * @return java.lang.Integer
+     **/
+    @Override
+    public Integer getMyCommunityCommentCount(Integer memberId) {
+        Integer myCommunityCommentCount = commentMapper.getMyCommunityCommentCount(memberId);
+        return myCommunityCommentCount;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // read comment by community id
+     * @Date 15:53 2021/6/30
+     * @Param [id : community id ]
+     * @return void
+     **/
+    @Override
+    public void readComment(Integer id) {
+        commentMapper.updateCommentReadByCommunityId(id);
     }
 }

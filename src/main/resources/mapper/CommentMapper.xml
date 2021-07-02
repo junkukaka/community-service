@@ -47,5 +47,44 @@
         SELECT count(1) FROM com_comment where member_id = #{memberId}
     </select>
 
+    <select id="getMyCommunityComment" resultType="java.util.Map">
+        SELECT
+            a.id,
+            a.title,
+            a.member_id as memberId,
+            count(1) as cnt
+        FROM
+            community a,
+            com_comment b
+        WHERE
+            a.id = b.community_id
+          and a.member_id = #{memberId}
+          and b.read_yn is null
+        GROUP BY a.id ,
+                 a.title,
+                 a.member_id
+    </select>
+
+    <select id="getMyCommunityCommentCount" resultType="java.lang.Integer">
+        SELECT
+            count(1) as cnt
+        FROM
+            community a,
+            com_comment b
+        WHERE
+            a.id = b.community_id
+          and a.member_id = #{memberId}
+          and b.read_yn is null
+    </select>
+
+    <update id="updateCommentReadByCommunityId" parameterType="java.lang.Integer">
+        UPDATE com_comment
+        SET read_yn = 1,
+            update_time = SYSDATE(),
+            update_id = register_id
+        WHERE
+            community_id = #{communityId}
+    </update>
+
 
 </mapper>

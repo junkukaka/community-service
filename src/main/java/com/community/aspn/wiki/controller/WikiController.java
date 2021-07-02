@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -61,12 +62,14 @@ public class WikiController {
      * @Param [menuId, request]
      * @return com.community.aspn.util.AjaxResponse
      **/
-    @GetMapping("/wikis/{menuId}")
-    public AjaxResponse selectWikiList(@PathVariable Integer menuId, HttpServletRequest request){
-        Wiki wiki = new Wiki();
-        wiki.setMenuId(menuId);
-        List<Map<String, Object>> maps = wikiService.wikiList(wiki, request.getRemoteAddr());
-        return AjaxResponse.success(maps);
+    @GetMapping("/wikis/pageList")
+    public AjaxResponse selectWikiList(HttpServletRequest request){
+        Map<String, Integer> map = new HashMap<>();
+        map.put("menuId", Integer.valueOf(request.getParameter("menuId")));
+        map.put("page", Integer.valueOf(request.getParameter("page")));
+        map.put("itemsPerPage",Integer.parseInt(request.getParameter("itemsPerPage")));
+        Map<String, Object> stringObjectMap = wikiService.selectPageList(map,request.getRemoteAddr());
+        return AjaxResponse.success(stringObjectMap);
     }
     /**
      * @Author nanguangjun

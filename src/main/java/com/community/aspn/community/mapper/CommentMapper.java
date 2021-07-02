@@ -13,4 +13,7 @@ public interface CommentMapper extends BaseMapper<ComComment> {
     Integer selectCommentCountByCommunityId(Integer communityId);
     List<Map<String,Object>> selectCommentByMemberId(Map<String,Integer> args);
     Integer selectCommentCountByMemberId(Integer memberId);
+    List<Map<String,Object>> getMyCommunityComment(Integer memberId);
+    Integer getMyCommunityCommentCount(Integer memberId);
+    void updateCommentReadByCommunityId(Integer communityId);
 }

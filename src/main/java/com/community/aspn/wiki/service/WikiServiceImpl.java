@@ -3,6 +3,7 @@ package com.community.aspn.wiki.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.community.aspn.menu.mapper.WikiMenuMapper;
+import com.community.aspn.pojo.sys.CommunityMenu;
 import com.community.aspn.pojo.sys.WikiMenu;
 import com.community.aspn.pojo.wiki.Wiki;
 import com.community.aspn.pojo.wiki.WikiHis;
@@ -12,10 +13,7 @@ import com.community.aspn.wiki.mapper.WikiMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class WikiServiceImpl implements WikiService{
@@ -151,18 +149,37 @@ public class WikiServiceImpl implements WikiService{
      * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
      **/
     @Override
-    public List<Map<String, Object>> wikiList(Wiki wiki, String remoteAddr) {
-        String p = "";
-        List<Integer> menuIdList = this.getMenuList(wiki);
-        List<Map<String, Object>> wikis = wikiMapper.selectWikiList(menuIdList);
-        //图片处理
-        for (int i = 0; i < wikis.size(); i++) {
-            if(wikis.get(i).get("picture") != null){
-                p = minoIOComponent.afterGetContentFromDBToFront(wikis.get(i).get("picture").toString(), remoteAddr);
-                wikis.get(i).put("picture",p);
+    public Map<String, Object> selectPageList(Map<String,Integer> params,String remoteAddr) {
+        Map<String, Object> result = new HashMap<>(); //最后返回值
+        int menuId = params.get("menuId");
+        int page = params.get("page");
+        int size = params.get("itemsPerPage");
+        List<Integer> menuList = this.getMenuList(menuId);
+        Map<String,Object> totalMapArgs = new HashMap<>();
+        totalMapArgs.put("list",menuList);
+        Integer total = wikiMapper.selectWikiListCount(totalMapArgs); //select total
+        int pages = total%size==0 ? total/size : total/size+1;
+
+        //分页查询传参
+        Map<String,Object> args = new HashMap<>();
+        args.put("list",menuList);
+        args.put("page",(page-1)*size);
+        args.put("size",size);
+        List<Map<String, Object>> list = wikiMapper.selectWikiList(args);
+        //图片地址处理
+        for (int i = 0; i < list.size(); i++) {
+            if(list.get(i).get("picture") != null){
+                String picture =
+                        minoIOComponent.afterGetContentFromDBToFront(list.get(i).get("picture").toString(),remoteAddr);
+                list.get(i).put("picture",picture);
+            }else {
+                list.get(i).put("picture","");
             }
         }
-        return wikis;
+        result.put("wikis",list); //数据
+        result.put("page",page); //当前页面
+        result.put("pages",pages); //总页数
+        return result;
     }
 
     /**
@@ -172,9 +189,8 @@ public class WikiServiceImpl implements WikiService{
      * @Param [wiki]
      * @return java.util.List<java.lang.Integer>
      **/
-    private List<Integer> getMenuList(Wiki wiki){
+    private List<Integer> getMenuList(Integer menuId){
         ArrayList<Integer> result = new ArrayList<Integer>();
-        Integer menuId = wiki.getMenuId();
         WikiMenu wikiMenu = wikiMenuMapper.selectById(menuId);
         result.add(menuId);
         if(wikiMenu.getTier().equals(3)){

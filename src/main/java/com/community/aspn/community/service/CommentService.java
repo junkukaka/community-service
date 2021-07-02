@@ -12,4 +12,7 @@ public interface CommentService {
     List<Map<String,Object>> selectCommentByCommunityId(Integer communityId, HttpServletRequest request);
     Integer selectCommentCountByCommunityId(Integer communityId);
     Map<String, Object> selectCommentPageListByMemberId(Map<String,Integer> params);
+    List<Map<String,Object>> getMyCommunityComment(Integer memberId);
+    Integer getMyCommunityCommentCount(Integer memberId);
+    void readComment(Integer id);
 }

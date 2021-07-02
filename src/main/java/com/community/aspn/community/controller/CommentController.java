@@ -72,6 +72,45 @@ public class CommentController {
         commentService.deleteCommentById(id);
         return AjaxResponse.success();
     }
+    
+    /**
+     * @Author nanguangjun
+     * @Description // getMyCommunityComment list
+     * @Date 9:48 2021/6/30
+     * @Param [memberId]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/getMyCommunityComment/{memberId}")
+    public @ResponseBody AjaxResponse getMyCommunityComment(@PathVariable Integer memberId){
+        List<Map<String, Object>> myCommunityComment = commentService.getMyCommunityComment(memberId);
+        return AjaxResponse.success(myCommunityComment);
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // getMyCommunityCommentCount
+     * @Date 9:48 2021/6/30
+     * @Param [memberId]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/getMyCommunityCommentCount/{memberId}")
+    public @ResponseBody AjaxResponse getMyCommunityCommentCount(@PathVariable Integer memberId){
+        Integer myCommunityCommentCount = commentService.getMyCommunityCommentCount(memberId);
+        return AjaxResponse.success(myCommunityCommentCount);
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // read Comment
+     * @Date 16:08 2021/6/30
+     * @Param [id]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @PutMapping("/readComment/{id}")
+    public @ResponseBody AjaxResponse readComment(@PathVariable Integer id){
+        commentService.readComment(id);
+        return AjaxResponse.success();
+    }
 
 
 

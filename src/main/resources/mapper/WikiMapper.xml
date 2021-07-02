@@ -27,6 +27,25 @@
           and w.menu_id = m.id
           and w.his_id is not null
         order by w.update_time desc,m.tier,w.title
+        LIMIT #{page},#{size}
+    </select>
+
+    <select id="selectWikiListCount" resultType="java.lang.Integer">
+        SELECT
+            count(1) as cnt
+        FROM
+            wiki w,
+            wiki_his s,
+            wiki_menu m
+        where w.menu_id in
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+            and w.his_id = s.id
+            and s.his_yn = 1
+            and w.menu_id = m.id
+            and w.his_id is not null
+            order by w.update_time desc,m.tier,w.title
     </select>
 
     <select id="selectWikiMainList" resultType="java.util.Map">

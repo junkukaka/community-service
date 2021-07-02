@@ -11,7 +11,8 @@ import java.util.Map;
 public interface WikiMapper extends BaseMapper<Wiki> {
     //insert wiki and return primary key
     Integer addWiki(Wiki wiki);
-    List<Map<String,Object>> selectWikiList(List<Integer> menuIdList);
+    List<Map<String,Object>> selectWikiList(Map<String,Object> args);
+    Integer selectWikiListCount(Map<String,Object> args);
     List<Map<String,Object>> selectWikiMainList(Integer count);
     List<Map<String,Object>> selectWikiHisList(Integer wikiId);
     List<Map<String,Object>> selectWikiHisProfile(Integer memberId);

@@ -148,9 +148,6 @@ public class CommunityServiceImpl implements CommunityService{
             }
         }
 
-        CommunityMenu communityMenu = communityMenuMapper.selectById(menuId);
-
-        result.put("menuName", communityMenu.getName());
         result.put("communitys",list); //数据
         result.put("page",page); //当前页面
         result.put("pages",pages); //总页数

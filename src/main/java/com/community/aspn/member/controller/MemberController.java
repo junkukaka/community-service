@@ -212,6 +212,19 @@ public class MemberController {
         return AjaxResponse.success();
     }
 
+    /**
+     * @Author nanguangjun
+     * @Description //  member Verify 查看token的有效期
+     * @Date 14:21 2021/7/2
+     * @Param [token]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/memberVerify/{token}")
+    public @ResponseBody AjaxResponse memberVerify(@PathVariable String token){
+        int verify = TokenUtil.verify(token);
+        return AjaxResponse.success(verify);
+    }
+
 
 
 }
