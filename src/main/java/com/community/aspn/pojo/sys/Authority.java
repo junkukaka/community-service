@@ -10,7 +10,7 @@ import java.util.Date;
 @Data
 @TableName("authority")
 public class Authority {
-    @TableId(type = IdType.AUTO)
+    @TableId
     private Integer id;
     private String name;
     private Integer registerId;

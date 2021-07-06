@@ -42,6 +42,19 @@
           AND b.a_id = #{aId}
     </select>
 
+    <select id="getDepartments" resultType="java.util.Map">
+        SELECT
+            d.id,
+            d.name,
+            d.authority,
+            a.name as authorityName
+        FROM
+            department d,
+            authority a
+        WHERE
+            d.authority = a.id
+    </select>
+
 
 
 </mapper>

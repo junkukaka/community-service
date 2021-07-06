@@ -29,7 +29,7 @@ public class AuthorityController {
      **/
     @GetMapping("/getDepartments")
     public AjaxResponse getAllDepartment(){
-        List<Department> allDepartment = authorityService.getAllDepartment();
+        List<Map<String,Object>> allDepartment = authorityService.getAllDepartment();
         return AjaxResponse.success(allDepartment);
     }
 

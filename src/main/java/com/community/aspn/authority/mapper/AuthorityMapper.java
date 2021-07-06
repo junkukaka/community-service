@@ -11,4 +11,5 @@ import java.util.Map;
 public interface AuthorityMapper extends BaseMapper<Authority> {
     List<Map<String,Object>> getAuthorityCommunityList(Integer aId);
     List<Map<String,Object>> getAuthorityWikiList(Integer aId);
+    List<Map<String,Object>> getDepartments();
 }

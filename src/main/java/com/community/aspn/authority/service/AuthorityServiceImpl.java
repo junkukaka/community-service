@@ -40,8 +40,8 @@ public class AuthorityServiceImpl implements AuthorityService {
     AuthorityWikiMapper authorityWikiMapper;
 
     @Override
-    public List<Department> getAllDepartment() {
-        return departmentMapper.selectList(null);
+    public List<Map<String,Object>> getAllDepartment() {
+        return authorityMapper.getDepartments();
     }
 
     @Override
@@ -74,6 +74,9 @@ public class AuthorityServiceImpl implements AuthorityService {
 
     @Override
     public void insertAuthority(Authority authority) {
+        authority.setRegisterTime(new Date());
+        authority.setUpdateTime(new Date());
+        authority.setRegisterId(authority.getUpdateId());
         authorityMapper.insert(authority);
     }
 

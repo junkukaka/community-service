@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface AuthorityService {
     //Department
-    List<Department> getAllDepartment();
+    List<Map<String,Object>> getAllDepartment();
     void insertDepartment(Department department);
     int deleteDepartment(String id);
     void updateDepartment(Department department);
