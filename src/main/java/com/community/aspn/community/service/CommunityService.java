@@ -16,6 +16,6 @@ public interface CommunityService {
     Map<String,Object> selectPageList(Map<String,Integer> map,HttpServletRequest request);
     Map<String,Object> selectCommunityListByMember(Map<String,Integer> map);
     Map<String,Object> selectCommunityDetail(Integer id, HttpServletRequest request);
-    List<Map<String,Object>> selectCommunityInMainPage(Map<String,Integer> param,HttpServletRequest request);
+    List<Map<String,Object>> selectCommunityInMainPage(Map<String,Object> params);
     Integer getCommunityMenuId(Integer id);
 }

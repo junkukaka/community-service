@@ -3,6 +3,7 @@ package com.community.aspn.wiki.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.community.aspn.menu.mapper.WikiMenuMapper;
+import com.community.aspn.menu.service.WikiMenuService;
 import com.community.aspn.pojo.sys.CommunityMenu;
 import com.community.aspn.pojo.sys.WikiMenu;
 import com.community.aspn.pojo.wiki.Wiki;
@@ -29,6 +30,9 @@ public class WikiServiceImpl implements WikiService{
 
     @Resource
     WikiMenuMapper wikiMenuMapper;
+
+    @Resource
+    WikiMenuService wikiMenuService;
 
     /**
      * @Author nanguangjun
@@ -154,7 +158,9 @@ public class WikiServiceImpl implements WikiService{
         int menuId = params.get("menuId");
         int page = params.get("page");
         int size = params.get("itemsPerPage");
+        ArrayList<Integer> authorityWikiList = wikiMenuService.getAuthorityMenus(params.get("authority"));
         List<Integer> menuList = this.getMenuList(menuId);
+        menuList.retainAll(authorityWikiList);
         Map<String,Object> totalMapArgs = new HashMap<>();
         totalMapArgs.put("list",menuList);
         Integer total = wikiMapper.selectWikiListCount(totalMapArgs); //select total
@@ -223,13 +229,16 @@ public class WikiServiceImpl implements WikiService{
      * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
      **/
     @Override
-    public List<Map<String, Object>> wikiMainList(Integer count, String remoteAddr) {
-        List<Map<String, Object>> wikis = wikiMapper.selectWikiMainList(count);
+    public List<Map<String, Object>> wikiMainList(Map<String,Object> params) {
+        ArrayList<Integer> authorityMenuList = wikiMenuService.getAuthorityMenus(Integer.parseInt(params.get("authority").toString()));
+        params.put("list",authorityMenuList);
+        List<Map<String, Object>> wikis = wikiMapper.selectWikiMainList(params);
         String p = "";
         //图片处理
         for (int i = 0; i < wikis.size(); i++) {
             if(wikis.get(i).get("picture") != null){
-                p = minoIOComponent.afterGetContentFromDBToFront(wikis.get(i).get("picture").toString(), remoteAddr);
+                p = minoIOComponent.afterGetContentFromDBToFront(wikis.get(i).get("picture").toString(),
+                        params.get("remoteAddr").toString());
                 wikis.get(i).put("picture",p);
             }
         }

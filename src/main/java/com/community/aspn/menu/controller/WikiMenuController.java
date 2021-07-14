@@ -88,9 +88,22 @@ public class WikiMenuController {
      * @Param []
      * @return com.community.aspn.util.AjaxResponse
      **/
-    @GetMapping("/menus/tree")
-    public @ResponseBody AjaxResponse selectMenuTree(){
-        List<Map<String, Object>> menuTree = wikiMenuService.getMenuTree();
+    @GetMapping("/menus/tree/{authority}")
+    public @ResponseBody AjaxResponse selectMenuTree(@PathVariable Integer authority){
+        List<Map<String, Object>> menuTree = wikiMenuService.getMenuTree(authority);
+        return  AjaxResponse.success(menuTree);
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // 获取所有menu
+     * @Date 14:52 2021/7/9
+     * @Param []
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/menus/getAllMenuTree")
+    public @ResponseBody AjaxResponse getAllMenuTree(){
+        List<Map<String, Object>> menuTree = wikiMenuService.getAllMenuTree();
         return  AjaxResponse.success(menuTree);
     }
 

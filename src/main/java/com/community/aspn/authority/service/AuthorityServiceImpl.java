@@ -165,13 +165,44 @@ public class AuthorityServiceImpl implements AuthorityService {
 
     /**
      * @Author nanguangjun
+     * @Description // get wiki authority by authority and menuId
+     * @Date 9:26 2021/7/14
+     * @Param [params]
+     * @return com.community.aspn.pojo.sys.AuthorityWiki
+     **/
+    @Override
+    public AuthorityWiki getMemberWikiAuthority(Map<String, Integer> params) {
+        QueryWrapper<AuthorityWiki> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("menu_id",params.get("menuId"))
+                .eq("a_id",params.get("authority"));
+        AuthorityWiki authorityWiki = authorityWikiMapper.selectOne(queryWrapper);
+        return authorityWiki;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description //get community authority by authority and menuId
+     * @Date 10:44 2021/7/14
+     * @Param [params]
+     * @return com.community.aspn.pojo.sys.AuthorityCommunity
+     **/
+    @Override
+    public AuthorityCommunity getMemberCommunityAuthority(Map<String, Integer> params) {
+        QueryWrapper<AuthorityCommunity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("menu_id",params.get("menuId"))
+                .eq("a_id",params.get("authority"));
+        AuthorityCommunity authorityCommunity = authorityCommunityMapper.selectOne(queryWrapper);
+        return authorityCommunity;
+    }
+
+    /**
+     * @Author nanguangjun
      * @Description // get not exist menuId by aId, when insert authority item table
      * @Date 8:54 2021/6/25
      * @Param [menus, authority Master id]
      * @return java.util.List<java.lang.Integer>
      **/
     private List<Integer> getNotExistsMenus(List<Integer> menus, Integer aId,String flag){
-        List<Integer> result = new ArrayList<>();
         if("C".equals(flag)){
             List<Integer> communityList = new ArrayList<>();
             List<AuthorityCommunity> communities =

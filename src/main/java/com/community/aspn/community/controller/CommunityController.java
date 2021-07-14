@@ -93,6 +93,7 @@ public class CommunityController {
         map.put("menuId", Integer.valueOf(request.getParameter("menuId")));
         map.put("page", Integer.valueOf(request.getParameter("page")));
         map.put("itemsPerPage",Integer.parseInt(request.getParameter("itemsPerPage")));
+        map.put("authority",Integer.parseInt(request.getParameter("authority")));
         Map<String, Object> stringObjectMap = communityService.selectPageList(map,request);
         return AjaxResponse.success(stringObjectMap);
     }
@@ -104,9 +105,15 @@ public class CommunityController {
      * @Param [request]
      * @return com.community.aspn.util.AjaxResponse
      **/
-    @PostMapping("/communitys/mainPage")
-    public @ResponseBody AjaxResponse selectCommunityInMainPage(@RequestBody Map<String,Integer> param, HttpServletRequest request){
-        List<Map<String, Object>> maps = communityService.selectCommunityInMainPage(param,request);
+    @GetMapping("/communitys/mainPage")
+    public @ResponseBody AjaxResponse selectCommunityInMainPage(HttpServletRequest request){
+        Integer count = Integer.parseInt(request.getParameter("count"));
+        Integer authority = Integer.parseInt(request.getParameter("authority"));
+        Map<String,Object> params = new HashMap<>();
+        params.put("count",count);
+        params.put("authority",authority);
+        params.put("remoteAddr",request.getRemoteAddr());
+        List<Map<String, Object>> maps = communityService.selectCommunityInMainPage(params);
         return AjaxResponse.success(maps);
     }
 

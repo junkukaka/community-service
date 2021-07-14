@@ -2,6 +2,8 @@ package com.community.aspn.authority.controller;
 
 import com.community.aspn.authority.service.AuthorityService;
 import com.community.aspn.pojo.sys.Authority;
+import com.community.aspn.pojo.sys.AuthorityCommunity;
+import com.community.aspn.pojo.sys.AuthorityWiki;
 import com.community.aspn.pojo.sys.Department;
 import com.community.aspn.util.AjaxResponse;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -100,6 +103,42 @@ public class AuthorityController {
     public AjaxResponse getAllAuthority(){
         List<Authority> allAuthority = authorityService.getAllAuthority();
         return AjaxResponse.success(allAuthority);
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // wiki List page get member authority
+     * @Date 9:42 2021/7/14
+     * @Param [request]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/getMemberWikiAuthority")
+    public AjaxResponse getMemberWikiAuthority(HttpServletRequest request){
+        Integer menuId = Integer.parseInt(request.getParameter("menuId"));
+        Integer authority = Integer.parseInt(request.getParameter("authority"));
+        Map<String, Integer> params = new HashMap<>();
+        params.put("menuId",menuId);
+        params.put("authority",authority);
+        AuthorityWiki authorityWiki = authorityService.getMemberWikiAuthority(params);
+        return AjaxResponse.success(authorityWiki);
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // wiki List page get member authority
+     * @Date 9:42 2021/7/14
+     * @Param [request]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/getMemberCommunityAuthority")
+    public AjaxResponse getMemberCommunityAuthority(HttpServletRequest request){
+        Integer menuId = Integer.parseInt(request.getParameter("menuId"));
+        Integer authority = Integer.parseInt(request.getParameter("authority"));
+        Map<String, Integer> params = new HashMap<>();
+        params.put("menuId",menuId);
+        params.put("authority",authority);
+        AuthorityCommunity authorityCommunity = authorityService.getMemberCommunityAuthority(params);
+        return AjaxResponse.success(authorityCommunity);
     }
 
     /**

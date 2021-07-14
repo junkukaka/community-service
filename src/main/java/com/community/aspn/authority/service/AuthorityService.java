@@ -2,6 +2,8 @@ package com.community.aspn.authority.service;
 
 
 import com.community.aspn.pojo.sys.Authority;
+import com.community.aspn.pojo.sys.AuthorityCommunity;
+import com.community.aspn.pojo.sys.AuthorityWiki;
 import com.community.aspn.pojo.sys.Department;
 
 import java.util.List;
@@ -26,4 +28,7 @@ public interface AuthorityService {
     void deleteAuthorityItem(Integer id,String flag);
     void updateAuthorityItem(Integer id,String flag,Integer viewYn,Integer editYn,Integer memberId);
 
+    AuthorityWiki getMemberWikiAuthority(Map<String, Integer> params);
+
+    AuthorityCommunity getMemberCommunityAuthority(Map<String, Integer> params);
 }

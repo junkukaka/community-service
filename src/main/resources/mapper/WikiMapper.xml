@@ -60,6 +60,10 @@
             wiki_his s
         where w.his_id = s.id
           and s.his_yn = 1
+          and w.menu_id in
+            <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
           and w.his_id is not null
         ORDER BY w.update_time DESC
         LIMIT #{count}

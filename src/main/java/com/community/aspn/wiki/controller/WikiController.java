@@ -68,6 +68,7 @@ public class WikiController {
         map.put("menuId", Integer.valueOf(request.getParameter("menuId")));
         map.put("page", Integer.valueOf(request.getParameter("page")));
         map.put("itemsPerPage",Integer.parseInt(request.getParameter("itemsPerPage")));
+        map.put("authority",Integer.parseInt(request.getParameter("authority")));
         Map<String, Object> stringObjectMap = wikiService.selectPageList(map,request.getRemoteAddr());
         return AjaxResponse.success(stringObjectMap);
     }
@@ -92,13 +93,17 @@ public class WikiController {
      * @Param [request]
      * @return com.community.aspn.util.AjaxResponse
      **/
-    @GetMapping("/wikiMain/{count}")
-    public AjaxResponse selectWikiMain(@PathVariable Integer count, HttpServletRequest request){
+    @GetMapping("/wikiMain")
+    public AjaxResponse selectWikiMain(HttpServletRequest request){
+        Map<String, Object> map = new HashMap<>();
         String remoteAddr = request.getRemoteAddr();
-        if(count == null){
+        map.put("authority",request.getParameter("authority"));
+        map.put("remoteAddr",request.getRemoteAddr());
+        map.put("count",Integer.parseInt(request.getParameter("count")));
+        if(request.getParameter("count") == null){
             AjaxResponse.success(null);
         }
-        List<Map<String, Object>> maps = wikiService.wikiMainList(count, remoteAddr);
+        List<Map<String, Object>> maps = wikiService.wikiMainList(map);
         return AjaxResponse.success(maps);
     }
 

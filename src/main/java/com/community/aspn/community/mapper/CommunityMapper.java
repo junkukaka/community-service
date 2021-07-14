@@ -12,5 +12,5 @@ public interface CommunityMapper extends BaseMapper<Community> {
     Map<String,Object> selectCommunityDetail(Integer id);
     List<Map<String,Object>> selectCommunityList(Map<String,Object> param);
     Integer selectCommunityListCount(Map<String,Object> param);
-    List<Map<String,Object>> selectCommunityInMainPage(Map<String,Integer> param);
+    List<Map<String,Object>> selectCommunityInMainPage(Map<String,Object> param);
 }

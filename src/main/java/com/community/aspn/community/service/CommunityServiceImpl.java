@@ -3,6 +3,7 @@ package com.community.aspn.community.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.community.aspn.community.mapper.CommunityMapper;
 import com.community.aspn.menu.mapper.CommunityMenuMapper;
+import com.community.aspn.menu.service.CommunityMenuService;
 import com.community.aspn.pojo.community.Community;
 import com.community.aspn.pojo.sys.CommunityMenu;
 import com.community.aspn.util.mino.MinIOFileUtil;
@@ -24,6 +25,9 @@ public class CommunityServiceImpl implements CommunityService{
 
     @Resource
     MinoIOComponent minoIOComponent;
+
+    @Resource
+    CommunityMenuService communityMenuService;
 
 
     /**
@@ -125,12 +129,13 @@ public class CommunityServiceImpl implements CommunityService{
         int menuId = params.get("menuId");
         int page = params.get("page");
         int size = params.get("itemsPerPage");
+        ArrayList<Integer> authorityMenuIdList = communityMenuService.getAuthorityMenus(params.get("authority"));
         List<Integer> menuList = this.getMenuList(menuId);
+        menuList.retainAll(authorityMenuIdList);
         Map<String,Object> totalMapArgs = new HashMap<>();
         totalMapArgs.put("list",menuList);
         Integer total = communityMapper.selectCommunityListCount(totalMapArgs); //select total
         int pages = total%size==0 ? total/size : total/size+1;
-
         //分页查询传参
         Map<String,Object> args = new HashMap<>();
         args.put("list",menuList);
@@ -247,13 +252,17 @@ public class CommunityServiceImpl implements CommunityService{
      * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
      **/
     @Override
-    public List<Map<String, Object>> selectCommunityInMainPage(Map<String,Integer> param,HttpServletRequest request) {
-        List<Map<String, Object>> list = communityMapper.selectCommunityInMainPage(param);
+    public List<Map<String, Object>> selectCommunityInMainPage(Map<String,Object> params) {
+        //권한 관리
+        ArrayList<Integer> menuList = communityMenuService.getAuthorityMenus(Integer.parseInt(params.get("authority").toString()));
+        params.put("list",menuList);
+        List<Map<String, Object>> list = communityMapper.selectCommunityInMainPage(params);
         //图片地址处理
         for (int i = 0; i < list.size(); i++) {
             if(list.get(i).get("picture") != null){
                 String picture =
-                        minoIOComponent.afterGetContentFromDBToFront(list.get(i).get("picture").toString(),request.getRemoteAddr());
+                        minoIOComponent.afterGetContentFromDBToFront(
+                                list.get(i).get("picture").toString(), params.get("remoteAddr").toString());
                 list.get(i).put("picture",picture);
             }else {
                 list.get(i).put("picture","");

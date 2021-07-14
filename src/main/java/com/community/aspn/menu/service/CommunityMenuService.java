@@ -17,7 +17,12 @@ public interface CommunityMenuService {
 
     List<CommunityMenu> getMenusByCondition(CommunityMenu communityMenu);
 
-    List<Map<String, Object>> getMenuTree();
+    List<Map<String, Object>> getMenuTree(Integer authority);
 
     List<Map<String, Object>> getDashboard(Integer menuId);
+
+    List<Map<String, Object>> getAllMenuTree();
+
+    ArrayList<Integer> getAuthorityMenus(Integer authorityId);
+
 }

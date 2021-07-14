@@ -12,7 +12,7 @@ public interface WikiService {
     Wiki activeWikiHis(WikiHis wikiHis);
     WikiHis selectWikiHisByID(Integer id,String remoteAddr);
     Map<String, Object> selectPageList(Map<String, Integer> map, String remoteAddr);
-    List<Map<String, Object>> wikiMainList(Integer count, String remoteAddr);
+    List<Map<String, Object>> wikiMainList(Map<String,Object> map);
     WikiHis selectWikiDetail(Integer id,String remoteAddr);
     List<Map<String, Object>> selectWikiHisProfile(Integer memberId);
     List<Map<String, Object>> selectWikiHisList(Integer wikiId, String remoteAddr);

@@ -89,9 +89,22 @@ public class CommunityMenuController {
      * @Param []
      * @return com.community.aspn.util.AjaxResponse
      **/
-    @GetMapping("/menus/tree")
-    public @ResponseBody AjaxResponse selectMenuTree(){
-        List<Map<String, Object>> menuTree = communityMenuService.getMenuTree();
+    @GetMapping("/menus/tree/{authority}")
+    public @ResponseBody AjaxResponse selectMenuTree(@PathVariable Integer authority){
+        List<Map<String, Object>> menuTree = communityMenuService.getMenuTree(authority);
+        return  AjaxResponse.success(menuTree);
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description //获取menu tree
+     * @Date 9:14 2021/1/18
+     * @Param []
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/menus/getAllMenuTree")
+    public @ResponseBody AjaxResponse getAllMenuTree(){
+        List<Map<String, Object>> menuTree = communityMenuService.getAllMenuTree();
         return  AjaxResponse.success(menuTree);
     }
 
