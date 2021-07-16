@@ -3,7 +3,6 @@ package com.community.aspn.menu.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.community.aspn.authority.mapper.AuthorityWikiMapper;
 import com.community.aspn.menu.mapper.WikiMenuMapper;
-import com.community.aspn.pojo.sys.AuthorityCommunity;
 import com.community.aspn.pojo.sys.AuthorityWiki;
 import com.community.aspn.pojo.sys.WikiMenu;
 import org.springframework.stereotype.Service;
@@ -106,14 +105,31 @@ public class WikiMenuServiceImpl implements WikiMenuService {
      * @Param []
      * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
      **/
-    public List<Map<String,Object>> getMenuTree(Integer authorityId){
+    public List<Map<String,Object>> getMenuTree(Map<String,Integer> params){
         List<WikiMenu> first = wikiMenuMapper.selectMenuByTier(1);
         List<WikiMenu> second = wikiMenuMapper.selectMenuByTier(2);
         List<WikiMenu> third = wikiMenuMapper.selectMenuByTier(3);
-        ArrayList<Integer> authorityMenus = this.getAuthorityMenus(authorityId);
+        ArrayList<Integer> authorityMenus = this.getAuthorityMenusByFlag(params);
         List<Map<String, Object>> getSecondTmpMenus = this.getSecondTmpMenus(second, third,authorityMenus);
         List<Map<String, Object>> finalMenuList = this.getFinalMenuList(first, getSecondTmpMenus,authorityMenus);
         return finalMenuList;
+    }
+
+    private ArrayList<Integer> getAuthorityMenusByFlag(Map<String, Integer> params) {
+        QueryWrapper<AuthorityWiki> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("a_id",params.get("authority"));
+        //0:viewYn ; 1:editYn
+        if(params.get("flag") == 0){
+            queryWrapper.eq("view_yn",1);
+        }else {
+            queryWrapper.eq("edit_yn",1);
+        }
+        List<AuthorityWiki> authorityWikis = authorityWikiMapper.selectList(queryWrapper);
+        ArrayList<Integer> list = new ArrayList<>();
+        for (AuthorityWiki authorityWiki : authorityWikis) {
+            list.add(authorityWiki.getMenuId());
+        }
+        return list;
     }
 
 

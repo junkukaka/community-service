@@ -6,6 +6,8 @@ import com.community.aspn.util.AjaxResponse;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -88,9 +90,15 @@ public class WikiMenuController {
      * @Param []
      * @return com.community.aspn.util.AjaxResponse
      **/
-    @GetMapping("/menus/tree/{authority}")
-    public @ResponseBody AjaxResponse selectMenuTree(@PathVariable Integer authority){
-        List<Map<String, Object>> menuTree = wikiMenuService.getMenuTree(authority);
+    @GetMapping("/menus/tree")
+    public @ResponseBody AjaxResponse selectMenuTree(HttpServletRequest httpServletRequest){
+        Map<String, Integer> params = new HashMap<>();
+        Integer authority = Integer.parseInt(httpServletRequest.getParameter("authority"));
+        params.put("authority",authority);
+        //0:viewYn ; 1:editYn
+        Integer flag = Integer.parseInt(httpServletRequest.getParameter("flag"));
+        params.put("flag",flag);
+        List<Map<String, Object>> menuTree = wikiMenuService.getMenuTree(params);
         return  AjaxResponse.success(menuTree);
     }
 

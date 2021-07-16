@@ -17,7 +17,7 @@ public interface WikiMenuService {
 
     List<WikiMenu> getMenusByCondition(WikiMenu wikiMenu);
 
-    List<Map<String, Object>> getMenuTree(Integer authority);
+    List<Map<String, Object>> getMenuTree(Map<String,Integer> params);
 
     List<Map<String, Object>> getDashboard(Integer menuId);
 

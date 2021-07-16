@@ -111,14 +111,31 @@ public class CommunityMenuServiceImpl implements CommunityMenuService {
      * @Param []
      * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
      **/
-    public List<Map<String,Object>> getMenuTree(Integer authorityId){
+    public List<Map<String,Object>> getMenuTree(Map<String, Integer> params){
         List<CommunityMenu> first = communityMenuMapper.selectMenuByTier(1);
         List<CommunityMenu> second = communityMenuMapper.selectMenuByTier(2);
         List<CommunityMenu> third = communityMenuMapper.selectMenuByTier(3);
-        ArrayList<Integer> authorityMenus = this.getAuthorityMenus(authorityId);
+        ArrayList<Integer> authorityMenus = this.getAuthorityMenusByFlag(params);
         List<Map<String, Object>> getSecondTmpMenus = this.getSecondTmpMenus(second, third,authorityMenus);
         List<Map<String, Object>> finalMenuList = this.getFinalMenuList(first, getSecondTmpMenus,authorityMenus);
         return finalMenuList;
+    }
+
+    private ArrayList<Integer> getAuthorityMenusByFlag(Map<String, Integer> params) {
+        QueryWrapper<AuthorityCommunity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("a_id",params.get("authority"));
+        //0:viewYn ; 1:editYn
+        if(params.get("flag") == 0){
+            queryWrapper.eq("view_yn",1);
+        }else {
+            queryWrapper.eq("edit_yn",1);
+        }
+        List<AuthorityCommunity> communities = authorityCommunityMapper.selectList(queryWrapper);
+        ArrayList<Integer> list = new ArrayList<>();
+        for (AuthorityCommunity authorityCommunity:communities) {
+            list.add(authorityCommunity.getMenuId());
+        }
+        return list;
     }
 
 

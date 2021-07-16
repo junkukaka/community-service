@@ -21,6 +21,7 @@ public class MemberApp {
     private String memberYn;
     //部门
     private String department;
+    private Integer authority;
     private String phone;
     //备注
     private String comment;

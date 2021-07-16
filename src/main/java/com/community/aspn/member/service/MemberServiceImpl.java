@@ -1,10 +1,12 @@
 package com.community.aspn.member.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.community.aspn.authority.mapper.DepartmentMapper;
 import com.community.aspn.member.mapper.MemberAppMapper;
 import com.community.aspn.pojo.member.Member;
 import com.community.aspn.member.mapper.MemberMapper;
 import com.community.aspn.pojo.member.MemberApp;
+import com.community.aspn.pojo.sys.Department;
 import com.community.aspn.util.mino.MinIOProperties;
 import com.community.aspn.util.mino.MinoIOComponent;
 import org.springframework.stereotype.Service;
@@ -36,6 +38,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Resource
     MemberAppMapper memberAppMapper;
+
+    @Resource
+    DepartmentMapper departmentMapper;
 
     /**
      * @Author nanguangjun
@@ -301,6 +306,9 @@ public class MemberServiceImpl implements MemberService {
         MemberApp memberApp;
         for (int i = 0; i < ids.size(); i++) {
             memberApp = memberAppMapper.selectById(ids.get(i));
+            String department = memberApp.getDepartment();
+            Department d = departmentMapper.selectById(department);
+            memberApp.setAuthority(d.getAuthority());
             this.appMemberInsertMember(memberApp);
         }
     }
@@ -332,6 +340,7 @@ public class MemberServiceImpl implements MemberService {
         member.setMemberName(memberApp.getMemberName());
         member.setPassword(memberApp.getPassword());
         member.setEmail(memberApp.getEmail());
+        member.setAuthority(memberApp.getAuthority());
         member.setDepartment(memberApp.getDepartment());
         member.setRegisterTime(new Date());
         member.setStatus("ON");
