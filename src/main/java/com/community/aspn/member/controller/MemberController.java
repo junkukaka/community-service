@@ -225,6 +225,24 @@ public class MemberController {
         return AjaxResponse.success(verify);
     }
 
+    /**
+     * @Author nanguangjun
+     * @Description // 初始化密码 123456
+     * @Date 8:23 2021/7/20
+     * @Param [id]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @PutMapping("/iniPassword")
+    public @ResponseBody AjaxResponse iniPassword(@RequestBody Member member){
+        try {
+            memberservice.iniPassword(member.getId());
+            return AjaxResponse.success();
+        }catch (Exception e){
+            System.out.println(e);
+            return AjaxResponse.error();
+        }
+    }
+
 
 
 }

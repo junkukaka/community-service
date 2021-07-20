@@ -329,6 +329,20 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * @Author nanguangjun
+     * @Description // 初始化密码:123456
+     * @Date 8:25 2021/7/20
+     * @Param [id]
+     * @return void
+     **/
+    @Override
+    public void iniPassword(Integer id) {
+        Member member = memberMapper.selectById(id);
+        member.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
+        memberMapper.updateById(member);
+    }
+
+    /**
+     * @Author nanguangjun
      * @Description // member insert by memberApp
      * @Date 17:06 2021/5/26
      * @Param [memberApp]

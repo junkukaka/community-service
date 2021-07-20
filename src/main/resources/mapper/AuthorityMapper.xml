@@ -47,12 +47,10 @@
             d.id,
             d.name,
             d.authority,
-            a.name as authorityName
+            a.name AS authorityName
         FROM
-            department d,
-            authority a
-        WHERE
-            d.authority = a.id
+            department d
+                LEFT JOIN authority a ON d.authority = a.id
     </select>
 
 

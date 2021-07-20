@@ -63,6 +63,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 
     @Override
     public void updateDepartment(Department department) {
+        department.setUpdateTime(new Date());
         departmentMapper.updateById(department);
     }
 

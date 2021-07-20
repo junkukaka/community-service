@@ -32,4 +32,5 @@ public interface MemberService {
 
     void appMemberDelete(List<Integer> ids);
 
+    void iniPassword(Integer id);
 }
