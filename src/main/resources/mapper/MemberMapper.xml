@@ -56,7 +56,9 @@
             m.email,
             m.phone,
             m.department,
-            d.`name` as departmentName,
+            m.authority,
+            (select name from authority where id = m.authority) as authorityName,
+            d.name as departmentName,
             date_format(m.register_time,'%Y-%m-%d %H:%i:%S') as registerTime,
             date_format(m.update_time,'%Y-%m-%d %H:%i:%S') as updateTime
         FROM
