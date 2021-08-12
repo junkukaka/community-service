@@ -7,6 +7,7 @@ import com.community.aspn.pojo.member.Member;
 import com.community.aspn.member.mapper.MemberMapper;
 import com.community.aspn.pojo.member.MemberApp;
 import com.community.aspn.pojo.sys.Department;
+import com.community.aspn.util.mino.MailSendUtil;
 import com.community.aspn.util.mino.MinIOProperties;
 import com.community.aspn.util.mino.MinoIOComponent;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Resource
     DepartmentMapper departmentMapper;
+
+    @Resource
+    MailSendUtil mailSendUtil;
 
     /**
      * @Author nanguangjun
@@ -266,6 +270,7 @@ public class MemberServiceImpl implements MemberService {
             memberAppMapper.insert(memberApp);
             resultMap.put("code", "1");
             resultMap.put("msg", "신청 성공!");
+            mailSendUtil.memberApplicationRemind(memberApp);
         }
         return resultMap;
     }
@@ -310,6 +315,8 @@ public class MemberServiceImpl implements MemberService {
             Department d = departmentMapper.selectById(department);
             memberApp.setAuthority(d.getAuthority());
             this.appMemberInsertMember(memberApp);
+            Member member = memberMapper.selectOne(new QueryWrapper<Member>().eq("login_id", memberApp.getLoginId()));
+            mailSendUtil.memberApplicationRemindSuccess(member);
         }
     }
 

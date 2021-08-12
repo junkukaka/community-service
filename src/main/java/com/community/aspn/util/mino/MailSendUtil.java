@@ -1,5 +1,7 @@
 package com.community.aspn.util.mino;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.community.aspn.member.mapper.MemberMapper;
 import com.community.aspn.pojo.member.Member;
 import com.community.aspn.pojo.member.MemberApp;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,7 +12,10 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import javax.mail.internet.MimeMessage;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 @Component
 public class MailSendUtil {
@@ -22,6 +27,9 @@ public class MailSendUtil {
     private String from;
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    @Resource
+    private MemberMapper memberMapper;
 
     /**
      * @Author nanguangjun
@@ -46,9 +54,27 @@ public class MailSendUtil {
      **/
     public void memberApplicationRemind(MemberApp memberApp){
         String date = simpleDateFormat.format(new Date());
-        String subject = "ASPN Community&Wiki 회원가입 신청" + date;
+        String subject = "ASPN Community&Wiki 회원가입 신청 " + date;
         String content = this.getMemberApplicationRemindRemind(memberApp);
         this.sendHtmlMail(memberApp.getEmail(),subject,content);
+        //관리자 한테 신청성고 메세지를 보낸다
+        this.memberApplicationToAdmin(memberApp,content);
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // 회원 가입 신청 메세지을 admin 한테 보냅니다
+     * @Date 10:22 2021/8/9
+     * @Param []
+     * @return void
+     **/
+    public void memberApplicationToAdmin(MemberApp memberApp,String content){
+        List<String> adminMail = this.getAdminMail();
+        String date = simpleDateFormat.format(new Date());
+        String subject = "ASPN Community&Wiki " + memberApp.getMemberName() + "님 회원가입 신청 " + date;
+        for (int i = 0; i < adminMail.size(); i++) {
+            this.sendHtmlMail(adminMail.get(i),subject,content);
+        }
     }
 
     /**
@@ -140,5 +166,22 @@ public class MailSendUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    /**
+     * @Author nanguangjun
+     * @Description // 获取Admin 邮箱
+     * @Date 10:21 2021/8/9
+     * @Param []
+     * @return java.util.List<java.lang.String>
+     **/
+    public List<String> getAdminMail(){
+        List<Member> members = memberMapper.selectList(new QueryWrapper<Member>().eq("authority", 0));
+        List<String> result = new ArrayList<>();
+        for (int i = 0; i < members.size(); i++) {
+            result.add(members.get(i).getEmail());
+        }
+        return result;
     }
 }

@@ -16,7 +16,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Date;
 
-@SpringBootTest
+//@SpringBootTest
 public class MailTest {
 
     @Autowired

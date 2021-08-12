@@ -155,12 +155,12 @@ class AspnApplicationTests {
 //        }
 //    }
 //
-    @Test
-    public void testMd5() throws NoSuchAlgorithmException {
-        // spring自带工具包DigestUtils
-        System.out.println(DigestUtils.md5DigestAsHex("qwe".getBytes()));
-        // 7815696ecbf1c96e6894b779456d330e
-    }
+//    @Test
+//    public void testMd5() throws NoSuchAlgorithmException {
+//        // spring自带工具包DigestUtils
+//        System.out.println(DigestUtils.md5DigestAsHex("qwe".getBytes()));
+//        // 7815696ecbf1c96e6894b779456d330e
+//    }
 
 
 

@@ -211,8 +211,7 @@ public class AuthorityServiceImpl implements AuthorityService {
             for (int i = 0; i < communities.size(); i++) {
                  communityList.add(communities.get(i).getMenuId());
             }
-            communityList.removeAll(menus); //差集
-            menus.addAll(communityList); //无重复并集
+            menus.removeAll(communityList); //差集
         }else {
             List<Integer> wikiList = new ArrayList<>();
             List<AuthorityWiki> wikis =
@@ -220,8 +219,7 @@ public class AuthorityServiceImpl implements AuthorityService {
             for (int i = 0; i < wikis.size(); i++) {
                 wikiList.add(wikis.get(i).getMenuId());
             }
-            wikiList.removeAll(menus); //差集
-            menus.addAll(wikiList); //无重复并集
+            menus.removeAll(wikiList); //差集
         }
         return menus;
     }

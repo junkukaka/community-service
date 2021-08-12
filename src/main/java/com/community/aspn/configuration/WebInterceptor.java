@@ -51,6 +51,9 @@ public class WebInterceptor implements WebMvcConfigurer {
         excludePath.add("/member/members/department");
         excludePath.add("/member/memberApplication");
         excludePath.add("/member/memberVerify");
+        excludePath.add("/wiki/wikiMain");
+        excludePath.add("/community/communitys/mainPage");
+        excludePath.add("/");
         registry.addInterceptor(tokenInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(excludePath);
