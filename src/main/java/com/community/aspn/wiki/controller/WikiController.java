@@ -100,6 +100,7 @@ public class WikiController {
         map.put("authority",request.getParameter("authority"));
         map.put("remoteAddr",request.getRemoteAddr());
         map.put("count",Integer.parseInt(request.getParameter("count")));
+        map.put("remoteAddr",remoteAddr);
         if(request.getParameter("count") == null){
             AjaxResponse.success(null);
         }
@@ -182,5 +183,39 @@ public class WikiController {
     public AjaxResponse getWikiMenuId(@PathVariable Integer id){
         Integer menuId = wikiService.getWikiMenuId(id);
         return AjaxResponse.success(menuId);
+    }
+
+
+    /**
+     * @Author nanguangjun
+     * @Description // wiki main template
+     * @Date 13:24 2021/8/20
+     * @Param [request]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/WikiTemplate")
+    public AjaxResponse selectWikiTemplate(HttpServletRequest request){
+        Map<String, Object> map = new HashMap<>();
+        String remoteAddr = request.getRemoteAddr();
+        map.put("authority",request.getParameter("authority"));
+        map.put("remoteAddr",request.getRemoteAddr());
+        map.put("size",Integer.parseInt(request.getParameter("size")));
+        map.put("page",Integer.parseInt(request.getParameter("page")));
+        map.put("remoteAddr",remoteAddr);
+        List<Map<String, Object>> maps = wikiService.selectWikiTemplate(map);
+        return AjaxResponse.success(maps);
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // wiki main template total
+     * @Date 13:45 2021/8/20
+     * @Param [authority]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/wikiTemplateCount/{authority}")
+    public AjaxResponse selectWikiTemplateCount(@PathVariable Integer authority){
+        Integer total = wikiService.selectWikiTemplateCount(authority);
+        return AjaxResponse.success(total);
     }
 }

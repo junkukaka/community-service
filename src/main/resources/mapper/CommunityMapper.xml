@@ -4,61 +4,58 @@
 
     <!-- community detail select   -->
     <select id="selectCommunityDetail" resultType="java.util.Map">
-        SELECT
-            m.id AS memberId,
-            m.member_name AS memberName,
-            m.picture,
-            (select name from department WHERE id = m.department) department,
-            c.content,
-            c.id,
-            c.title,
-            c.md_yn as mdYn,
-            c.use_yn as useYn,
-            c.register_id AS registerId,
-            c.register_time AS registerTime,
-            u.id AS menuId,
-            u.NAME AS menuName,
-            c.doc_id as docId
-        FROM
-            community c,
-            member m,
-            community_menu u
-        WHERE
-            c.member_id = m.id
-        AND u.id = c.menu_id
-        and c.id = #{communityId}
+        SELECT m.id            AS                                    memberId,
+               m.member_name   AS                                    memberName,
+               m.picture,
+               (select name from department WHERE id = m.department) department,
+               c.content,
+               c.id,
+               c.title,
+               c.md_yn         as                                    mdYn,
+               c.use_yn        as                                    useYn,
+               c.register_id   AS                                    registerId,
+               c.register_time AS                                    registerTime,
+               u.id            AS                                    menuId,
+               u.NAME          AS                                    menuName,
+               c.doc_id        as                                    docId
+        FROM community c,
+             member m,
+             community_menu u
+        WHERE c.member_id = m.id
+          AND u.id = c.menu_id
+          and c.id = #{communityId}
     </select>
 
     <!-- select community by options pagelist   -->
     <select id="selectCommunityList" resultType="java.util.Map">
         SELECT
-            m.id as memberId,
-            m.member_name as memberName,
-            m.picture,
-            c.id,
-            c.title,
-            u.id as menuId,
-            u.name as menuName,
-            c.register_time as registerTime,
-            (select count(1) from com_comment where community_id = c.id) as commentCount,
-            (select count(1) from com_like where community_id = c.id) as likesCount,
-            (select count(1) from com_hits where community_id = c.id) as hitsCount
+        m.id as memberId,
+        m.member_name as memberName,
+        m.picture,
+        c.id,
+        c.title,
+        u.id as menuId,
+        u.name as menuName,
+        c.register_time as registerTime,
+        (select count(1) from com_comment where community_id = c.id) as commentCount,
+        (select count(1) from com_like where community_id = c.id) as likesCount,
+        (select count(1) from com_hits where community_id = c.id) as hitsCount
         FROM
-            community c,
-            member m,
-            community_menu u
+        community c,
+        member m,
+        community_menu u
         WHERE
-            c.member_id = m.id
-            and u.id = c.menu_id
-            <if test='list!=null and list.size()>0'>
-                and c.menu_id in
-                <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
-                    #{id}
-                </foreach>
-            </if>
-            <if test="memberId!=null">
-                and c.member_id = #{memberId}
-            </if>
+        c.member_id = m.id
+        and u.id = c.menu_id
+        <if test='list!=null and list.size()>0'>
+            and c.menu_id in
+            <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+        <if test="memberId!=null">
+            and c.member_id = #{memberId}
+        </if>
         order by c.id desc
         LIMIT #{page},#{size}
     </select>
@@ -66,43 +63,43 @@
     <!-- select community by options count  -->
     <select id="selectCommunityListCount" resultType="java.lang.Integer">
         SELECT
-            count(1) cnt
+        count(1) cnt
         FROM
-            community c,
-            member m,
-            community_menu u
+        community c,
+        member m,
+        community_menu u
         WHERE
-            c.member_id = m.id
+        c.member_id = m.id
         and u.id = c.menu_id
-            <if test='list!=null and list.size()>0'>
-                and c.menu_id in
-                <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
-                    #{id}
-                </foreach>
-            </if>
-            <if test="memberId!=null">
-                and c.member_id = #{memberId}
-            </if>
+        <if test='list!=null and list.size()>0'>
+            and c.menu_id in
+            <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+        <if test="memberId!=null">
+            and c.member_id = #{memberId}
+        </if>
     </select>
 
     <!-- select community in main page  -->
     <select id="selectCommunityInMainPage" resultType="java.util.Map">
         SELECT
-            m.id as memberId,
-            m.member_name as memberName,
-            m.picture,
-            c.id,
-            c.title,
-            u.id as menuId,
-            u.name as menuName,
-            c.register_time as registerTime
+        m.id as memberId,
+        m.member_name as memberName,
+        m.picture,
+        c.id,
+        c.title,
+        u.id as menuId,
+        u.name as menuName,
+        c.register_time as registerTime
         FROM
-            community c,
-            member m,
-            community_menu u
+        community c,
+        member m,
+        community_menu u
         WHERE
-            c.member_id = m.id
-          and u.id = c.menu_id
+        c.member_id = m.id
+        and u.id = c.menu_id
         <if test='list!=null and list.size()>0'>
             and c.menu_id in
             <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
@@ -111,6 +108,53 @@
         </if>
         order by c.id desc
         LIMIT #{count}
+    </select>
+
+    <!-- select community in main page  -->
+    <select id="selectCommunityTemplatePage" resultType="java.util.Map">
+        SELECT
+        m.id as memberId,
+        m.member_name as memberName,
+        m.picture,
+        c.id,
+        c.title,
+        u.id as menuId,
+        u.name as menuName,
+        c.register_time as registerTime
+        FROM
+        community c,
+        member m,
+        community_menu u
+        WHERE
+        c.member_id = m.id
+        and u.id = c.menu_id
+        <if test='list!=null and list.size()>0'>
+            and c.menu_id in
+            <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+        order by c.id desc
+        LIMIT #{page},#{size}
+    </select>
+
+    <!-- select community in main page  -->
+    <select id="selectCommunityTemplatePageCount" resultType="java.lang.Integer">
+        SELECT
+            count(1) as cnt
+            FROM
+            community c,
+            member m,
+            community_menu u
+        WHERE
+        c.member_id = m.id
+        and u.id = c.menu_id
+        <if test='list!=null and list.size()>0'>
+            and c.menu_id in
+            <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
     </select>
 
 </mapper>

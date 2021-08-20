@@ -91,7 +91,8 @@ class AspnApplicationTests {
 //    void testEmailRegex(){
 //        String regex = "^([a-z0-9A-Z]+[-|\\.|_]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
 //        String[] str1 = {"lu.jiayu@ncbakery.com",
-//                "cs1@chefchoice-china.com",
+//                "",
+//                "abczgd@163.com",
 //                "skyzhang@zidan.com.cn",
 //                "cs2@dd.com",
 //                "skyzhang@zidan.com.cn",
@@ -104,6 +105,8 @@ class AspnApplicationTests {
 //            System.out.println(str+" \\\\. "+str.matches(regex));
 //        }
 //    }
+
+
 //    @Test
 //    public void testIPReplace(){
 //        String target = "#@#MINIO#@#";

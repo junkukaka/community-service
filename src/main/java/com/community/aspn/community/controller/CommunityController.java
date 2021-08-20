@@ -26,7 +26,7 @@ public class CommunityController {
     @Resource
     CommunityService communityService;
 
-    @PostMapping("/communitys")
+    @PostMapping("/communities")
     public @ResponseBody  AjaxResponse saveCommunity(@RequestBody Community community){
         int code = 0;
         if(community.getId() != null){
@@ -44,7 +44,7 @@ public class CommunityController {
      * @Param [id]
      * @return com.community.aspn.util.AjaxResponse
      **/
-    @GetMapping("/communitys/{id}")
+    @GetMapping("/communities/{id}")
     public @ResponseBody AjaxResponse selectCommunityById(@PathVariable Integer id,HttpServletRequest request){
         Map<String, Object> stringObjectMap = communityService.selectCommunityDetail(id,request);
         return AjaxResponse.success(stringObjectMap);
@@ -57,7 +57,7 @@ public class CommunityController {
      * @Param [map]
      * @return com.community.aspn.util.AjaxResponse
      **/
-    @GetMapping("/communitys/getListByMember")
+    @GetMapping("/communities/getListByMember")
     public @ResponseBody AjaxResponse selectCommunityListByMember(HttpServletRequest request){
         Map<String, Integer> map = new HashMap<>();
         map.put("memberId",Integer.parseInt(request.getParameter("memberId")));
@@ -74,7 +74,7 @@ public class CommunityController {
      * @Param [id]
      * @return com.community.aspn.util.AjaxResponse
      **/
-    @DeleteMapping("/communitys/{id}")
+    @DeleteMapping("/communities/{id}")
     public @ResponseBody AjaxResponse deleteCommunityById(@PathVariable Integer id){
         int i = communityService.deleteCommunityById(id);
         return AjaxResponse.success(i);
@@ -87,7 +87,7 @@ public class CommunityController {
      * @Param [request]
      * @return com.community.aspn.util.AjaxResponse
      **/
-    @GetMapping("/communitys/pageList")
+    @GetMapping("/communities/pageList")
     public @ResponseBody AjaxResponse selectPageList(HttpServletRequest request){
         Map<String, Integer> map = new HashMap<>();
         map.put("menuId", Integer.valueOf(request.getParameter("menuId")));
@@ -105,7 +105,7 @@ public class CommunityController {
      * @Param [request]
      * @return com.community.aspn.util.AjaxResponse
      **/
-    @GetMapping("/communitys/mainPage")
+    @GetMapping("/communities/mainPage")
     public @ResponseBody AjaxResponse selectCommunityInMainPage(HttpServletRequest request){
         Integer count = Integer.parseInt(request.getParameter("count"));
         Integer authority = Integer.parseInt(request.getParameter("authority"));
@@ -115,6 +115,40 @@ public class CommunityController {
         params.put("remoteAddr",request.getRemoteAddr());
         List<Map<String, Object>> maps = communityService.selectCommunityInMainPage(params);
         return AjaxResponse.success(maps);
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description //community main template 커뮤니티 메인 페이지 Virtual scroller
+     * @Date 16:22 2021/8/18
+     * @Param [request]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/communities/selectCommunityTemplatePage")
+    public @ResponseBody AjaxResponse selectCommunityTemplatePage(HttpServletRequest request){
+        Integer size = Integer.parseInt(request.getParameter("size"));
+        Integer page = Integer.parseInt(request.getParameter("page"));
+        Integer authority = Integer.parseInt(request.getParameter("authority"));
+        Map<String,Object> params = new HashMap<>();
+        params.put("size",size);
+        params.put("page",page);
+        params.put("authority",authority);
+        params.put("remoteAddr",request.getRemoteAddr());
+        List<Map<String, Object>> maps = communityService.selectCommunityTemplatePage(params);
+        return AjaxResponse.success(maps);
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description //community main template 커뮤니티 메인 페이지 Virtual scroller count
+     * @Date 14:10 2021/8/19
+     * @Param [authority]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/communities/selectCommunityTemplatePageCount/{authority}")
+    public @ResponseBody AjaxResponse selectCommunityTemplatePageCount(@PathVariable Integer authority){
+        Integer cnt = communityService.selectCommunityTemplatePageCount(authority);
+        return AjaxResponse.success(cnt);
     }
 
     /**

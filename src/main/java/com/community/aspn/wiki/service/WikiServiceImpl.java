@@ -358,4 +358,44 @@ public class WikiServiceImpl implements WikiService{
     }
 
 
+    /**
+     * @Author nanguangjun
+     * @Description //
+     * @Date 13:41 2021/8/20
+     * @Param [params]
+     * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+     **/
+    @Override
+    public List<Map<String, Object>> selectWikiTemplate(Map<String, Object> params) {
+        ArrayList<Integer> authorityMenuList = wikiMenuService.getAuthorityMenus(Integer.parseInt(params.get("authority").toString()));
+        params.put("list",authorityMenuList);
+        List<Map<String, Object>> wikis = wikiMapper.selectWikiTemplate(params);
+        String p = "";
+        //图片处理
+        for (int i = 0; i < wikis.size(); i++) {
+            if(wikis.get(i).get("picture") != null){
+                p = minoIOComponent.afterGetContentFromDBToFront(wikis.get(i).get("picture").toString(),
+                        params.get("remoteAddr").toString());
+                wikis.get(i).put("picture",p);
+            }
+        }
+        return wikis;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // wiki template total
+     * @Date 13:42 2021/8/20
+     * @Param [authority]
+     * @return java.lang.Integer
+     **/
+    @Override
+    public Integer selectWikiTemplateCount(Integer authority) {
+        ArrayList<Integer> authorityMenuList = wikiMenuService.getAuthorityMenus(authority);
+        Map<String, Object> param = new HashMap<>();
+        param.put("list",authorityMenuList);
+        return wikiMapper.selectWikiTemplateCount(param);
+    }
+
+
 }

@@ -20,4 +20,7 @@ public interface WikiService {
     void deleteWikiHistoryById(Integer id);
     Integer getWikiMenuId(Integer id);
     List<Map<String, Object>> selectWikiEditedProfile(Integer memberId);
+
+    List<Map<String, Object>> selectWikiTemplate(Map<String, Object> map);
+    Integer selectWikiTemplateCount(Integer authority);
 }
