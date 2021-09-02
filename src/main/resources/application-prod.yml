@@ -1,18 +1,45 @@
 server:
   port: 8080
 
+#公司本地主机
+#    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF8&serverTimezone=Hongkong
+#    password: root
+
+
 spring:
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+      enabled: true
   datasource:
-    username: root
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
     #公司虚拟机
     url: jdbc:mysql://mysql:3306/test?useUnicode=true&characterEncoding=UTF8&serverTimezone=Hongkong
-    password: 123456
+    username: root
+    password: aspn2021
+    hikari:
+      ## 最小空闲连接数量
+      minimum-idle: 10
+      ## 连接池最大连接数，默认是10
+      maximum-pool-size: 20
+      ## 此属性控制从池返回的连接的默认自动提交行为,默认值：true
+      auto-commit: true
+      ## 空闲连接存活最大时间，默认600000（10分钟）
+      idle-timeout: 180000
+  mail:
+    host: mail.aspnc.com
+    port: 25
+    password: aspn20070312
+    username: aspn300@aspnc.com
+    properties.mail.smtp:
+      #      socketFactoryCalss: javax.net.ssl.SSLSocketFactory
+      timeout: 5000
+      connectiontimeout: 5000
+      writetimeout: 5000
+    default-encoding: UTF-8
 
-    #公司本地主机
-    #    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF8&serverTimezone=Hongkong
-    #    password: root
-
-    driver-class-name: com.mysql.cj.jdbc.Driver
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/*Mapper.xml
@@ -23,13 +50,22 @@ mybatis-plus:
 
 # MinIo文件服务器
 minio:
-  endpoint: http://minio_aspn:9000
-  accessKey: minioadmin
-  secretKey: minioadmin
+  endpoint: http://minio:9000
+  accessKey: aspn
+  secretKey: aspn2021
   communityBucket: community
-  wikiBucket: wiki
+  uploadBucket: upload
   sysBucket: sys
-  path: http://192.168.0.134:9000
+  # 内网minio
+  localAddr: http://www.aspnc.com.cn:9000
+  # 外网minio
+  remoteAddr: http://www.aspnc.com.cn:9000
+  # 实际存储数据库,使用占位符代替
+  realAddr: '@-@MINIO@-@'
+  # 是否据王判断正则
+  patternAddr: http://www.aspnc.com.cn:9000
+  # 判断是否为本地
+  localIpPrefix: 192.168
 
 
 

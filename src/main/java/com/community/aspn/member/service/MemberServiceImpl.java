@@ -267,6 +267,7 @@ public class MemberServiceImpl implements MemberService {
         member.setPhone(memberApp.getPhone());
         Map<String, String> resultMap = this.checkMemberOne(member);
         if (!"0".equals(resultMap.get("code"))) {
+            memberApp.setPassword(DigestUtils.md5DigestAsHex(memberApp.getPassword().getBytes()));
             memberAppMapper.insert(memberApp);
             resultMap.put("code", "1");
             resultMap.put("msg", "신청 성공!");
@@ -309,11 +310,17 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void appMemberToRealMember(List<Integer> ids) {
         MemberApp memberApp;
+        Integer loginIdCount = 0;
         for (int i = 0; i < ids.size(); i++) {
             memberApp = memberAppMapper.selectById(ids.get(i));
             String department = memberApp.getDepartment();
             Department d = departmentMapper.selectById(department);
             memberApp.setAuthority(d.getAuthority());
+            loginIdCount = memberMapper.selectCount(new QueryWrapper<Member>().eq("login_id", memberApp.getLoginId()));
+            //如果会员已存在就停止
+            if(loginIdCount> 0){
+                break;
+            }
             this.appMemberInsertMember(memberApp);
             Member member = memberMapper.selectOne(new QueryWrapper<Member>().eq("login_id", memberApp.getLoginId()));
             mailSendUtil.memberApplicationRemindSuccess(member);
