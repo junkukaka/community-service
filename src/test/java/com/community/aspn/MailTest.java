@@ -1,20 +1,10 @@
 package com.community.aspn;
 
-import com.community.aspn.pojo.member.Member;
-import com.community.aspn.pojo.member.MemberApp;
-import com.community.aspn.util.mino.MailSendUtil;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 
 import javax.annotation.Resource;
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import java.util.Date;
 
 @SpringBootTest
 public class MailTest {
@@ -22,8 +12,6 @@ public class MailTest {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    @Resource
-    private MailSendUtil mailSendUtil;
 
 //    @Test
 //    public void sendSuccessMail(){

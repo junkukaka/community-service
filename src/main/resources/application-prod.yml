@@ -16,7 +16,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
     #公司虚拟机
-    url: jdbc:mysql://mysql:3306/test?useUnicode=true&characterEncoding=UTF8&serverTimezone=Hongkong
+    url: jdbc:mysql://mysql:3306/aspn?useUnicode=true&characterEncoding=UTF8&serverTimezone=Hongkong
     username: root
     password: aspn2021
     hikari:
@@ -57,15 +57,15 @@ minio:
   uploadBucket: upload
   sysBucket: sys
   # 内网minio
-  localAddr: http://www.aspnc.com.cn:9000
+  localAddr: http://aspnc.com.cn:9000
   # 外网minio
-  remoteAddr: http://www.aspnc.com.cn:9000
+  remoteAddr: http://aspnc.com.cn:9000
   # 实际存储数据库,使用占位符代替
   realAddr: '@-@MINIO@-@'
   # 是否据王判断正则
-  patternAddr: http://www.aspnc.com.cn:9000
+  patternAddr: 'http://aspnc.com.cn:9000'
   # 判断是否为本地
-  localIpPrefix: 192.168
+  localIpPrefix: http://aspnc.com.cn
 
 
 

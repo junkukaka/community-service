@@ -2,20 +2,18 @@ package com.community.aspn.member.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.community.aspn.authority.mapper.DepartmentMapper;
+import com.community.aspn.mail.service.ScheduleMailComponent;
 import com.community.aspn.member.mapper.MemberAppMapper;
 import com.community.aspn.pojo.member.Member;
 import com.community.aspn.member.mapper.MemberMapper;
 import com.community.aspn.pojo.member.MemberApp;
 import com.community.aspn.pojo.sys.Department;
-import com.community.aspn.util.mino.MailSendUtil;
-import com.community.aspn.util.mino.MinIOProperties;
 import com.community.aspn.util.mino.MinoIOComponent;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -44,7 +42,7 @@ public class MemberServiceImpl implements MemberService {
     DepartmentMapper departmentMapper;
 
     @Resource
-    MailSendUtil mailSendUtil;
+    ScheduleMailComponent scheduleMailComponent;
 
     /**
      * @Author nanguangjun
@@ -271,7 +269,7 @@ public class MemberServiceImpl implements MemberService {
             memberAppMapper.insert(memberApp);
             resultMap.put("code", "1");
             resultMap.put("msg", "신청 성공!");
-            mailSendUtil.memberApplicationRemind(memberApp);
+            scheduleMailComponent.memberApplicationRemind(memberApp);
         }
         return resultMap;
     }
@@ -323,7 +321,7 @@ public class MemberServiceImpl implements MemberService {
             }
             this.appMemberInsertMember(memberApp);
             Member member = memberMapper.selectOne(new QueryWrapper<Member>().eq("login_id", memberApp.getLoginId()));
-            mailSendUtil.memberApplicationRemindSuccess(member);
+            scheduleMailComponent.memberApplicationRemindSuccess(member);
         }
     }
 

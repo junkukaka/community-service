@@ -1,9 +1,12 @@
-package com.community.aspn.util.mino;
+package com.community.aspn.mail.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.community.aspn.mail.mapper.ScheduleMailMapper;
+import com.community.aspn.member.mapper.MemberAppMapper;
 import com.community.aspn.member.mapper.MemberMapper;
 import com.community.aspn.pojo.member.Member;
 import com.community.aspn.pojo.member.MemberApp;
+import com.community.aspn.pojo.sys.ScheduleMail;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -14,11 +17,10 @@ import javax.mail.internet.MimeMessage;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 @Component
-public class MailSendUtil {
+public class ScheduleMailComponent {
 
     @Resource
     private JavaMailSender javaMailSender;
@@ -31,6 +33,9 @@ public class MailSendUtil {
     @Resource
     private MemberMapper memberMapper;
 
+    @Resource
+    private ScheduleMailMapper scheduleMailMapper;
+
     /**
      * @Author nanguangjun
      * @Description // application success 회원가입 성고 메세지
@@ -42,7 +47,8 @@ public class MailSendUtil {
         String date = simpleDateFormat.format(new Date());
         String subject = "ASPN Community&Wiki 회원가입 " + date;
         String content = this.getMemberApplicationRemindSuccess(member);
-        this.sendHtmlMail(member.getEmail(),subject,content);
+        this.insertScheduleMail(subject,content,member);
+//        this.sendHtmlMail(member.getEmail(),subject,content);
     }
 
     /**
@@ -56,9 +62,35 @@ public class MailSendUtil {
         String date = simpleDateFormat.format(new Date());
         String subject = "ASPN Community&Wiki 회원가입 신청 " + date;
         String content = this.getMemberApplicationRemindRemind(memberApp);
-        this.sendHtmlMail(memberApp.getEmail(),subject,content);
+        this.insertScheduleMail(subject,content,memberApp);
+        //this.sendHtmlMail(memberApp.getEmail(),subject,content);
         //관리자 한테 신청성고 메세지를 보낸다
         this.memberApplicationToAdmin(memberApp,content);
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // 获取邮件发送数据
+     * @Date 10:36 2021/9/13
+     * @Param [subject, content, object]
+     * @return com.community.aspn.pojo.sys.ScheduleMail
+     **/
+    public void insertScheduleMail(String subject,String content,Object object){
+        MemberApp memberApp = null;
+        Member member = null;
+        ScheduleMail scheduleMail = new ScheduleMail();
+        scheduleMail.setCreateDay(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+        scheduleMail.setContent(content);
+        scheduleMail.setTitle(subject);
+        scheduleMail.setSendMail(from);
+        if(object instanceof MemberApp){
+            memberApp = (MemberApp)object;
+            scheduleMail.setToMail(memberApp.getEmail());
+        }else {
+            member = (Member) object;
+            scheduleMail.setToMail(member.getEmail());
+        }
+        scheduleMailMapper.insert(scheduleMail);
     }
 
     /**
@@ -69,13 +101,15 @@ public class MailSendUtil {
      * @return void
      **/
     public void memberApplicationToAdmin(MemberApp memberApp,String content){
-        List<String> adminMail = this.getAdminMail();
+        List<Member> members = this.getAdminMember();
         String date = simpleDateFormat.format(new Date());
         String subject = "ASPN Community&Wiki " + memberApp.getMemberName() + "님 회원가입 신청 " + date;
-        for (int i = 0; i < adminMail.size(); i++) {
-            this.sendHtmlMail(adminMail.get(i),subject,content);
+        for (int i = 0; i < members.size(); i++) {
+            this.insertScheduleMail(subject,content,members.get(i));
         }
     }
+
+
 
     /**
      * @Author nanguangjun
@@ -108,7 +142,7 @@ public class MailSendUtil {
                 "\t\t</div>\n" +
                 "\t\t<div style=\"padding:20px 20px;background-color:#fafafa;\">\n" +
                 "\t\t\t<h5 style=\"font-weight: bold;padding:0 0 10px 0\">"
-            + member.getMemberName() + "님 회원가입 성공했습니다.</h5>\n" +
+                + member.getMemberName() + "님 회원가입 성공했습니다.</h5>\n" +
                 "\t\t\t<hr style=\"border-color:#c5c5c5;border-top-width:1px;\"/>\n" +
                 "\t\t\t<ul style=\"font-size:9px;color:#a0a0a0;padding:5px 0 0;list-style:none;margin:0\">\n" +
                 "\t\t\t\t<li>- 본 메일은 발신전용입니다.</li>\n" +
@@ -147,6 +181,36 @@ public class MailSendUtil {
 
 
 
+
+    /**
+     * @Author nanguangjun
+     * @Description //获取Admin 账号
+     * @Date 14:03 2021/9/13
+     * @Param []
+     * @return java.util.List<com.community.aspn.pojo.member.Member>
+     **/
+    public List<Member> getAdminMember(){
+        List<Member> members = memberMapper.selectList(new QueryWrapper<Member>().eq("authority", 0));
+        return members;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // 获取Admin 邮箱
+     * @Date 10:21 2021/8/9
+     * @Param []
+     * @return java.util.List<java.lang.String>
+     **/
+    public List<String> getAdminMail(){
+        List<Member> members = memberMapper.selectList(new QueryWrapper<Member>().eq("authority", 0));
+        List<String> result = new ArrayList<>();
+        for (int i = 0; i < members.size(); i++) {
+            result.add(members.get(i).getEmail());
+        }
+        return result;
+    }
+
+
     /**
      * @Author nanguangjun
      * @Description // 最终发送邮件
@@ -166,22 +230,5 @@ public class MailSendUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-
-    /**
-     * @Author nanguangjun
-     * @Description // 获取Admin 邮箱
-     * @Date 10:21 2021/8/9
-     * @Param []
-     * @return java.util.List<java.lang.String>
-     **/
-    public List<String> getAdminMail(){
-        List<Member> members = memberMapper.selectList(new QueryWrapper<Member>().eq("authority", 0));
-        List<String> result = new ArrayList<>();
-        for (int i = 0; i < members.size(); i++) {
-            result.add(members.get(i).getEmail());
-        }
-        return result;
     }
 }
