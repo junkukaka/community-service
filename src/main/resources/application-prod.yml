@@ -29,16 +29,16 @@ spring:
       ## 空闲连接存活最大时间，默认600000（10分钟）
       idle-timeout: 180000
   mail:
-    host: mail.aspnc.com
-    port: 25
-    password: aspn20070312
     username: aspn300@aspnc.com
-    properties.mail.smtp:
-      #      socketFactoryCalss: javax.net.ssl.SSLSocketFactory
-      timeout: 5000
-      connectiontimeout: 5000
-      writetimeout: 5000
-    default-encoding: UTF-8
+#    host: mail.aspnc.com
+#    port: 25
+#    password: aspn20070312
+#    properties.mail.smtp:
+#      #      socketFactoryCalss: javax.net.ssl.SSLSocketFactory
+#      timeout: 5000
+#      connectiontimeout: 5000
+#      writetimeout: 5000
+#    default-encoding: UTF-8
 
 
 mybatis-plus:

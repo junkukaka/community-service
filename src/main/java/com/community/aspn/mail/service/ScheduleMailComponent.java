@@ -2,28 +2,22 @@ package com.community.aspn.mail.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.community.aspn.mail.mapper.ScheduleMailMapper;
-import com.community.aspn.member.mapper.MemberAppMapper;
 import com.community.aspn.member.mapper.MemberMapper;
 import com.community.aspn.pojo.member.Member;
 import com.community.aspn.pojo.member.MemberApp;
 import com.community.aspn.pojo.sys.ScheduleMail;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import javax.mail.internet.MimeMessage;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Component
 public class ScheduleMailComponent {
 
-    @Resource
-    private JavaMailSender javaMailSender;
+
 
     @Value("${spring.mail.username}")
     private String from;
@@ -179,9 +173,6 @@ public class ScheduleMailComponent {
         return stringBuilder.toString();
     }
 
-
-
-
     /**
      * @Author nanguangjun
      * @Description //获取Admin 账号
@@ -192,43 +183,5 @@ public class ScheduleMailComponent {
     public List<Member> getAdminMember(){
         List<Member> members = memberMapper.selectList(new QueryWrapper<Member>().eq("authority", 0));
         return members;
-    }
-
-    /**
-     * @Author nanguangjun
-     * @Description // 获取Admin 邮箱
-     * @Date 10:21 2021/8/9
-     * @Param []
-     * @return java.util.List<java.lang.String>
-     **/
-    public List<String> getAdminMail(){
-        List<Member> members = memberMapper.selectList(new QueryWrapper<Member>().eq("authority", 0));
-        List<String> result = new ArrayList<>();
-        for (int i = 0; i < members.size(); i++) {
-            result.add(members.get(i).getEmail());
-        }
-        return result;
-    }
-
-
-    /**
-     * @Author nanguangjun
-     * @Description // 最终发送邮件
-     * @Date 9:28 2021/7/27
-     * @Param [to, subject, content]
-     * @return void
-     **/
-    public void sendHtmlMail(String to, String subject, String content) {
-        MimeMessage mimeMailMessage = javaMailSender.createMimeMessage();
-        try {
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMailMessage, true);
-            mimeMessageHelper.setTo(to);
-            mimeMessageHelper.setSubject(subject);
-            mimeMessageHelper.setText(content, true);
-            mimeMessageHelper.setFrom(from);
-            javaMailSender.send(mimeMailMessage);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
