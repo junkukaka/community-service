@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 @RequestMapping("/member")
@@ -243,6 +242,30 @@ public class MemberController {
         }
     }
 
+    /**
+     * @Author nanguangjun
+     * @Description // 커뮤니티 위키 글 통계
+     * @Date 16:17 2021/10/29
+     * @Param [request]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/reportWCMemberCount")
+    public @ResponseBody AjaxResponse reportWCMemberCount(HttpServletRequest httpServletRequest) throws Exception {
+        String start = httpServletRequest.getParameter("startDate");
+        String endDate = httpServletRequest.getParameter("endDate");
 
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date end = simpleDateFormat.parse(endDate);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(end);
+        calendar.add(calendar.DATE,1);
+        end = calendar.getTime();
+        HashMap<String, String> params = new HashMap<>();
+        params.put("start",start);
+        params.put("end",simpleDateFormat.format(end));
+        List<Map<String, Object>> result = memberservice.reportWCMemberCount(params);
+        return  AjaxResponse.success(result);
+    }
 
 }

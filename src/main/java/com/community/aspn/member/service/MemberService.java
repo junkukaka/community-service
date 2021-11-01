@@ -4,6 +4,7 @@ import com.community.aspn.pojo.member.Member;
 import com.community.aspn.pojo.member.MemberApp;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,4 +34,6 @@ public interface MemberService {
     void appMemberDelete(List<Integer> ids);
 
     void iniPassword(Integer id);
+
+    List<Map<String,Object>> reportWCMemberCount(HashMap<String,String> params);
 }

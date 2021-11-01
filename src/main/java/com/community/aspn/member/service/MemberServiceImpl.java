@@ -355,6 +355,19 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * @Author nanguangjun
+     * @Description // 커뮤니티 위키 글 통계
+     * @Date 10:05 2021/11/1
+     * @Param [params]
+     * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+     **/
+    @Override
+    public List<Map<String, Object>> reportWCMemberCount(HashMap<String, String> params) {
+        List<Map<String, Object>> result = memberMapper.reportWCMemberCount(params);
+        return result;
+    }
+
+    /**
+     * @Author nanguangjun
      * @Description // member insert by memberApp
      * @Date 17:06 2021/5/26
      * @Param [memberApp]

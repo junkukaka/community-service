@@ -175,4 +175,22 @@
             and w.his_id is not null
     </select>
 
+    <select id="selectWikiHisMembers" resultType="java.util.Map">
+        SELECT
+            id,
+            member_name,
+            picture
+        FROM
+            member
+        WHERE
+                id IN (
+                SELECT
+                    member_id
+                FROM
+                    wiki_his
+                WHERE
+                    wiki_id = #{wikiId}
+            )
+    </select>
+
 </mapper>

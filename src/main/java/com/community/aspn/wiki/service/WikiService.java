@@ -23,4 +23,6 @@ public interface WikiService {
 
     List<Map<String, Object>> selectWikiTemplate(Map<String, Object> map);
     Integer selectWikiTemplateCount(Integer authority);
+
+    List<Map<String, Object>> selectWikiHisMembers(Map<String, Object> params);
 }

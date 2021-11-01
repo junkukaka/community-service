@@ -19,4 +19,5 @@ public interface WikiMapper extends BaseMapper<Wiki> {
     List<Map<String,Object>> selectWikiEditedProfile(Integer memberId);
     List<Map<String, Object>> selectWikiTemplate(Map<String, Object> params);
     Integer selectWikiTemplateCount(Map<String, Object> params);
+    List<Map<String, Object>> selectWikiHisMembers(Integer wikiId);
 }

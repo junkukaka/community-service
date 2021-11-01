@@ -397,5 +397,27 @@ public class WikiServiceImpl implements WikiService{
         return wikiMapper.selectWikiTemplateCount(param);
     }
 
+    /**
+     * @Author nanguangjun
+     * @Description //获取编辑WIKI的人们。
+     * @Date 13:41 2021/9/23
+     * @Param [params]
+     * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+     **/
+    @Override
+    public List<Map<String, Object>> selectWikiHisMembers(Map<String, Object> params) {
+        List<Map<String, Object>> result = wikiMapper.selectWikiHisMembers(Integer.parseInt(params.get("wikiId").toString()));
+        //图片处理
+        String p = "";
+        for (int i = 0; i < result.size(); i++) {
+            if(result.get(i).get("picture") != null){
+                p = minoIOComponent.afterGetContentFromDBToFront(result.get(i).get("picture").toString(),
+                        params.get("remoteAddr").toString());
+                result.get(i).put("picture",p);
+            }
+        }
+        return result;
+    }
+
 
 }

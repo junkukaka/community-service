@@ -218,4 +218,12 @@ public class WikiController {
         Integer total = wikiService.selectWikiTemplateCount(authority);
         return AjaxResponse.success(total);
     }
+
+    @GetMapping("/selectWikiHisMembers/{wikiId}")
+    public AjaxResponse selectWikiHisMembers(@PathVariable Integer wikiId,HttpServletRequest request){
+        HashMap<String, Object> param = new HashMap<>();
+        param.put("wikiId",wikiId);
+        param.put("remoteAddr",request.getRemoteAddr());
+        return AjaxResponse.success(wikiService.selectWikiHisMembers(param));
+    }
 }
