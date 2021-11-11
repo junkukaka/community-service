@@ -14,10 +14,7 @@ import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Author nanguangjun
@@ -362,7 +359,13 @@ public class MemberServiceImpl implements MemberService {
      **/
     @Override
     public List<Map<String, Object>> reportWCMemberCount(HashMap<String, String> params) {
-        List<Map<String, Object>> result = memberMapper.reportWCMemberCount(params);
+        String [] dept = params.get("departments").split(",");
+        List<String> list = Arrays.asList(dept);
+        HashMap<String, Object> maps = new HashMap<>();
+        maps.put("list",list);
+        maps.put("start",params.get("start"));
+        maps.put("end",params.get("end"));
+        List<Map<String, Object>> result = memberMapper.reportWCMemberCount(maps);
         return result;
     }
 

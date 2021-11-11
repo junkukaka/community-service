@@ -14,5 +14,5 @@ public interface MemberMapper extends BaseMapper<Member> {
     void updateMemberDynamic(Member member);
     List<Map<String,Object>> getAllAppMember();
     List<Map<String,Object>> getAllMemberByAdmin();
-    List<Map<String,Object>> reportWCMemberCount(HashMap<String,String> params);
+    List<Map<String,Object>> reportWCMemberCount(HashMap<String,Object> params);
 }

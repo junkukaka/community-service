@@ -109,7 +109,8 @@ public class WikiInfoServiceImpl implements WikiInfoService {
         QueryWrapper<WikiHits> hitsQueryWrapper = new QueryWrapper<>();
         hitsQueryWrapper.eq("wiki_id",wikiId);
         hitsQueryWrapper.groupBy("wiki_id");
-        result.put("hitsCount",wikiHitsMapper.selectCount(hitsQueryWrapper));
+        Integer hitsCount = wikiHitsMapper.selectCount(hitsQueryWrapper) == null ? 0 : wikiHitsMapper.selectCount(hitsQueryWrapper);
+        result.put("hitsCount",hitsCount);
         //likes count
         QueryWrapper<WikiLike> likesQueryWrapper = new QueryWrapper<>();
         likesQueryWrapper.eq("wiki_id",wikiId);

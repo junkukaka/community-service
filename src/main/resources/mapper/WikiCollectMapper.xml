@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.community.aspn.wikiInfo.mapper.WikiCollectMapper">
+
+    <!-- member profile select like by member id page list   -->
+    <select id="selectLikesPageListByMemberId" resultType="java.util.Map">
+
+        SELECT
+            a.wiki_id as wikiId,
+            a.member_id as memberId,
+            b.title,
+            b.menu_id as menuId,
+            (select name from wiki_menu where id = b.menu_id) as menuName,
+            a.register_time as date
+        FROM
+            wiki_like a,
+            wiki b
+        where a.wiki_id = b.id
+          and a.member_id = #{memberId}
+        order by a.register_time desc
+        LIMIT #{page},#{size}
+    </select>
+
+    <!-- member profile select like by member id  count -->
+    <select id="selectLikesPageListCountByMemberId" resultType="java.lang.Integer">
+        SELECT count(1) FROM wiki_like where member_id = #{memberId}
+    </select>
+
+
+    <!-- member profile collect like by member id  count -->
+    <select id="selectCollectPageListCountByMemberId" resultType="java.lang.Integer">
+        SELECT count(1) FROM wiki_like where member_id = #{memberId}
+    </select>
+
+
+</mapper>

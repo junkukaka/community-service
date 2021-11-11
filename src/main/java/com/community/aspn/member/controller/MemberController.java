@@ -253,6 +253,7 @@ public class MemberController {
     public @ResponseBody AjaxResponse reportWCMemberCount(HttpServletRequest httpServletRequest) throws Exception {
         String start = httpServletRequest.getParameter("startDate");
         String endDate = httpServletRequest.getParameter("endDate");
+        String departments = httpServletRequest.getParameter("departments");
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date end = simpleDateFormat.parse(endDate);
@@ -264,6 +265,7 @@ public class MemberController {
         HashMap<String, String> params = new HashMap<>();
         params.put("start",start);
         params.put("end",simpleDateFormat.format(end));
+        params.put("departments",departments);
         List<Map<String, Object>> result = memberservice.reportWCMemberCount(params);
         return  AjaxResponse.success(result);
     }
