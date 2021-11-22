@@ -31,6 +31,35 @@
     <select id="selectCollectPageListCountByMemberId" resultType="java.lang.Integer">
         SELECT count(1) FROM wiki_like where member_id = #{memberId}
     </select>
+    
+    <!-- 회원 즐겨찾기 메뉴별 조회 -->
+    <select id="selectWikiCollect" resultType="java.util.Map">
+        SELECT
+            w.title,
+            c.wiki_id as wikiId,
+            c.member_id as memberId,
+            c.collect_menu_id as collectMenuId
+        FROM
+            wiki_collect c,
+            wiki w
+        WHERE
+            c.wiki_id = w.id
+          and c.collect_menu_id = #{id}
+    </select>
 
+    <!--    전체 회원별 즐겨찾기-->
+    <select id="selectAllWikiCollect" resultType="java.util.Map">
+        SELECT
+            w.title,
+            c.wiki_id as wikiId,
+            c.member_id as memberId,
+            c.collect_menu_id as collectMenuId
+        FROM
+            wiki_collect c,
+            wiki w
+        WHERE
+            c.wiki_id = w.id
+          and c.member_id = #{id}
+    </select>
 
 </mapper>

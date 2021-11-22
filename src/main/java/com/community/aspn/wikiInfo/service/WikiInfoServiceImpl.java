@@ -45,29 +45,6 @@ public class WikiInfoServiceImpl implements WikiInfoService {
         wikiHitsMapper.insert(wikiHits);
     }
 
-    /**
-     * @Author nanguangjun
-     * @Description //TODO 
-     * @Date 15:37 2021/11/2
-     * @Param [wikiCollect]
-     * @return int
-     **/
-    @Override
-    public int saveCollete(WikiCollect wikiCollect) {
-        QueryWrapper<WikiCollect> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("wiki_id",wikiCollect.getWikiId())
-                .eq("member_id",wikiCollect.getMemberId());
-        Integer count = wikiCollectMapper.selectCount(queryWrapper);
-        //if there is no user id and community id will save hits
-        if (count == 0){
-            wikiCollect.setRegisterTime(new Date());
-            wikiCollectMapper.insert(wikiCollect);
-        }else {
-            wikiCollectMapper.delete(queryWrapper);
-            count = 0;
-        }
-        return count;
-    }
 
     /**
      * @Author nanguangjun
@@ -103,7 +80,7 @@ public class WikiInfoServiceImpl implements WikiInfoService {
      * @return java.util.Map<java.lang.String,java.lang.Integer>
      **/
     @Override
-    public Map<String, Integer> selectWikiInfoCountByCommunityId(Integer wikiId) {
+    public Map<String, Integer> selectWikiInfoCountByWikiId(Integer wikiId) {
         Map<String, Integer> result = new HashMap<>(); //最终返回的结果
         //hits count
         QueryWrapper<WikiHits> hitsQueryWrapper = new QueryWrapper<>();
@@ -179,35 +156,5 @@ public class WikiInfoServiceImpl implements WikiInfoService {
         return result;
     }
 
-    /**
-     * @Author nanguangjun
-     * @Description //TODO
-     * @Date 15:43 2021/11/2
-     * @Param [params]
-     * @return java.util.Map<java.lang.String,java.lang.Object>
-     **/
-    @Override
-    public Map<String, Object> selectCollectPageListByMemberId(Map<String, Integer> params) {
-        Map<String, Object> result = new HashMap<>(); //最后返回值
-        int memberId = params.get("memberId");
-        int size = params.get("itemsPerPage");
-        int page = params.get("page");
-        Map<String,Integer> totalMapArgs = new HashMap<>();
-        totalMapArgs.put("memberId",memberId);
-        Integer total = wikiCollectMapper.selectCollectPageListCountByMemberId(memberId);
-        int pages = total%size==0 ? total/size : total/size+1;
-
-        //分页查询传参
-        Map<String,Integer> args = new HashMap<>();
-        args.put("memberId",memberId);
-        args.put("page",(page-1)*size);
-        args.put("size",size);
-        List<Map<String, Object>> list = wikiCollectMapper.selectCollectPageListByMemberId(args);
-
-        result.put("collect",list); //数据
-        result.put("page",page); //当前页面
-        result.put("pages",pages); //总页数
-        return result;
-    }
 
 }

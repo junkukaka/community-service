@@ -1,6 +1,5 @@
 package com.community.aspn.wikiInfo.controller;
 
-import com.community.aspn.pojo.wiki.WikiCollect;
 import com.community.aspn.pojo.wiki.WikiHits;
 import com.community.aspn.pojo.wiki.WikiLike;
 import com.community.aspn.util.AjaxResponse;
@@ -29,7 +28,7 @@ public class WikiInfoController {
      **/
     @GetMapping("/count/{wikiId}")
     public @ResponseBody AjaxResponse getWikiInfoCount(@PathVariable Integer wikiId){
-        Map<String, Integer> result = wikiInfoService.selectWikiInfoCountByCommunityId(wikiId);
+        Map<String, Integer> result = wikiInfoService.selectWikiInfoCountByWikiId(wikiId);
         return AjaxResponse.success(result);
     }
 
@@ -72,17 +71,7 @@ public class WikiInfoController {
         return AjaxResponse.success(wikiInfoService.saveLikes(wikiLike));
     }
 
-    /**
-     * @Author nanguangjun
-     * @Description //save collect
-     * @Date 15:55 2021/3/9
-     * @Param [comCollect]
-     * @return com.community.aspn.util.AjaxResponse
-     **/
-    @PostMapping("/save/collect")
-    public @ResponseBody AjaxResponse saveCollect(@RequestBody WikiCollect wikiCollect){
-        return AjaxResponse.success(wikiInfoService.saveCollete(wikiCollect));
-    }
+
 
     /**
      * @Author nanguangjun
@@ -100,24 +89,6 @@ public class WikiInfoController {
         Map<String, Object> stringObjectMap = wikiInfoService.selectLikesPageListByMemberId(map);
         return AjaxResponse.success(stringObjectMap);
     }
-
-    /**
-     * @Author nanguangjun
-     * @Description //Profile page select collect
-     * @Date 13:57 2021/3/25
-     * @Param [request]
-     * @return com.community.aspn.util.AjaxResponse
-     **/
-    @GetMapping("/collect/collectPageList")
-    public @ResponseBody AjaxResponse selectCollectPageList(HttpServletRequest request){
-        Map<String, Integer> map = new HashMap<>();
-        map.put("memberId", Integer.valueOf(request.getParameter("memberId")));
-        map.put("page", Integer.valueOf(request.getParameter("page")));
-        map.put("itemsPerPage",Integer.parseInt(request.getParameter("itemsPerPage")));
-        Map<String, Object> stringObjectMap = wikiInfoService.selectCollectPageListByMemberId(map);
-        return AjaxResponse.success(stringObjectMap);
-    }
-
 
 
 }

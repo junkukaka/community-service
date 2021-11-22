@@ -12,6 +12,7 @@ public interface WikiCollectMapper extends BaseMapper<WikiCollect> {
    List<Map<String,Object>> selectLikesPageListByMemberId(Map<String,Integer> args);
    Integer selectLikesPageListCountByMemberId(Integer memberId);
 
-   List<Map<String,Object>> selectCollectPageListByMemberId(Map<String,Integer> args);
-   Integer selectCollectPageListCountByMemberId(Integer memberId);
+   List<Map<String,Object>> selectWikiCollect(Integer menuId);
+   List<Map<String,Object>> selectAllWikiCollect(Integer memberId);
+
 }
