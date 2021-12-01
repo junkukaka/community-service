@@ -269,5 +269,21 @@ public class MemberController {
         List<Map<String, Object>> result = memberservice.reportWCMemberCount(params);
         return  AjaxResponse.success(result);
     }
+    
+    /**
+     * @Author nanguangjun
+     * @Description // 회원 이름으로 회원 리스트 조회 
+     * @Date 10:51 2021/11/25
+     * @Param [name, httpServletRequest]
+     * @return com.community.aspn.util.AjaxResponse
+     **/
+    @GetMapping("/getMembersSearchByName/{name}")
+    public @ResponseBody AjaxResponse getMembersSearchByName(@PathVariable String name,HttpServletRequest httpServletRequest){
+        HashMap<String, String> params = new HashMap<>();
+        params.put("name",name);
+        params.put("remoteAddr",httpServletRequest.getRemoteAddr());
+        List<Member> result = memberservice.getMembersSearchByName(params);
+        return AjaxResponse.success(result);
+    }
 
 }

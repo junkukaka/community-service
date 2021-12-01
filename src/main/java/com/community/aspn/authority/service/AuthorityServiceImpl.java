@@ -6,12 +6,12 @@ import com.community.aspn.authority.mapper.AuthorityMapper;
 import com.community.aspn.authority.mapper.AuthorityWikiMapper;
 import com.community.aspn.authority.mapper.DepartmentMapper;
 import com.community.aspn.member.mapper.MemberMapper;
+import com.community.aspn.menu.mapper.CommunityMenuMapper;
+import com.community.aspn.menu.mapper.WikiMenuMapper;
 import com.community.aspn.pojo.member.Member;
-import com.community.aspn.pojo.sys.Authority;
-import com.community.aspn.pojo.sys.AuthorityCommunity;
-import com.community.aspn.pojo.sys.AuthorityWiki;
-import com.community.aspn.pojo.sys.Department;
+import com.community.aspn.pojo.sys.*;
 import com.sun.corba.se.impl.ior.OldJIDLObjectKeyTemplate;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static java.awt.SystemColor.menu;
 
 @Service
 public class AuthorityServiceImpl implements AuthorityService {
@@ -38,6 +40,12 @@ public class AuthorityServiceImpl implements AuthorityService {
 
     @Resource
     AuthorityWikiMapper authorityWikiMapper;
+
+    @Resource
+    WikiMenuMapper wikiMenuMapper;
+
+    @Resource
+    CommunityMenuMapper communityMenuMapper;
 
     @Override
     public List<Map<String,Object>> getAllDepartment() {
@@ -177,6 +185,33 @@ public class AuthorityServiceImpl implements AuthorityService {
         queryWrapper.eq("menu_id",params.get("menuId"))
                 .eq("a_id",params.get("authority"));
         AuthorityWiki authorityWiki = authorityWikiMapper.selectOne(queryWrapper);
+        //如果是null话
+        if(authorityWiki == null){
+            AuthorityWiki authorityWikiNull = new AuthorityWiki();
+            authorityWikiNull.setViewYn(0);
+            authorityWikiNull.setEditYn(0);
+            return authorityWikiNull;
+        }
+
+        WikiMenu menu = wikiMenuMapper.selectById(params.get("menuId"));
+        //如果不是1级菜单
+        if(menu.getTier() > 1 ){
+            //如果是2级菜单的话
+            Integer fatherAuthorityViwYn = authorityMapper.getWikiFatherAuthorityViwYn(params);
+            if(menu.getTier() ==  2){
+                //如果是父菜单的读写权限是0的话
+                if(fatherAuthorityViwYn == 0 ){
+                    authorityWiki.setViewYn(0);
+                }
+            //3级菜单
+            }else {
+                Integer grandfatherAuthorityViwYn = authorityMapper.getWikiGrandfatherAuthorityViwYn(params);
+                //如果是父菜单的读写权限是0的话
+                if(fatherAuthorityViwYn == 0 || grandfatherAuthorityViwYn == 0){
+                    authorityWiki.setViewYn(0);
+                }
+            }
+        }
         return authorityWiki;
     }
 
@@ -193,6 +228,34 @@ public class AuthorityServiceImpl implements AuthorityService {
         queryWrapper.eq("menu_id",params.get("menuId"))
                 .eq("a_id",params.get("authority"));
         AuthorityCommunity authorityCommunity = authorityCommunityMapper.selectOne(queryWrapper);
+
+        //如果是null话
+        if(authorityCommunity == null){
+            AuthorityCommunity authorityCommunityNull = new AuthorityCommunity();
+            authorityCommunityNull.setViewYn(0);
+            authorityCommunityNull.setEditYn(0);
+            return authorityCommunityNull;
+        }
+
+        CommunityMenu menu = communityMenuMapper.selectById(params.get("menuId"));
+        //如果不是1级菜单
+        if(menu.getTier() > 1 ){
+            //如果是2级菜单的话
+            Integer fatherAuthorityViwYn = authorityMapper.getCommunityFatherAuthorityViwYn(params);
+            if(menu.getTier() ==  2){
+                //如果是父菜单的读写权限是0的话
+                if(fatherAuthorityViwYn == 0 ){
+                    authorityCommunity.setViewYn(0);
+                }
+                //3级菜单
+            }else {
+                Integer grandfatherAuthorityViwYn = authorityMapper.getCommunityGrandfatherAuthorityViwYn(params);
+                //如果是父菜单的读写权限是0的话
+                if(fatherAuthorityViwYn == 0 || grandfatherAuthorityViwYn == 0){
+                    authorityCommunity.setViewYn(0);
+                }
+            }
+        }
         return authorityCommunity;
     }
 

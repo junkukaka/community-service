@@ -4,11 +4,12 @@
 
     <select id="selectCommentByCommunityId" resultType="java.util.Map">
         SELECT
-            m.id,
+            m.id as memberId,
             m.member_name,
             m.picture,
             c.content,
             c.community_id,
+            c.id,
             c.register_id,
             c.register_time
         FROM

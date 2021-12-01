@@ -9,6 +9,7 @@
                m.picture,
                (select name from department WHERE id = m.department) department,
                c.content,
+               c.menu_id        as menuId,
                c.id,
                c.title,
                c.md_yn         as                                    mdYn,

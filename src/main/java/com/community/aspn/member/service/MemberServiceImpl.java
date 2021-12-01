@@ -371,6 +371,29 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * @Author nanguangjun
+     * @Description // 회원리스트 조회 검색조건 회원 이름
+     * @Date 10:41 2021/11/25
+     * @Param [name]
+     * @return java.util.List<com.community.aspn.pojo.member.Member>
+     **/
+    @Override
+    public List<Member> getMembersSearchByName(HashMap<String,String> params) {
+        QueryWrapper<Member> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("member_name",params.get("name"));
+        List<Member> members = memberMapper.selectList(queryWrapper);
+        String p = "";
+        for (int i = 0; i < members.size(); i++) {
+            if(members.get(i).getPicture() != null){
+                p = minoIOComponent.afterGetContentFromDBToFront(members.get(i).getPicture().toString(),
+                        params.get("remoteAddr").toString());
+                members.get(i).setPicture(p);
+            }
+        }
+        return members;
+    }
+
+    /**
+     * @Author nanguangjun
      * @Description // member insert by memberApp
      * @Date 17:06 2021/5/26
      * @Param [memberApp]

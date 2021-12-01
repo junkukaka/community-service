@@ -36,4 +36,6 @@ public interface MemberService {
     void iniPassword(Integer id);
 
     List<Map<String,Object>> reportWCMemberCount(HashMap<String,String> params);
+
+    List<Member> getMembersSearchByName(HashMap<String,String> params);
 }

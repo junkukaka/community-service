@@ -123,6 +123,7 @@ public class AuthorityController {
         return AjaxResponse.success(authorityWiki);
     }
 
+
     /**
      * @Author nanguangjun
      * @Description // wiki List page get member authority

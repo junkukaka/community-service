@@ -12,4 +12,10 @@ public interface AuthorityMapper extends BaseMapper<Authority> {
     List<Map<String,Object>> getAuthorityCommunityList(Integer aId);
     List<Map<String,Object>> getAuthorityWikiList(Integer aId);
     List<Map<String,Object>> getDepartments();
+
+    Integer getWikiFatherAuthorityViwYn(Map<String,Integer> params);
+    Integer getWikiGrandfatherAuthorityViwYn(Map<String,Integer> params);
+
+    Integer getCommunityFatherAuthorityViwYn(Map<String,Integer> params);
+    Integer getCommunityGrandfatherAuthorityViwYn(Map<String,Integer> params);
 }

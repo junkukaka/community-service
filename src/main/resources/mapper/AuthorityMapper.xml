@@ -53,6 +53,42 @@
                 LEFT JOIN authority a ON d.authority = a.id
     </select>
 
+    <!--wiki  menuId 获取爸爸菜单的读权限   -->
+    <select id="getWikiFatherAuthorityViwYn" resultType="java.lang.Integer">
+        select view_yn from authority_wiki where menu_id =
+            (
+                select id from wiki_menu where id = (select father from wiki_menu where id = #{menuId})
+            )
+        and a_id = #{authority}
+    </select>
+
+    <!-- wiki menuId  获取爷爷菜单的读权限   -->
+    <select id="getWikiGrandfatherAuthorityViwYn" resultType="java.lang.Integer">
+        select view_yn from authority_wiki where menu_id =
+            (
+                select father from wiki_menu where id = (select father from wiki_menu where id = #{menuId})
+            )
+        and a_id = #{authority}
+    </select>
+
+    <!-- community menuId 获取爸爸菜单的读权限   -->
+    <select id="getCommunityFatherAuthorityViwYn" resultType="java.lang.Integer">
+        select view_yn from authority_community where menu_id =
+             (
+                 select id from community_menu where id = (select father from community_menu where id = #{menuId})
+             )
+         and a_id = #{authority}
+    </select>
+
+    <!-- community menuId 获取爷爷菜单的读权限   -->
+    <select id="getCommunityGrandfatherAuthorityViwYn" resultType="java.lang.Integer">
+        select view_yn from authority_community where menu_id =
+             (
+                 select father from community_menu where id = (select father from community_menu where id = #{menuId})
+             )
+         and a_id = #{authority}
+    </select>
+
 
 
 </mapper>

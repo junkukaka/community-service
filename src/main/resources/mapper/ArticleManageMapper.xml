@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.community.aspn.admin.mapper.ArticleManageMapper">
+
+    <!-- select community by options page list   -->
+    <select id="selectCommunities" resultType="java.util.Map">
+        SELECT
+            m.id as memberId,
+            m.member_name as memberName,
+            c.id,
+            c.title,
+            c.register_time as registerTime
+        FROM
+            community c,
+            member m
+        WHERE
+            c.member_id = m.id
+        <if test='members!=null and members.size()>0'>
+            and m.id in
+            <foreach collection="members" index="index" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+        <if test="searchTitle!=null">
+            and c.title like CONCAT('%',#{searchTitle},'%')
+        </if>
+        order by c.id desc
+        LIMIT #{page},#{size}
+    </select>
+
+    <select id="selectCommunitiesCnt" resultType="java.lang.Integer">
+        SELECT
+            count(1) as cnt
+        FROM
+            community c,
+            member m
+        WHERE
+            c.member_id = m.id
+        <if test='members!=null and members.size()>0'>
+            and m.id in
+            <foreach collection="members" index="index" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+        <if test="searchTitle!=null">
+            and c.title like CONCAT('%',#{searchTitle},'%')
+        </if>
+    </select>
+
+
+    <!-- select wiki by options page list   -->
+    <select id="selectWikis" resultType="java.util.Map">
+        SELECT
+            wikiId AS id,
+            title AS title
+        FROM
+        (
+            SELECT
+                b.wiki_id AS wikiId,
+                b.his_yn,
+                w.title,
+                b.member_id
+            FROM
+                wiki_his b,
+                wiki w
+            WHERE
+                    w.id = b.wiki_id
+            <if test="searchTitle!=null">
+                and b.title like CONCAT('%',#{searchTitle},'%')
+            </if>
+            <if test='members!=null and members.size()>0'>
+                and b.member_id in
+                <foreach collection="members" index="index" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+        ) wiki
+        GROUP BY
+            wikiId,
+            title
+    </select>
+
+    <select id="selectWikisCnt" resultType="java.lang.Integer">
+        SELECT
+            count(1) as cnt
+        FROM
+        (
+            SELECT
+                b.wiki_id AS wikiId,
+                b.his_yn,
+                w.title,
+                b.member_id
+            FROM
+                wiki_his b,
+                wiki w
+            WHERE
+                w.id = b.wiki_id
+                <if test="searchTitle!=null">
+                    and b.title like CONCAT('%',#{searchTitle},'%')
+                </if>
+                <if test='members!=null and members.size()>0'>
+                    and b.member_id in
+                    <foreach collection="members" index="index" item="id" open="(" separator="," close=")">
+                        #{id}
+                    </foreach>
+                </if>
+        ) wiki
+    </select>
+
+
+    <select id="selectWikiHis" resultType="java.util.Map">
+        SELECT
+            h.id,
+            h.title,
+            m.member_name AS memberName,
+            m.picture,
+            h.member_id AS memberId,
+            h.information,
+            h.register_time AS registerTime,
+            h.his_yn,
+            w.id AS wikiId,
+            w.his_id,
+            CASE
+                WHEN w.his_id = h.id THEN
+                    1
+                ELSE
+                    0
+                END AS activeYn
+        FROM
+            wiki_his h,
+            wiki w,
+            member m
+        WHERE
+            h.member_id = m.id
+          AND h.wiki_id = #{wikiId}
+          AND w.id = h.wiki_id
+          AND h.his_yn
+    </select>
+
+</mapper>
