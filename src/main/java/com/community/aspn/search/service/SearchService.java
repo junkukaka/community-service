@@ -6,6 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface SearchService {
-    List<Map<String,Object>> search(Search search);
-    List<Search> getSearchContent(String content);
+    List<Map<String,Object>> search(Map<String,Object> params);
+
 }

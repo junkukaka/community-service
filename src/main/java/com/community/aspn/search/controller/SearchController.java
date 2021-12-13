@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/search")
@@ -23,28 +24,11 @@ public class SearchController {
      * @return com.community.aspn.util.AjaxResponse
      **/
     @PostMapping("/comprehensive")
-    public @ResponseBody AjaxResponse comprehensiveSearch(@RequestBody Search search){
-        if( search.getContent() == null || "".equals(search.getContent()) ){
-            return AjaxResponse.success(0);
-        }else {
-            return AjaxResponse.success(searchService.search(search));
-        }
+    public @ResponseBody AjaxResponse comprehensiveSearch(@RequestBody Map<String,Object> search){
+        List<Map<String, Object>> result = searchService.search(search);
+        return AjaxResponse.success(result);
     }
 
-    /**
-     * @Author nanguangjun
-     * @Description // get search content
-     * @Date 9:46 2021/5/8
-     * @Param [content]
-     * @return com.community.aspn.util.AjaxResponse
-     **/
-    @GetMapping("/content/{content}")
-    public @ResponseBody AjaxResponse getSearchContent(@PathVariable String content){
-        if("".equals(content) || content == null){
-            return AjaxResponse.success();
-        }
-        List<Search> search = searchService.getSearchContent(content);
-        return AjaxResponse.success(search);
-    }
+
 
 }

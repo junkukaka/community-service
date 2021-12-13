@@ -16,7 +16,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
     #公司虚拟机
-    url: jdbc:mysql://mxg_mysql:3306/test?useUnicode=true&characterEncoding=UTF8&serverTimezone=Hongkong
+    url: jdbc:mysql://mysql:3306/aspn?useUnicode=true&characterEncoding=UTF8&serverTimezone=Hongkong
     username: root
     password: 123456
     hikari:
@@ -50,16 +50,16 @@ mybatis-plus:
 
 # MinIo文件服务器
 minio:
-  endpoint: http://jolly_villani:9000
+  endpoint: http://minio_aspn:9000
   accessKey: minioadmin
   secretKey: minioadmin
   communityBucket: community
   uploadBucket: upload
   sysBucket: sys
   # 内网minio
-  localAddr: http://192.168.72.139:9000
+  localAddr: http://192.168.0.134:9000
   # 外网minio
-  remoteAddr: http://192.168.72.139:9000
+  remoteAddr: http://36.97.142.105:9000
   # 实际存储数据库,使用占位符代替
   realAddr: '@-@MINIO@-@'
   # 是否据王判断正则

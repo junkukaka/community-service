@@ -1,16 +1,13 @@
 package com.community.aspn.search.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+
 import com.community.aspn.pojo.sys.Search;
 import com.community.aspn.search.mapper.SearchMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class SearchServiceImpl implements SearchService{
@@ -18,38 +15,86 @@ public class SearchServiceImpl implements SearchService{
     @Resource
     SearchMapper searchMapper;
 
-    /**
-     * @Author nanguangjun
-     * @Description // search content
-     * @Date 9:11 2021/5/8
-     * @Param [search]
-     * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
-     **/
+
     @Override
-    public List<Map<String, Object>> search(Search search) {
-        String ty = search.getTy();
+    public List<Map<String, Object>> search(Map<String,Object> search) {
         List<Map<String, Object>> result = null;
+        String ty = search.get("ty").toString();
         if("WIKI".equals(ty)){
             result = this.wikiSearch(search);
         }else if("COMMUNITY".equals(ty)){
             result = this.communitySearch(search);
+        }else {
+            result = this.wikiAndCommunitySearch(search);
         }
-        this.insertSearch(search); //insert search
+
+        //검색 이력 table insert
+        Search s = new Search();
+        s.setContent(search.get("content").toString());
+        s.setRegisterId(Integer.parseInt(search.get("registerId").toString()));
+        this.insertSearch(s); //insert search
         return result;
     }
 
     /**
      * @Author nanguangjun
-     * @Description // select search
-     * @Date 10:39 2021/5/8
-     * @Param [content]
-     * @return java.util.List<com.community.aspn.pojo.sys.Search>
+     * @Description // 위키와 커뮤니티 종합검색색
+    * @Date 9:35 2021/12/10
+     * @Param [search]
+     * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
      **/
-    @Override
-    public List<Search> getSearchContent(String content) {
-        QueryWrapper<Search> searchQueryWrapper = new QueryWrapper<>();
-        searchQueryWrapper.like("content",content);
-        return searchMapper.selectList(searchQueryWrapper);
+    private List<Map<String, Object>> wikiAndCommunitySearch(Map<String, Object> search) {
+        List<Map<String, Object>> wiki = this.wikiSearch(search);
+        List<Map<String, Object>> community = this.communitySearch(search);
+        List<Map<String, Object>> result = new ArrayList<>();
+        result.addAll(wiki);
+        result.addAll(community);
+        return result;
+    }
+
+
+    /**
+     * @Author nanguangjun
+     * @Description // 위키 검색
+     * @Date 16:26 2021/12/7
+     * @Param [search]
+     * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+     **/
+    private List<Map<String,Object>> wikiSearch(Map<String,Object> search){
+        String content = search.get("content").toString();
+        String option = search.get("option").toString();
+        Integer page = Integer.parseInt(search.get("page").toString());
+        Integer size = Integer.parseInt(search.get("size").toString());
+        List<Integer> menus = this.castList(search.get("menus"),Integer.class);
+        List<Integer> members = this.castList(search.get("members"),Integer.class);
+        //如果会员和 content 同时没有值的话就返回null
+        if("".equals(content) && members.size() == 0 ){
+            return null;
+        }
+        List<Map<String, Object>> maps = searchMapper.wikiSearch(content,option,menus,members,page,size);
+        return maps;
+    }
+
+    /**
+     * @Author nanguangjun
+     * @Description // community 查询
+     * @Date 16:36 2021/5/7
+     * @Param [search]
+     * @return java.util.List<com.community.aspn.pojo.community.Community>
+     **/
+    private List<Map<String,Object>> communitySearch(Map<String,Object> search){
+        String content = search.get("content").toString();
+        String option = search.get("option").toString();
+        Integer page = Integer.parseInt(search.get("page").toString());
+        Integer size = Integer.parseInt(search.get("size").toString());
+        List<Integer> menus = this.castList(search.get("menus"),Integer.class);
+        List<Integer> members = this.castList(search.get("members"),Integer.class);
+        //如果会员和 content 同时没有值的话就返回null
+        if("".equals(content) && members.size() == 0 ){
+            return null;
+        }
+        List<Map<String, Object>> maps = searchMapper.communitySearch(content,option,menus,members,page,size);
+        return maps;
     }
 
 
@@ -74,29 +119,18 @@ public class SearchServiceImpl implements SearchService{
 
     }
 
-
-    /**
-     * @Author nanguangjun
-     * @Description // wiki Search
-     * @Date 16:26 2021/5/7
-     * @Param []
-     * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
-     **/
-    private List<Map<String,Object>> wikiSearch(Search search){
-        List<Map<String, Object>> maps = searchMapper.wikiSearch(search.getContent());
-        return maps;
-    }
-
-    /**
-     * @Author nanguangjun
-     * @Description // community 查询
-     * @Date 16:36 2021/5/7
-     * @Param [search]
-     * @return java.util.List<com.community.aspn.pojo.community.Community>
-     **/
-    private List<Map<String,Object>> communitySearch(Search search){
-        List<Map<String, Object>> maps = searchMapper.communitySearch(search.getContent());
-        return maps;
+    private <T> List<T> castList(Object obj, Class<T> clazz)
+    {
+        List<T> result = new ArrayList<T>();
+        if(obj instanceof List<?>)
+        {
+            for (Object o : (List<?>) obj)
+            {
+                result.add(clazz.cast(o));
+            }
+            return result;
+        }
+        return null;
     }
 
 
