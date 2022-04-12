@@ -129,8 +129,8 @@ public class WikiController {
      * @return com.community.aspn.util.AjaxResponse
      **/
     @GetMapping("/wikiProfileEditedList/{memberId}")
-    public AjaxResponse selectWikiEditedProfile(@PathVariable Integer memberId){
-        List<Map<String, Object>> list = wikiService.selectWikiEditedProfile(memberId);
+    public AjaxResponse selectWikiEditedProfile(@PathVariable Integer memberId,HttpServletRequest request){
+        List<Map<String, Object>> list = wikiService.selectWikiEditedProfile(memberId,request.getRemoteAddr());
         return AjaxResponse.success(list);
     }
 

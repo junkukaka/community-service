@@ -134,6 +134,9 @@ public class CommunityController {
         params.put("page",page);
         params.put("authority",authority);
         params.put("remoteAddr",request.getRemoteAddr());
+        if(!"".equals(request.getParameter("memberId"))){
+            params.put("memberId",request.getParameter("memberId"));
+        }
         List<Map<String, Object>> maps = communityService.selectCommunityTemplatePage(params);
         return AjaxResponse.success(maps);
     }

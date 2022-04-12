@@ -135,6 +135,9 @@
                 #{id}
             </foreach>
         </if>
+        <if test="memberId!=null">
+            and c.member_id = #{memberId}
+        </if>
         order by c.id desc
         LIMIT #{page},#{size}
     </select>

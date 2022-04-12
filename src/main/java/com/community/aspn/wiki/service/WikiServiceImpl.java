@@ -352,8 +352,14 @@ public class WikiServiceImpl implements WikiService{
      * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
      **/
     @Override
-    public List<Map<String, Object>> selectWikiEditedProfile(Integer memberId) {
+    public List<Map<String, Object>> selectWikiEditedProfile(Integer memberId,String remoteAddr) {
         List<Map<String, Object>> list = wikiMapper.selectWikiEditedProfile(memberId);
+        for (int i = 0; i < list.size(); i++) {
+            if(list.get(i).get("picture")!=null){
+                String picture = minoIOComponent.afterGetContentFromDBToFront(list.get(i).get("picture").toString(), remoteAddr);
+                list.get(i).put("picture",picture);
+            }
+        }
         return list;
     }
 

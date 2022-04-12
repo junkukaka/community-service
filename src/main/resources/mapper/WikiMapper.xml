@@ -94,6 +94,7 @@
             w.id,
             w.title,
             w.menu_id as menuId,
+            w.picture,
             m.name as menuName,
             date_format(w.update_time,'%Y-%m-%d %H:%i:%S') as updateTime
         FROM
@@ -109,6 +110,7 @@
             w.id,
             w.title,
             w.menu_id,
+            w.picture,
             m.name,
             m.register_time,
             m.update_time

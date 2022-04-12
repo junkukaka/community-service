@@ -57,15 +57,15 @@ minio:
   uploadBucket: upload
   sysBucket: sys
   # 内网minio
-  localAddr: http://aspnc.com.cn:9000
+  localAddr: http://www.aspnc.com.cn:9000
   # 外网minio
-  remoteAddr: http://aspnc.com.cn:9000
+  remoteAddr: http://www.aspnc.com.cn:9000
   # 实际存储数据库,使用占位符代替
   realAddr: '@-@MINIO@-@'
   # 是否据王判断正则
   patternAddr: 'http://aspnc.com.cn:9000'
   # 判断是否为本地
-  localIpPrefix: http://aspnc.com.cn
+  localIpPrefix: http://www.aspnc.com.cn
 
 
 
