@@ -226,4 +226,15 @@ public class WikiController {
         param.put("remoteAddr",request.getRemoteAddr());
         return AjaxResponse.success(wikiService.selectWikiHisMembers(param));
     }
+
+    /**
+     * 위키 평점
+     * @param param
+     * @return
+     */
+    @PostMapping("/wikiRating")
+    public AjaxResponse rating(@RequestBody HashMap<String,Object> param){
+        wikiService.wikiRating(param);
+        return AjaxResponse.success();
+    }
 }

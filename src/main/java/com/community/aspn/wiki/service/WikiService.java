@@ -3,6 +3,7 @@ package com.community.aspn.wiki.service;
 import com.community.aspn.pojo.wiki.Wiki;
 import com.community.aspn.pojo.wiki.WikiHis;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,4 +26,6 @@ public interface WikiService {
     Integer selectWikiTemplateCount(Integer authority);
 
     List<Map<String, Object>> selectWikiHisMembers(Map<String, Object> params);
+
+    void wikiRating(HashMap<String, Object> param);
 }

@@ -195,4 +195,10 @@
             )
     </select>
 
+    <insert id="saveWikiRating" parameterType="java.util.Map">
+        insert into wiki_rating(wiki_id,member_id,rating,register_time)
+        VALUES (#{wiki_id},#{member_id},#{rating},SYSDATE())
+        ON DUPLICATE KEY UPDATE rating = #{rating},update_time = SYSDATE()
+    </insert>
+
 </mapper>

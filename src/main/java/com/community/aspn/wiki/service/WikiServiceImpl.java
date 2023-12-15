@@ -425,5 +425,14 @@ public class WikiServiceImpl implements WikiService{
         return result;
     }
 
+    /**
+     * 위키 평점
+     * @param param
+     */
+    @Override
+    public void wikiRating(HashMap<String, Object> param) {
+        wikiMapper.saveWikiRating(param);
+    }
+
 
 }

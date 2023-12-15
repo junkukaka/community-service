@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.community.aspn.pojo.wiki.Wiki;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,4 +21,5 @@ public interface WikiMapper extends BaseMapper<Wiki> {
     List<Map<String, Object>> selectWikiTemplate(Map<String, Object> params);
     Integer selectWikiTemplateCount(Map<String, Object> params);
     List<Map<String, Object>> selectWikiHisMembers(Integer wikiId);
+    void saveWikiRating(HashMap<String, Object> param);
 }

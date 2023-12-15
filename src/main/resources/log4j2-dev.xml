@@ -36,16 +36,16 @@
         <!-- 根日志设置 -->
         <Root level="debug">
             <AppenderRef ref="CONSOLE" level="debug"/>
-            <AppenderRef ref="FILE-APPENDER" level="info"/>
+            <AppenderRef ref="FILE-APPENDER" level="debug"/>
         </Root>
 
         <!--spring日志-->
-        <Logger name="org.springframework" level="info"/>
+        <Logger name="org.springframework" level="debug"/>
         <!-- mybatis日志 -->
-        <Logger name="com.mybatis" level="warn"/>
+        <Logger name="com.mybatis" level="debug"/>
 
         <AsyncLogger name="ACCESS-LOG" level="debug" additivity="false">
-            <AppenderRef ref="FILE-APPENDER" level="info"/>
+            <AppenderRef ref="FILE-APPENDER" level="debug"/>
         </AsyncLogger>
     </Loggers>
 </configuration>
