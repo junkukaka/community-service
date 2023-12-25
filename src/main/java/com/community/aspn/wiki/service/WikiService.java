@@ -28,4 +28,6 @@ public interface WikiService {
     List<Map<String, Object>> selectWikiHisMembers(Map<String, Object> params);
 
     void wikiRating(HashMap<String, Object> param);
+
+    Integer getWikiRating(Integer wikiId);
 }

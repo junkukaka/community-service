@@ -13,7 +13,8 @@
             w.title,
             w.picture,
             (select member_name from member where id = w.register_id) as registerName,
-            (select member_name from member where id = w.update_id) as updateName
+            (select member_name from member where id = w.update_id) as updateName,
+            IFNULL((select average_rating from view_wiki_rating where wiki_id = w.id),0)  as average_rating
         FROM
             wiki w,
             wiki_his s,
@@ -54,7 +55,8 @@
             w.title,
             w.picture,
             (select member_name from member where id = w.register_id) as registerName,
-            (select member_name from member where id = w.update_id) as updateName
+            (select member_name from member where id = w.update_id) as updateName,
+            IFNULL((select average_rating from view_wiki_rating where wiki_id = w.id),0)  as average_rating
         FROM
             wiki w,
             wiki_his s
@@ -147,7 +149,8 @@
             w.title,
             w.picture,
             (select member_name from member where id = w.register_id) as registerName,
-            (select member_name from member where id = w.update_id) as updateName
+            (select member_name from member where id = w.update_id) as updateName,
+            IFNULL((select average_rating from view_wiki_rating where wiki_id = w.id),0)  as average_rating
         FROM
             wiki w,
             wiki_his s
@@ -196,9 +199,20 @@
     </select>
 
     <insert id="saveWikiRating" parameterType="java.util.Map">
-        insert into wiki_rating(wiki_id,member_id,rating,register_time)
-        VALUES (#{wiki_id},#{member_id},#{rating},SYSDATE())
-        ON DUPLICATE KEY UPDATE rating = #{rating},update_time = SYSDATE()
+        /* WikiMapper.saveWikiRating 위키 평점*/
+        insert into wiki_rating(wiki_id,member_id,rating,target_member_id,register_time)
+        VALUES (#{wikiId},#{memberId},#{rating},#{targetMemberId},SYSDATE())
+        ON DUPLICATE KEY UPDATE rating = #{rating},target_member_id = #{targetMemberId},update_time = SYSDATE()
     </insert>
+
+    <select id="getWikiRatingSum" resultType="java.lang.Integer" parameterType="int">
+        /* WikiMapper.getWikiRatingSum 위키 총점 가져오기 */
+        select sum(rating) from wiki_rating where wiki_id = #{wikiId}
+    </select>
+
+    <select id="getWikiRatingCount" resultType="java.lang.Integer" parameterType="int">
+        /* WikiMapper.getWikiRatingCount 위키 총점 수량 가져오기 */
+        select count(rating) from wiki_rating where wiki_id = #{wikiId}
+    </select>
 
 </mapper>

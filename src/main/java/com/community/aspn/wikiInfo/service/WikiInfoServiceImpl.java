@@ -1,9 +1,11 @@
 package com.community.aspn.wikiInfo.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.community.aspn.pojo.wiki.Wiki;
 import com.community.aspn.pojo.wiki.WikiCollect;
 import com.community.aspn.pojo.wiki.WikiHits;
 import com.community.aspn.pojo.wiki.WikiLike;
+import com.community.aspn.wiki.mapper.WikiMapper;
 import com.community.aspn.wikiInfo.mapper.WikiCollectMapper;
 import com.community.aspn.wikiInfo.mapper.WikiHitsMapper;
 import com.community.aspn.wikiInfo.mapper.WikiLikeMapper;
@@ -26,6 +28,9 @@ public class WikiInfoServiceImpl implements WikiInfoService {
 
     @Resource
     WikiLikeMapper wikiLikeMapper;
+
+    @Resource
+    WikiMapper wikiMapper;
 
     /**
      * @Author nanguangjun
@@ -96,6 +101,11 @@ public class WikiInfoServiceImpl implements WikiInfoService {
         QueryWrapper<WikiCollect> collectQueryWrapper = new QueryWrapper<>();
         collectQueryWrapper.eq("wiki_id",wikiId);
         result.put("collectCount",wikiCollectMapper.selectCount(collectQueryWrapper));
+        //wiki register_id
+        QueryWrapper<Wiki> wikiQueryWrapper = new QueryWrapper<>();
+        wikiQueryWrapper.eq("id",wikiId);
+        Wiki wiki = wikiMapper.selectOne(wikiQueryWrapper);
+        result.put("wikiRegisterID",wiki.getRegisterId());
         return result;
     }
 

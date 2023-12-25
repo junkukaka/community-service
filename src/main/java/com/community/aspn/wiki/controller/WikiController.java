@@ -228,7 +228,7 @@ public class WikiController {
     }
 
     /**
-     * 위키 평점
+     * 위키 평점 저장
      * @param param
      * @return
      */
@@ -237,4 +237,15 @@ public class WikiController {
         wikiService.wikiRating(param);
         return AjaxResponse.success();
     }
+
+    /**
+     * 위키 평점 가져오기
+     * @param wikiId
+     * @return
+     */
+    @GetMapping("/getWikiRating/{wikiId}")
+    public AjaxResponse getWikiRating(@PathVariable Integer wikiId){
+        return AjaxResponse.success(wikiService.getWikiRating(wikiId));
+    }
+
 }

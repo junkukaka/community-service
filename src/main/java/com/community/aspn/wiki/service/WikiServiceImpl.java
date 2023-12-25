@@ -434,5 +434,16 @@ public class WikiServiceImpl implements WikiService{
         wikiMapper.saveWikiRating(param);
     }
 
+    @Override
+    public Integer getWikiRating(Integer wikiId) {
+        Integer wikiRatingSum = wikiMapper.getWikiRatingSum(wikiId);
+        Integer wikiRatingCount = wikiMapper.getWikiRatingCount(wikiId);
+        if(wikiRatingCount == 0){
+            return 0;
+        }else {
+            return Math.round(wikiRatingSum/wikiRatingCount);
+        }
+    }
+
 
 }

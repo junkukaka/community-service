@@ -71,9 +71,9 @@
 
     <select id="reportWCMemberCount" resultType="java.util.Map">
         select
-        b.*
+            b.*
         from
-        member m ,
+            member m ,
         (SELECT
                 m.id,
                 m.member_name,
@@ -108,77 +108,72 @@
                     wh.id,
                     count(1) as wiki_his_cnt
                     FROM(
-                    SELECT
-                    m.id,
-                    wiki_id
-                FROM
-                    wiki_his w,
-                    member m
-                WHERE
-                        m.id = w.member_id
-                    AND w.update_time <![CDATA[ >= ]]> (SELECT STR_TO_DATE(#{start}, '%Y-%m-%d'))
-                    AND w.update_time <![CDATA[ <= ]]> (SELECT STR_TO_DATE(#{end}, '%Y-%m-%d'))
-                    AND w.his_yn = 1
-                GROUP BY
-                m.id,wiki_id
-            ) wh
+                            SELECT
+                            m.id,
+                            wiki_id
+                        FROM
+                            wiki_his w,
+                            member m
+                        WHERE
+                                m.id = w.member_id
+                            AND w.update_time <![CDATA[ >= ]]> (SELECT STR_TO_DATE(#{start}, '%Y-%m-%d'))
+                            AND w.update_time <![CDATA[ <= ]]> (SELECT STR_TO_DATE(#{end}, '%Y-%m-%d'))
+                            AND w.his_yn = 1
+                        GROUP BY
+                        m.id,wiki_id
+                    ) wh
             GROUP BY wh.id
             ) wh ON m.id = wh.id
             LEFT JOIN (
-                SELECT
-                    m.id,
-                    count(1) community_cnt
-                FROM
-                    community c,
-                    member m
-                WHERE
-                    c.member_id = m.id
-                    AND c.register_time <![CDATA[ >= ]]> (SELECT STR_TO_DATE(#{start}, '%Y-%m-%d'))
-                    AND c.register_time <![CDATA[ <= ]]> (SELECT STR_TO_DATE(#{end}, '%Y-%m-%d'))
-                GROUP BY
-                m.id
-            ) c ON m.id = c.id
+                            SELECT
+                                m.id,
+                                count(1) community_cnt
+                            FROM
+                                community c,
+                                member m
+                            WHERE
+                                c.member_id = m.id
+                                AND c.register_time <![CDATA[ >= ]]> (SELECT STR_TO_DATE(#{start}, '%Y-%m-%d'))
+                                AND c.register_time <![CDATA[ <= ]]> (SELECT STR_TO_DATE(#{end}, '%Y-%m-%d'))
+                            GROUP BY
+                            m.id
+                        ) c ON m.id = c.id
             LEFT JOIN (
-            SELECT
-                m.id,
-                count(1) AS comment_cnt
-            FROM
-            member m,
-            com_comment c
-            WHERE
-                    m.id = c.member_id
-                AND c.register_time <![CDATA[ >= ]]> (SELECT STR_TO_DATE(#{start}, '%Y-%m-%d'))
-                AND c.register_time <![CDATA[ <= ]]> (SELECT STR_TO_DATE(#{end}, '%Y-%m-%d'))
-            GROUP BY
-            m.id
-            ) cc ON m.id = cc.id
+                        SELECT
+                            m.id,
+                            count(1) AS comment_cnt
+                        FROM
+                        member m,
+                        com_comment c
+                        WHERE
+                                m.id = c.member_id
+                            AND c.register_time <![CDATA[ >= ]]> (SELECT STR_TO_DATE(#{start}, '%Y-%m-%d'))
+                            AND c.register_time <![CDATA[ <= ]]> (SELECT STR_TO_DATE(#{end}, '%Y-%m-%d'))
+                        GROUP BY
+                        m.id
+                    ) cc ON m.id = cc.id
             LEFT JOIN (
-            SELECT
-                m.id,
-                sum(l.be_liked) AS be_collect
-            FROM
-            community c,
-            (
-                SELECT
-                    l.community_id,
-                    count(1) be_liked
-                FROM
-                    com_collect l,
-                    community c
-                WHERE
-                    l.community_id = c.id
-                    AND l.register_time <![CDATA[ >= ]]> (SELECT STR_TO_DATE(#{start}, '%Y-%m-%d'))
-                    AND l.register_time <![CDATA[ <= ]]> (SELECT STR_TO_DATE(#{end}, '%Y-%m-%d'))
-                GROUP BY
-                l.community_id
-            ) l,
-                member m
-                WHERE
-                    c.id = l.community_id
-                AND m.id = c.member_id
-                GROUP BY
-                m.id
-            ) l ON m.id = l.id
+                        SELECT
+                                ww.register_id as id ,-- member id,
+                                sum(wcc.be_collect) AS be_collect
+                            FROM
+                            wiki ww,
+                            (
+                                SELECT
+                                    wc.wiki_id ,
+                                    count(1) be_collect
+                                FROM
+                                    wiki_collect wc  ,
+                                    wiki w
+                                WHERE
+                                    wc.wiki_id  = w.id
+                                GROUP BY wc.wiki_id
+                            ) wcc
+                            where ww.id = wcc.wiki_id
+                            AND ww.register_time <![CDATA[ >= ]]> (SELECT STR_TO_DATE(#{start}, '%Y-%m-%d'))
+                            AND ww.register_time <![CDATA[ <= ]]> (SELECT STR_TO_DATE(#{end}, '%Y-%m-%d'))
+                            GROUP BY ww.register_id
+                        ) l ON m.id = l.id
             LEFT JOIN (
                 SELECT
                     m.id,

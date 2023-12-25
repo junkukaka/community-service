@@ -22,4 +22,6 @@ public interface WikiMapper extends BaseMapper<Wiki> {
     Integer selectWikiTemplateCount(Map<String, Object> params);
     List<Map<String, Object>> selectWikiHisMembers(Integer wikiId);
     void saveWikiRating(HashMap<String, Object> param);
+    Integer getWikiRatingSum(Integer wikiId);
+    Integer getWikiRatingCount(Integer wikiId);
 }
