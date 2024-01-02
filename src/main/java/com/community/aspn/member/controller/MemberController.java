@@ -286,4 +286,28 @@ public class MemberController {
         return AjaxResponse.success(result);
     }
 
+    /**
+     * 평정 상세
+     * @param httpServletRequest
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/getRatingDetail")
+    public @ResponseBody AjaxResponse getRatingDetail(HttpServletRequest httpServletRequest) throws Exception {
+        HashMap<String, Object> params = new HashMap<>();
+        String start = httpServletRequest.getParameter("startDate");
+        String endDate = httpServletRequest.getParameter("endDate");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date end = simpleDateFormat.parse(endDate);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(end);
+        calendar.add(calendar.DATE,1);
+        end = calendar.getTime();
+        params.put("start",start);
+        params.put("end",simpleDateFormat.format(end));
+        params.put("memberId",httpServletRequest.getParameter("memberId"));
+        List<Map<String, Object>> result = memberservice.getRatingDetail(params);
+        return  AjaxResponse.success(result);
+    }
+
 }

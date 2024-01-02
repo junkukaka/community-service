@@ -15,4 +15,5 @@ public interface MemberMapper extends BaseMapper<Member> {
     List<Map<String,Object>> getAllAppMember();
     List<Map<String,Object>> getAllMemberByAdmin();
     List<Map<String,Object>> reportWCMemberCount(HashMap<String,Object> params);
+    List<Map<String,Object>> getRatingDetail(HashMap<String,Object> params);
 }

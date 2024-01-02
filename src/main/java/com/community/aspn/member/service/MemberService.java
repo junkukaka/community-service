@@ -38,4 +38,6 @@ public interface MemberService {
     List<Map<String,Object>> reportWCMemberCount(HashMap<String,String> params);
 
     List<Member> getMembersSearchByName(HashMap<String,String> params);
+
+    List<Map<String, Object>> getRatingDetail(HashMap<String, Object> params);
 }

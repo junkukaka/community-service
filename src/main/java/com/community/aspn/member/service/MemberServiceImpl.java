@@ -393,6 +393,16 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
+     * 평정 상세
+     * @param params
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> getRatingDetail(HashMap<String, Object> params) {
+        return memberMapper.getRatingDetail(params);
+    }
+
+    /**
      * @Author nanguangjun
      * @Description // member insert by memberApp
      * @Date 17:06 2021/5/26
