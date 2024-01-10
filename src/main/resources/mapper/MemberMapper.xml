@@ -77,12 +77,12 @@
         (SELECT
                 m.id,
                 m.member_name,
-                IFNULL(w.wiki_cnt, 0) AS wiki_cnt,
-                IFNULL(wh.wiki_his_cnt, 0) AS wiki_his_cnt,
-                IFNULL(c.community_cnt, 0) AS community_cnt,
-                IFNULL(cc.comment_cnt, 0) AS comment_cnt,
-                IFNULL(l.be_collect, 0) AS be_collect,
-                IFNULL(bl.be_liked, 0) AS be_liked,
+                IFNULL(w.wiki_cnt, 0) * 2 AS wiki_cnt,
+                IFNULL(wh.wiki_his_cnt, 0) * 1 AS wiki_his_cnt,
+                IFNULL(c.community_cnt, 0) * 1 AS community_cnt,
+                IFNULL(cc.comment_cnt, 0) * 0.2 AS comment_cnt,
+                IFNULL(l.be_collect, 0) * 0.5 AS be_collect,
+                IFNULL(bl.be_liked, 0) * 0.3 AS be_liked,
                 IFNULL(sl.rating, 0) as rating,
                 IFNULL(w.wiki_cnt, 0) * 2 + IFNULL(wh.wiki_his_cnt, 0) * 1 + IFNULL(c.community_cnt, 0) * 1 +
                 IFNULL(cc.comment_cnt, 0) * 0.2 + IFNULL(l.be_collect, 0) * 0.5 + IFNULL(bl.be_liked, 0) * 0.3 + IFNULL(sl.rating, 0)
