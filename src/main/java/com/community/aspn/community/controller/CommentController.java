@@ -27,8 +27,16 @@ public class CommentController {
      **/
     @PostMapping("/comments")
     public @ResponseBody AjaxResponse insertComment(@RequestBody ComComment comComment){
-        int i = commentService.insertComment(comComment);
-        return AjaxResponse.success(i);
+        try {
+            if (comComment.getId() == null){
+                commentService.insertComment(comComment);
+            }else {
+                commentService.updateComment(comComment);
+            }
+            return AjaxResponse.success();
+        }catch (Exception e){
+            return AjaxResponse.error(e.getMessage());
+        }
     }
 
     /**
@@ -110,6 +118,20 @@ public class CommentController {
     public @ResponseBody AjaxResponse readComment(@PathVariable Integer id){
         commentService.readComment(id);
         return AjaxResponse.success();
+    }
+
+    /**
+     * 댓글삭제
+     * @param id
+     */
+    @DeleteMapping("/delete/{id}")
+    public @ResponseBody AjaxResponse deleteComment(@PathVariable Integer id){
+        try{
+            commentService.deleteCommentById(id);
+            return AjaxResponse.success();
+        }catch (Exception e){
+            return AjaxResponse.error();
+        }
     }
 
 

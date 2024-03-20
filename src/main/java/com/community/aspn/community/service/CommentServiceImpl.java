@@ -145,4 +145,9 @@ public class CommentServiceImpl implements CommentService{
     public void readComment(Integer id) {
         commentMapper.updateCommentReadByCommunityId(id);
     }
+
+    @Override
+    public void updateComment(ComComment comComment) {
+        commentMapper.updateById(comComment);
+    }
 }

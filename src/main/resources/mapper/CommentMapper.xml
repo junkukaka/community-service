@@ -33,7 +33,8 @@
             b.id as communityId,
             b.menu_id as menuId,
             (select name from community_menu where id = b.menu_id) as menuName,
-            a.register_time as date
+            a.register_time as date,
+            b.member_id as memberId
         from
             com_comment a,
             community b
