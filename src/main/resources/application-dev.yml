@@ -12,7 +12,7 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     username: root
     #公司虚拟机
-    url: jdbc:mysql://192.168.0.141:3306/aspn?useUnicode=true&characterEncoding=UTF8&serverTimezone=Hongkong
+    url: jdbc:mysql://36.111.188.244:3306/aspn?useUnicode=true&characterEncoding=UTF8&serverTimezone=Hongkong
     password: aspn2021
     hikari:
       ## 最小空闲连接数量
@@ -63,8 +63,8 @@ mybatis-plus:
 # MinIo文件服务器
 minio:
   endpoint: http://192.168.0.141:9000
-  accessKey: minioadmin
-  secretKey: minioadmin
+  accessKey: aspn
+  secretKey: aspn2021
   communityBucket: community
   uploadBucket: upload
   sysBucket: sys
