@@ -291,8 +291,30 @@ public class MemberServiceImpl implements MemberService {
      * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
      **/
     @Override
-    public List<Map<String, Object>> getAllMemberByAdmin() {
-        return memberMapper.getAllMemberByAdmin();
+    public HashMap<String,Object> getAllMemberByAdmin(HashMap<String,Object> params) {
+        HashMap<String, Object> result = new HashMap<>();
+        Integer size = Integer.parseInt(params.get("itemsPerPage").toString());
+        Integer page = Integer.parseInt(params.get("page").toString());
+
+        //分页查询传参
+        Map<String, Object> args = new HashMap<>();
+
+        if(params.get("department") != null){
+            args.put("department", params.get("department").toString());
+        }
+        if (params.get("authority") != null){
+            args.put("authority", params.get("authority").toString());
+        }
+        Integer total = memberMapper.getAllMemberByAdminCount(args);
+        args.put("page", (page - 1) * size);
+        args.put("size", size);
+        List<Map<String, Object>> list = memberMapper.getAllMemberByAdmin(args); //分页查询
+
+        int pages = total % size == 0 ? total / size : total / size + 1;
+        result.put("members", list); //数据
+        result.put("page", page); //当前页面
+        result.put("pages", pages); //总页数
+        return result;
     }
 
     /**

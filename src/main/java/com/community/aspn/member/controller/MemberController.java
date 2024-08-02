@@ -148,9 +148,14 @@ public class MemberController {
      * @return com.community.aspn.util.AjaxResponse
      **/
     @GetMapping("/members/getAllMemberByAdmin")
-    public @ResponseBody AjaxResponse getAllMemberByAdmin(){
-        List<Map<String, Object>> allMemberByAdmin = memberservice.getAllMemberByAdmin();
-        return AjaxResponse.success(allMemberByAdmin);
+    public @ResponseBody AjaxResponse getAllMemberByAdmin(HttpServletRequest request){
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("itemsPerPage",Integer.parseInt(request.getParameter("itemsPerPage")));
+        map.put("page",Integer.parseInt(request.getParameter("page")));
+        map.put("department",request.getParameter("department"));
+        map.put("authority",request.getParameter("authority"));
+        Map<String, Object> result = memberservice.getAllMemberByAdmin(map);
+        return AjaxResponse.success(result);
     }
 
     /**

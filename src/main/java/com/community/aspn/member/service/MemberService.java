@@ -27,7 +27,7 @@ public interface MemberService {
 
     List<Map<String,Object>> getAllAppMember();
 
-    List<Map<String,Object>> getAllMemberByAdmin();
+    HashMap<String,Object> getAllMemberByAdmin(HashMap<String,Object> map);
 
     void appMemberToRealMember(List<Integer> ids);
 
