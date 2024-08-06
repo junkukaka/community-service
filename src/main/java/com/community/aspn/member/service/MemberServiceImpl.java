@@ -305,6 +305,9 @@ public class MemberServiceImpl implements MemberService {
         if (params.get("authority") != null){
             args.put("authority", params.get("authority").toString());
         }
+        if (params.get("memberName") != null){
+            args.put("memberName", params.get("memberName"));
+        }
         Integer total = memberMapper.getAllMemberByAdminCount(args);
         args.put("page", (page - 1) * size);
         args.put("size", size);

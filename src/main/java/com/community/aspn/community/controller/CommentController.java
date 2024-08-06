@@ -1,6 +1,6 @@
 package com.community.aspn.community.controller;
 
-import com.community.aspn.community.service.CommentService;
+import com.community.aspn.community.mapper.service.CommentService;
 import com.community.aspn.pojo.community.ComComment;
 import com.community.aspn.util.AjaxResponse;
 import org.springframework.web.bind.annotation.*;

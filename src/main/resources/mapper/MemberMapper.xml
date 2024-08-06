@@ -72,6 +72,9 @@
             <if test="authority!=null">
                 and m.authority = #{authority}
             </if>
+            <if test="memberName!=null">
+                and m.member_name like concat('%',#{memberName},'%')
+            </if>
         order by m.status desc,m.update_time desc
         LIMIT #{page},#{size}
     </select>
@@ -88,6 +91,9 @@
             </if>
             <if test="authority!=null">
                 and m.authority = #{authority}
+            </if>
+            <if test="memberName!=null">
+                and m.member_name like concat('%',#{memberName},'%')
             </if>
     </select>
 

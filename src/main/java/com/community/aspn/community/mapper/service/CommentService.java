@@ -1,4 +1,4 @@
-package com.community.aspn.community.service;
+package com.community.aspn.community.mapper.service;
 
 import com.community.aspn.pojo.community.ComComment;
 

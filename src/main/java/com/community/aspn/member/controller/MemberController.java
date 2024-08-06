@@ -150,6 +150,9 @@ public class MemberController {
     @GetMapping("/members/getAllMemberByAdmin")
     public @ResponseBody AjaxResponse getAllMemberByAdmin(HttpServletRequest request){
         HashMap<String, Object> map = new HashMap<>();
+        if (request.getParameter("memberName") != null && !"".equals(request.getParameter("memberName").trim())){
+            map.put("memberName",request.getParameter("memberName").trim());
+        }
         map.put("itemsPerPage",Integer.parseInt(request.getParameter("itemsPerPage")));
         map.put("page",Integer.parseInt(request.getParameter("page")));
         map.put("department",request.getParameter("department"));

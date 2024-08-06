@@ -1,4 +1,4 @@
-package com.community.aspn.community.service;
+package com.community.aspn.community.mapper.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.community.aspn.community.mapper.CommunityMapper;

@@ -1,6 +1,5 @@
-package com.community.aspn.community.service;
+package com.community.aspn.community.mapper.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.community.aspn.community.mapper.CommentMapper;
 import com.community.aspn.pojo.community.ComComment;
 import com.community.aspn.util.mino.MinoIOComponent;
