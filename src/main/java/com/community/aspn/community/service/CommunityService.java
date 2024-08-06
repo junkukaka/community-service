@@ -1,4 +1,4 @@
-package com.community.aspn.community.mapper.service;
+package com.community.aspn.community.service;
 
 
 import com.community.aspn.pojo.community.Community;
